@@ -1,0 +1,1159 @@
+@import "_def";
+@import "./object/button";
+@import "./object/label";
+@import "./object/field";
+
+* {
+  box-sizing: border-box;
+}
+
+a[href] {
+  color: inherit;
+  text-decoration: none;
+}
+
+body {
+  min-height: 100%;
+  background-color: #fafcfe;
+  color: #212325;
+  cursor: default;
+  font-family: 'Pin-Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, 'ヒラギノ角ゴ Pro W3', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', Arial, sans-serif !important;
+  font-size: 0.875rem;
+  font-weight: 300;
+  margin: initial;
+  user-select: none;
+  overflow-y: scroll;
+  position: relative;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font: inherit;
+  margin-block: initial;
+  margin-inline: initial;
+}
+
+html {
+  height: 100%;
+}
+
+button, input, select, textarea {
+  background-color: initial;
+  border: initial;
+  color: inherit;
+  font: inherit;
+  margin: initial;
+  margin-block: initial;
+  margin-inline: initial;
+  letter-spacing: initial;
+  outline: initial;
+  padding: initial;
+  padding-block: initial;
+  padding-inline: initial;
+  text-indent: initial;
+  text-shadow: initial;
+  text-transform: initial;
+  word-spacing: initial;
+}
+
+ol, ul {
+  list-style: none;
+  margin-block: initial;
+  padding-inline: initial;
+}
+
+.dialog {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(0.5rem);
+  background-color: #212325a0;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  transition-duration: 175ms;
+  transition-property: opacity;
+  transition-timing-function: ease;
+  z-index: 8;
+
+  &.-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  > .-modal {
+    @include flex(column, stretch, flex-start, 1rem);
+    top: 50%;
+    left: 50%;
+    min-width: 20rem;
+    background-color: #fafcfe;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 1.25rem #21232525;
+    opacity: 0;
+    overflow: hidden;
+    padding: 1.625rem 1.75rem;
+    pointer-events: none;
+    position: fixed;
+    transform: scale(95%) translate(-50%, -50%);
+    transform-origin: top left;
+    transition-duration: 175ms;
+    transition-property: opacity, transform;
+    transition-timing-function: ease;
+
+    &.-visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(100%) translate(-50%, -50%);
+    }
+
+    > .-title {
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    > .-content {
+      text-align: justify;
+    }
+
+    > .-button-container {
+      @include flex(row, stretch, center, 0.5rem);
+    }
+  }
+}
+
+.loading {
+  @include flex(column, center, center, 1.25rem);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(0.5rem);
+  background-color: #212325a0;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  transition-duration: 175ms;
+  transition-property: opacity;
+  transition-timing-function: ease;
+  z-index: 7;
+
+  &.-visible {
+    opacity: 1;
+    pointer-events: auto;
+
+    > .-icon {
+      top: 0;
+      opacity: 1;
+    }
+
+    > .-caption {
+      top: 0;
+      opacity: 1;
+      transition-delay: 100ms;
+    }
+  }
+
+  > .-icon {
+    @keyframes animation {
+      from {
+        transform: rotateZ(0deg);
+      }
+      to {
+        transform: rotateZ(360deg);
+      }
+    }
+    top: 0.25rem;
+    width: 3.5rem;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-name: animation;
+    animation-timing-function: linear;
+    opacity: 0;
+    position: relative;
+    transition-duration: 175ms;
+    transition-property: top, opacity;
+    transition-timing-function: ease;
+  }
+
+  > .-caption {
+    top: 0.25rem;
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 400;
+    opacity: 0;
+    position: relative;
+    transition-duration: 175ms;
+    transition-property: top, opacity;
+    transition-timing-function: ease;
+  }
+}
+
+body:has(.dialog.-visible) {
+  overflow: hidden !important;
+}
+
+// [ 헤더 플래그먼츠 ] @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+svg * {
+  transform-box: fill-box;
+}
+
+#header * {
+  box-sizing: border-box;
+}
+
+#header {
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: block;
+}
+
+#header .header-layout {
+  margin-top: -1px;
+  padding-top: -1px;
+  min-width: 320px;
+  display: block;
+}
+
+// [ 검색 네이게이션 ] @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#headerContent {
+  left: 65px;
+  right: 0;
+  position: fixed;
+  display: block;
+  z-index: 6;
+}
+
+#headerContent .nags {
+  width: 100%;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  display: block;
+}
+
+#headerContent .nags-layout {
+  @include flex(column, flex-start, flex-start);
+  width: 100%;
+  height: 74px;
+  margin: 0;
+}
+
+#headerContent .nags-wrapper {
+  @include flex(row, center, flex-start);
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+#headerContent .nags-button-container {
+  @include flex(row, center, flex-start);
+  width: 100%;
+  height: 56px;
+}
+
+#headerContent .search-container {
+  min-width: 407px;
+  min-height: 0;
+  flex: 1 1 auto;
+  box-sizing: border-box;
+  padding-left: 8px;
+  padding-right: 8px;
+  display: block;
+}
+
+#headerContent .search-box {
+  @include flex(row, flex-start, flex-start);
+  height: 48px;
+  background-color: rgb(241, 241, 241);
+  border-radius: 12px;
+}
+
+#headerContent .search-box:hover {
+  background-color: rgb(225, 225, 225);
+}
+
+#headerContent .search-box-wrapper {
+  @include flex(row, center, flex-start);
+  min-height: 0;
+  min-width: 0;
+  height: 100%;
+  padding: 0 0 0 16px;
+  position: relative;
+  flex: 1 1 auto;
+}
+
+#headerContent .search-box-icon {
+  margin-right: 8px;
+  flex: 0 0 auto;
+  display: block;
+}
+
+#headerContent .search-box-icon .icon {
+  width: 16px;
+  height: 16px;
+  display: block;
+  color: #57574c;
+  fill: currentColor;
+  stroke-width: 0;
+  vertical-align: middle;
+}
+
+#headerContent .search-box-input {
+  min-height: 0;
+  min-width: 0;
+  height: 100%;
+  flex: 1 1 auto;
+  display: block;
+}
+
+#headerContent .search-box-input .input {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: normal;
+  outline: none;
+  padding: 0;
+}
+
+#headerContent .profile-container {
+  display: block;
+  box-sizing: border-box;
+}
+
+#headerContent .profile-container .profile {
+  width: 100%;
+  border-radius: 16px;
+  cursor: pointer;
+  outline: none;
+  display: block;
+  transition: transform 85ms ease-out;
+}
+
+#headerContent .profile-container .profile:active, {
+  transform: scale(0.916667);
+  outline: 0;
+}
+
+#headerContent .profile-container .profile:active .profile-content {
+  border: 1px solid rgb(17, 17, 17);
+}
+
+#headerContent .profile-layout {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  display: block;
+}
+
+#headerContent .profile-layout:hover {
+  background-color: rgba(248, 247, 242, 0.95);
+}
+
+#headerContent .profile-wrapper {
+  @include flex(row, center, center);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+#headerContent .profile-content {
+  @include flex(row, center, center);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+
+#headerContent .profile-svg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  display: block
+}
+
+#headerContent .profile-img-wrapper {
+  background-color: #efefef;
+  padding-bottom: 100%;
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+}
+
+#headerContent .profile-img-wrapper .img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  border: 0;
+  color: transparent;
+  vertical-align: middle;
+  position: absolute;
+  display: block;
+}
+
+#headerContent .profile-add-container {
+  display: block;
+}
+
+#headerContent .profile-add-button {
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+}
+
+#headerContent .profile-add-layout {
+  display: block;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  background-color: transparent;
+  transition: transform 85ms ease-out;
+}
+
+#headerContent .profile-add-layout:active {
+  transform: scale(0.833333);
+}
+
+#headerContent .profile-add-layout:active .profile-add-wrapper {
+  background-color: rgba(0, 0, 0, .1);
+}
+
+#headerContent .profile-add-wrapper {
+  @include flex(row, center, center);
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  border-radius: 8px;
+  perspective: 1px;
+}
+
+#headerContent .profile-add-wrapper:hover {
+  background-color: rgba(0, 0, 0, .06);
+}
+
+#headerContent .profile-add-wrapper .icon {
+  width: 12px;
+  height: 12px;
+  display: block;
+  color: #57574c;
+  fill: currentColor;
+  stroke-width: 0;
+  vertical-align: middle;
+}
+
+// [ 사이드 네이게이션 ] @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#VerticalNavContent {
+  @include flex(column, center, flex-start);
+  top: 0;
+  height: 100vh;
+  width: 65px;
+  background-color: #ffffff;
+  border-right: 1px solid #d1d1c7;
+  position: fixed;
+  overflow: auto;
+  z-index: 6;
+}
+
+#VerticalNavContent .nav-layout {
+  position: relative;
+  height: 100%;
+  padding-bottom: 16px;
+  padding-top: 16px;
+}
+
+#VerticalNavContent .nav-wrapper {
+  @include flex(column, center, space-between, 24px);
+  height: 100%;
+}
+
+#VerticalNavContent .nav-content {
+  @include flex(column, center, flex-start, 24px);
+}
+
+#VerticalNavContent .pixterest-logo-home-button,
+#VerticalNavContent .home-logo-button,
+#VerticalNavContent .creation-logo-button {
+  display: block;
+  box-sizing: border-box;
+}
+
+#VerticalNavContent .logo-layout {
+  display: block;
+  outline: none;
+  border: 0;
+  cursor: pointer;
+  padding-top: 0;
+  background-color: transparent;
+  transition: transform 85ms ease-out;
+}
+
+#VerticalNavContent .logo-layout:active {
+  transform: scale(0.916667);
+}
+
+#VerticalNavContent .logo-wrapper {
+  width: 41px;
+  height: 41px;
+  color: inherit;
+  cursor: pointer;
+  background-color: transparent;
+  border-radius: 16px;
+  perspective: 1px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+#VerticalNavContent .logo-wrapper:hover {
+  background-color: rgba(0, 0, 0, .06);
+}
+
+#VerticalNavContent .logo-wrapper:active {
+  background-color: rgba(0, 0, 0, .1);
+}
+
+#VerticalNavContent .icon {
+  width: 22px;
+  height: 22px;
+  color: #e60023;
+  fill: currentColor;
+  display: block;
+  stroke-width: 0;
+  vertical-align: middle;
+}
+
+#VerticalNavContent .icon.home,
+#VerticalNavContent .icon.creation,
+#VerticalNavContent .icon.option {
+  color: #111;
+  fill: currentColor;
+}
+
+// [ 만들기 팝업 ] @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#creationFlyout {
+  position: absolute;
+  left: 16px;
+  top: 0;
+  box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  visibility: visible;
+  outline: none;
+  display: none;
+  z-index: 10000;
+  transform: translate(0, 0);
+  //transform: translate(67.7778px, 52.444px);
+}
+
+#creationFlyout.-visible {
+  display: block;
+}
+
+#creationFlyout .creation-flyout-wrapper {
+  max-width: 392px;
+  max-height: 90vh;
+  min-width: 180px;
+  min-height: 40px;
+  width: 392px;
+  background-color: #fff;
+
+  border-radius: 16px;
+  overflow: auto;
+  position: relative;
+  display: block;
+}
+
+#creationFlyout .flyout-wrapper {
+  @include flex(column, center, flex-start);
+  min-width: 0;
+  min-height: 0;
+  margin: 12px;
+  flex: 1 1 auto;
+}
+
+#creationFlyout .flyout-title {
+  width: 100%;
+  align-self: start;
+  padding: 8px;
+  display: block;
+}
+
+#creationFlyout .flyout-title > .title {
+  text-align: left;
+  color: #111;
+  -webkit-font-smoothing: antialiased;
+  word-wrap: break-word;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+#creationFlyout .flyout-pin-button {
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  appearance: none;
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+}
+
+#creationFlyout .flyout-pin-button:hover {
+  background-color: #f0f0eb;
+}
+
+#creationFlyout .flyout-pin-button:active {
+  background-color: #deded3;
+}
+
+#creationFlyout .flyout-pin-layout {
+  color: inherit;
+  padding: 12px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+#creationFlyout .flyout-pin-container {
+  width: 100%;
+  margin-bottom: 2px;
+  margin-top: 2px;
+  display: block;
+  outline: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 85ms ease-out;
+}
+
+#creationFlyout .flyout-pin-row {
+  @include flex(row, center, flex-start);
+  margin: 0;
+}
+
+
+#creationFlyout .flyout-pin-icon {
+  box-sizing: border-box;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: #e0e0d9;
+  display: block;
+}
+
+#creationFlyout .flyout-pin-icon > .icon {
+  width: 28px;
+  height: 28px;
+  color: #111;
+  fill: currentColor;
+  stroke-width: 0;
+  vertical-align: middle;
+  display: block;
+}
+
+#creationFlyout .flyout-pin-content {
+  min-width: 0;
+  margin-left: 12px;
+  box-sizing: border-box;
+  display: block;
+  flex: 1;
+}
+
+#creationFlyout .flyout-pin-content > .title {
+  text-align: left;
+  color: #111;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  text-decoration: none;
+  letter-spacing: 0;
+  line-height: 1.5;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+#creationFlyout .flyout-pin-content > .caption {
+  text-align: left;
+  color: #57574c;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: none;
+  letter-spacing: 0;
+  line-height: 1.5;
+  white-space: normal;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+// [ 옵션 팝업 ]@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#optionFlyout {
+  position: absolute;
+  left: 16px;
+  top: 0;
+  box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  visibility: visible;
+  outline: none;
+  display: none;
+  z-index: 10000;
+  transform: translate(0, 0);
+  //transform: translate(67.7778px, 500.444px);
+}
+
+#optionFlyout.-visible {
+  display: block;
+}
+
+#optionFlyout .option-flyout-wrapper {
+  max-width: 392px;
+  max-height: 90vh;
+  min-width: 180px;
+  min-height: 40px;
+  width: 392px;
+  background-color: #fff;
+
+  border-radius: 16px;
+  overflow: auto;
+  position: relative;
+  display: block;
+}
+
+#optionFlyout .flyout-wrapper {
+  @include flex(column, center, flex-start);
+  min-width: 0;
+  min-height: 0;
+  margin: 12px;
+  flex: 1 1 auto;
+}
+
+#optionFlyout .flyout-option-button {
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  appearance: none;
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+}
+
+#optionFlyout .flyout-option-button:hover {
+  background-color: #f0f0eb;
+}
+
+#optionFlyout .flyout-option-button:active {
+  background-color: #deded3;
+}
+
+#optionFlyout .flyout-option-layout {
+  color: inherit;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+#optionFlyout .flyout-option-wrapper {
+  width: 100%;
+  border-radius: 0;
+  outline: none;
+  cursor: pointer;
+  display: block;
+  transition: transform 85ms ease-out;
+}
+
+#optionFlyout .flyout-option-row {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+#optionFlyout .flyout-option-content {
+  min-width: 0;
+  margin-left: 5px;
+  box-sizing: border-box;
+  display: block;
+  flex: 1 1 auto;
+}
+
+#optionFlyout .flyout-option-content > .caption {
+  -webkit-line-clamp: 1;
+  text-align: left;
+  color: #111;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+#optionFlyout .flyout-option-icon {
+  @include flex(row, center, center);
+  margin-left: 6px;
+  box-sizing: border-box;
+}
+
+#optionFlyout .flyout-option-icon > .icon {
+  width: 16px;
+  height: 16px;
+  color: #111;
+  fill: currentColor;
+  stroke-width: 0;
+  vertical-align: middle;
+  display: block;
+}
+
+// [ 프로필 팝업 ]@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#profileFlyout {
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  visibility: visible;
+  outline: none;
+  display: none;
+  z-index: 10000;
+  transform: translate(0, 0);
+}
+
+#profileFlyout.-visible {
+  display: block;
+}
+
+#profileFlyout .profile-flyout-wrapper {
+  max-width: 90vw;
+  max-height: 90vh;
+  min-width: 180px;
+  min-height: 40px;
+  width: 360px;
+  background-color: #fff;
+
+  border-radius: 16px;
+  overflow: auto;
+  position: relative;
+  display: block;
+}
+
+#profileFlyout .flyout-wrapper {
+  @include flex(column, center, flex-start);
+  min-width: 0;
+  min-height: 0;
+  margin: 12px;
+  flex: 1 1 auto;
+}
+
+#profileFlyout .profile-login {
+  width: 100%;
+  display: block;
+}
+
+#profileFlyout .profile-login-title {
+  @include flex(row, flex-start, flex-start);
+  padding: 8px 12px;
+}
+
+#profileFlyout .profile-login-title .title {
+  text-align: left;
+  color: #57574c;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-decoration: none;
+  display: block;
+}
+
+#profileFlyout .profile-login-content {
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  appearance: none;
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+}
+
+#profileFlyout .profile-login-content:hover {
+  background-color: #f0f0eb;
+}
+
+#profileFlyout .profile-login-content:active {
+  background-color: #deded3;
+}
+
+#profileFlyout .profile-content-layout {
+  @include flex(column, flex-start, flex-start);
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+#profileFlyout .profile-content-wrapper {
+  width: 100%;
+  @include flex(row, flex-start, flex-start);
+  margin: 0;
+}
+
+#profileFlyout .profile-login-1-layout {
+  min-height: 0;
+  min-width: 0;
+  margin: -2px 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+}
+
+#profileFlyout .profile-login-1-wrapper {
+  margin: 2px 0;
+  display: block;
+}
+
+#profileFlyout .profile-login-1 {
+  @include flex(row, center, flex-start);
+  margin: 0;
+}
+
+#profileFlyout .profile-login-1-content {
+  border-radius: 0;
+  color: #215d82;
+  cursor: pointer;
+  outline: none;
+  font-weight: 500;
+  display: block;
+  transition: transform 85ms ease-out;
+}
+
+#profileFlyout .profile-login-row {
+  @include flex(row, center, flex-start);
+  margin-right: 16px;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+#profileFlyout .profile-login-row-img {
+  width: 56px;
+  height: 56px;
+  margin-right: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  display: block;
+}
+
+#profileFlyout .profile-login-row-img-wrapper {
+  width: 100%;
+  background-color: #efefef;
+  border-radius: 50%;
+  box-sizing: border-box;
+  padding-bottom: 100%;
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+
+#profileFlyout .profile-login-row-img-wrapper .img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  border: 0;
+  color: transparent;
+  position: absolute;
+  vertical-align: middle;
+  display: block;
+}
+
+#profileFlyout .profile-login-row-content {
+  max-width: 176px;
+  box-sizing: border-box;
+  display: block;
+}
+
+
+#profileFlyout .profile-login-row-content-name {
+  -webkit-line-clamp: 1;
+  text-align: left;
+  color: #000000;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+#profileFlyout .profile-login-row-content-type {
+  margin-top: 2px;
+  display: block;
+  -webkit-line-clamp: 1;
+  text-align: left;
+  color: #57574c;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  letter-spacing: 0;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+#profileFlyout .profile-login-row-content-email {
+  margin-top: 2px;
+  display: block;
+  -webkit-line-clamp: 1;
+  text-align: left;
+  color: #57574c;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  letter-spacing: 0;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+#profileFlyout .profile-svg-wrapper {
+  @include flex(row, center, flex-end);
+  min-width: 12px;
+  min-height: 70px;
+  margin-left: 8px;
+  background-color: transparent;
+}
+
+#profileFlyout .profile-svg-wrapper .img {
+  width: 16px;
+  height: 16px;
+  color: #000000;
+  fill: currentColor;
+  stroke-width: 0;
+  vertical-align: middle;
+  display: block;
+}
+
+#profileFlyout .profile-my {
+  width: 100%;
+  display: block;
+}
+
+#profileFlyout .profile-my:not(:first-child) {
+  margin-top: 8px;
+}
+
+#profileFlyout .profile-my-title {
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: row;
+}
+
+#profileFlyout .profile-my-title .title {
+  text-align: left;
+  color: #57574c;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-decoration: none;
+  display: block;
+}
+
+#profileFlyout .profile-my-button {
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  appearance: none;
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+}
+
+#profileFlyout .profile-my-button:hover {
+  background-color: #f0f0eb;
+}
+
+#profileFlyout .profile-my-button:active {
+  background-color: #deded3;
+  outline: none;
+}
+
+#profileFlyout .profile-my-button-layout {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0);
+  display: flex;
+  flex-direction: column;
+}
+
+#profileFlyout .profile-my-button-wrapper {
+  flex: 1 1 auto;
+  margin: -2px 0;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#profileFlyout .profile-my-button-content {
+  @include flex(row, center, flex-start);
+  margin: 0;
+}
+
+#profileFlyout .profile-my-button-content .caption {
+  -webkit-line-clamp: 1;
+  text-align: left;
+  color: #000000;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+

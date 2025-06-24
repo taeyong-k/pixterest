@@ -1,0 +1,62 @@
+@charset "UTF-8";
+
+@use "sass:color";
+@import "../_def";
+
+.obj-button {
+  @mixin buttonEffect($background-color, $color, $factor) {
+    background-color: $background-color;
+    color: $color;
+
+    &:hover {
+      background-color: color.adjust($background-color, $lightness: $factor);
+    }
+
+    &:hover {
+      background-color: color.adjust($background-color, $lightness: $factor * 2);
+    }
+
+  }
+  @include flex(row, center, center, 0.375rem);
+  height: 2rem;
+  border: 0.0625rem solid transparent;
+  border-radius: 1rem;
+  cursor: pointer;
+  padding: 0 0.75rem;
+  transition-duration: 175ms;
+  transition-property: background-color;
+  transition-timing-function: ease;
+
+  &:disabled {
+    background-color: #a2a4a6 !important;
+    color: #e0e2e4 !important;
+    cursor: default !important;
+
+    > .-icon {
+      filter: opacity(66.66%) !important;
+    }
+  }
+
+  &.-color-blue {
+    @include buttonEffect(#3498db, #fafcfe, -2.5%)
+  }
+
+  &.-color-gray {
+    @include buttonEffect(#e0e0d9, #fafcfe, -2.5%);
+  }
+
+  &.-color-green {
+    @include buttonEffect(#1abc9c, #fafcfe, -2.5%)
+  }
+
+  &.-color-red {
+    @include buttonEffect(#e60023, #fafcfe, -2.5%)
+  }
+
+  > .-icon {
+    width: 0.9375rem;
+    height: 0.9375rem;
+    object-fit: contain;
+    object-position: center left;
+  }
+}
