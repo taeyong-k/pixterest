@@ -16,11 +16,11 @@ header#header {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 100;
+  z-index: 2000;
 }
 
 #header {
-  min-height: 100vh;
+  height: auto;
   box-sizing: border-box;
   display: block;
 }
@@ -38,7 +38,7 @@ header#header {
   right: 0;
   position: fixed;
   display: block;
-  z-index: 6;
+  z-index: 2000;
 }
 
 #headerContent .nags {
@@ -274,7 +274,7 @@ header#header {
   border-right: 1px solid #d1d1c7;
   position: fixed;
   overflow: auto;
-  z-index: 6;
+  z-index: 2000;
 }
 
 #VerticalNavContent .nav-layout {
@@ -362,7 +362,7 @@ header#header {
   visibility: visible;
   outline: none;
   display: none;
-  z-index: 101;
+  z-index: 3000;
   transform: translate(0, 0);
   //transform: translate(67.7778px, 52.444px);
 }
@@ -523,7 +523,7 @@ header#header {
   visibility: visible;
   outline: none;
   display: none;
-  z-index: 101;
+  z-index: 3000;
   transform: translate(0, 0);
   //transform: translate(67.7778px, 500.444px);
 }
@@ -651,7 +651,7 @@ header#header {
   visibility: visible;
   outline: none;
   display: none;
-  z-index: 101;
+  z-index: 3000;
   transform: translate(0, 0);
 }
 

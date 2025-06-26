@@ -12,11 +12,11 @@ header#header {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 100;
+  z-index: 2000;
 }
 
 #header {
-  min-height: 100vh;
+  height: auto;
   box-sizing: border-box;
   display: block;
 }
@@ -33,7 +33,7 @@ header#header {
   right: 0;
   position: fixed;
   display: block;
-  z-index: 6;
+  z-index: 2000;
 }
 
 #headerContent .nags {
@@ -368,7 +368,7 @@ header#header {
   border-right: 1px solid #d1d1c7;
   position: fixed;
   overflow: auto;
-  z-index: 6;
+  z-index: 2000;
 }
 #VerticalNavContent > * {
   flex-grow: 0;
@@ -487,7 +487,7 @@ header#header {
   visibility: visible;
   outline: none;
   display: none;
-  z-index: 101;
+  z-index: 3000;
   transform: translate(0, 0);
 }
 
@@ -668,7 +668,7 @@ header#header {
   visibility: visible;
   outline: none;
   display: none;
-  z-index: 101;
+  z-index: 3000;
   transform: translate(0, 0);
 }
 
@@ -817,7 +817,7 @@ header#header {
   visibility: visible;
   outline: none;
   display: none;
-  z-index: 101;
+  z-index: 3000;
   transform: translate(0, 0);
 }
 
@@ -1343,8 +1343,18 @@ header#header {
 .obj-label:hover {
   color: hsl(0, 0%, -15%);
   border-color: #ffffff;
-  outline: 0.125rem solid #007db8;
+  outline: 1.5px solid #007db8;
   z-index: 1;
+}
+.obj-label:focus-within {
+  border-color: #ffffff;
+  outline: 1.5px solid #007db8;
+  z-index: 1;
+}
+.obj-label.-invalid {
+  border-color: #ffffff;
+  outline: 1.5px solid #b2001a;
+  z-index: 9;
 }
 .obj-label.-invalid .-field:not(:disabled) {
   border-color: #e74c3c !important;

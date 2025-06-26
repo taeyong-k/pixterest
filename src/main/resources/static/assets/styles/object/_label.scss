@@ -30,12 +30,22 @@
   &:hover {
     color: color.adjust($caption-text-color, $lightness: -15%);
     border-color: #ffffff;
-    outline: 0.125rem solid #007db8;
+    outline: 1.5px solid #007db8;
     z-index: 1; // 시각적으로 겹칠 경우 위로
+  }
+
+  &:focus-within {
+    border-color: #ffffff;
+    outline: 1.5px solid #007db8;
+    z-index: 1;
   }
 
   // 유효성 오류 상태
   &.-invalid {
+    border-color: #ffffff;
+    outline: 1.5px solid #b2001a;
+    z-index: 9;
+
     .-field:not(:disabled) {
       border-color: #e74c3c !important;
       color: #e74c3c !important;
