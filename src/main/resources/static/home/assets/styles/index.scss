@@ -1,0 +1,57 @@
+@charset "UTF-8";
+
+@import "../../../assets/styles/_def";
+@import "../../../assets/styles/libraries/masonry";
+
+#home * {
+  box-sizing: border-box;
+}
+
+#home {
+  min-height: 100vh;
+  min-width: 320px;
+  position: relative;
+  display: block;
+  z-index: 1000;
+}
+
+#home .home-layout {
+  display: block;
+}
+
+#home .home-wrapper {
+  padding-top: 74px;
+  padding-left: 65px;
+  display: block;
+}
+
+#home .home-container {
+  display: block;
+}
+
+//#home .grid-layout {
+//  padding: 0 14px;
+//  display: block;
+//}
+//
+//#home .grid-wrapper {
+//  width: 100%;
+//  margin: 0 auto;
+//  display: block;
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

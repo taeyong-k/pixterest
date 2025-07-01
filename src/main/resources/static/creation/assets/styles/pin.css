@@ -88,7 +88,7 @@
   align-items: center;
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  gap: 46px;
   justify-content: flex-start;
 }
 #creation-pin .pin-content-container > * {

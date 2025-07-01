@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+.grid, .grid * {
+  box-sizing: border-box;
+}
+
+.grid {
+  max-width: 1200px;
+  margin: 0;
+  padding: 0 14px;
+  position: relative;
+  display: block;
+}
+
+.grid-sizer,
+.grid-item {
+  width: 20%;
+}
+
+.grid-item {
+  border-radius: 16px;
+  margin-bottom: 14px;
+  margin-left: 0;
+  margin-right: 0;
+  overflow: hidden;
+  display: block;
+}
+
+.grid-item img {
+  width: 100%;
+  height: auto;
+  border: 0;
+  cursor: pointer;
+  border-radius: 16px;
+  display: block;
+}
+
