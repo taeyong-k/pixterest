@@ -1,3 +1,7 @@
+body {
+  background-color: #ffffff;
+}
+
 #creation-pin * {
   box-sizing: border-box;
 }

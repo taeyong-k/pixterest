@@ -3,6 +3,10 @@
 @import "../../../assets/styles/_def";
 @import "../../../assets/styles/libraries/masonry";
 
+body {
+  background-color: #ffffff;
+}
+
 #home * {
   box-sizing: border-box;
 }
@@ -16,6 +20,7 @@
 }
 
 #home .home-layout {
+  flex: 1 1 auto;
   display: block;
 }
 
@@ -29,16 +34,11 @@
   display: block;
 }
 
-//#home .grid-layout {
-//  padding: 0 14px;
-//  display: block;
-//}
-//
-//#home .grid-wrapper {
-//  width: 100%;
-//  margin: 0 auto;
-//  display: block;
-//}
+#home .grid-wrapper {
+  padding-top: 24px;
+  padding-left: 14px;
+  box-sizing: border-box;
+}
 
 
 

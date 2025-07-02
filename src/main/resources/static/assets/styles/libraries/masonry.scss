@@ -5,21 +5,20 @@
 }
 
 .grid {
-  max-width: 1200px;
-  margin: 0;
-  padding: 0 14px;
+  width: 100%;
+  margin: 0 auto;
   position: relative;
-  display: block;
 }
 
 .grid-sizer,
 .grid-item {
-  width: 20%;
+  width: calc(12.5% - 20px);
 }
 
 .grid-item {
   border-radius: 16px;
-  margin-bottom: 14px;
+  margin-bottom: 0;
+  padding-bottom: 14px;
   margin-left: 0;
   margin-right: 0;
   overflow: hidden;
@@ -35,3 +34,44 @@
   display: block;
 }
 
+@media (max-width: 1750px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc(14.2857% - 20px); /* 7열 */
+  }
+}
+
+@media (max-width: 1500px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc(16.6666% - 20px); /* 6열 */
+  }
+}
+
+@media (max-width: 1300px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc(20% - 20px); /* 5열 */
+  }
+}
+
+@media (max-width: 1100px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc(25% - 20px); /* 4열 */
+  }
+}
+
+@media (max-width: 900px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc(33.3333% - 20px); /* 3열 */
+  }
+}
+
+@media (max-width: 700px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc(50% - 20px); /* 2열 */
+  }
+}
