@@ -50,7 +50,7 @@ function updateFlyoutPosition() {
 }
 
 function hideAllFlyouts() {
-    const allFlyouts = document.querySelectorAll('.-visible');
+    const allFlyouts = document.querySelectorAll('.flyout.-visible');  // 팝업 요소만 선택
     allFlyouts.forEach(f => f.classList.remove('-visible'));
     visibleFlyoutSelector = null;
     visibleTriggerSelector = null;

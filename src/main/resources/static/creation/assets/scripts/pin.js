@@ -16,6 +16,19 @@ document.addEventListener('DOMContentLoaded', () => {
             $boardFlyout.classList.remove('-visible');
         }
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
 });
 
 
