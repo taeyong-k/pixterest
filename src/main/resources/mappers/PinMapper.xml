@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tyk.pixterest.mappers.PinMapper">
+    <insert id="insert"
+            useGeneratedKeys="true"
+            keyColumn="id"
+            keyProperty="id">
+        insert into `pixterest`.`pins` (`user_email`, `title`, `content`, `link`, `tag`, `image`, `created_at`,
+                                        `modified_at`, `is_deleted`)
+        values (#{pin.user_email}, #{pin.title}, #{pin.content}, #{pin.link}, #{pin.tag}, #{pin.image},
+                #{pin.created_at}, #{pin.modified_at}, #{pin.isDeleted});
+    </insert>
+
+    <select id="selectById" resultType="com.tyk.pixterest.entities.PinEntity">
+        select `id`          as `id`,
+               `user_email`  as `userEmail`,
+               `title`       as `title`,
+               `content`     as `content`,
+               `link`        as `link`,
+               `tag`         as `tag`,
+               `image`       as `image`,
+               `created_at`  as `createdAt`,
+               `modified_at` as `modifiedAt`,
+               `is_deleted`  as `isDeleted`
+        from `pixterest`.`pins`
+        where `id` = #{id}
+        limit 1
+    </select>
+
+
+</mapper>

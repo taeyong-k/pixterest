@@ -14,7 +14,10 @@ public class PinEntity {
     private String userEmail;
     private String title;
     private String content;
+    private String link;
+    private String tag;
     private String image;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private boolean isDeleted;
 }

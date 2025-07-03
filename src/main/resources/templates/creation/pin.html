@@ -18,8 +18,13 @@
     <div class="creation-pin-layout">
         <div class="creation-pin-wrapper">
             <div class="creation-pin-container">
-                <div class="pin-title">
-                    <h1 class="title">핀 만들기</h1>
+                <div class="pin-title-container">
+                    <div class="pin-title">
+                        <h1 class="title">핀 만들기</h1>
+                    </div>
+                    <form class="pin-post" id="pin-post-btn">
+                        <button aria-label="핀 게시" class="pin-post-btn" tabindex="0" type="submit">게시</button>
+                    </form>
                 </div>
                 <div class="pin-content-container-layout">
                     <div class="pin-content-container-wrapper">
@@ -48,6 +53,9 @@
                                     </button>
                                 </div>
                             </div>
+                            <div class="pin-upload-preview"> <!--이미지 업로드-->
+                                <button aria-label="이미지 삭제" class="preview-clear-btn" tabindex="0">&times;</button>
+                            </div>
                             <div class="pin-label-layout">
                                 <div class="pin-label-wrapper">
                                     <div class="pin-label-container">
@@ -70,8 +78,9 @@
                                             <div class="pin-label-wrapper">
                                                 <div class="title">설명</div>
                                                 <label class="obj-label pin-label">
-                                                    <input aria-invalid="false" class="obj-field input" name="input"
-                                                           placeholder="자세한 설명을 추가하세요." type="text">
+                                                    <textarea aria-invalid="false" class="obj-field textarea"
+                                                              name="input" placeholder="자세한 설명을 추가하세요."
+                                                              rows="5"></textarea>
                                                     <div class="-warning -row">
                                                         <div class="warning-icon">
                                                             <svg class="icon" role="img" viewbox="0 0 16 16">
@@ -104,7 +113,9 @@
                                             <div class="pin-label-wrapper">
                                                 <div class="title">보드</div>
                                                 <label class="obj-label pin-label">
-                                                    <button class="pin-label-board-button" role="menuitem" tabindex="0" type="button">보드선택</button>
+                                                    <button class="pin-label-board-button" role="menuitem" tabindex="0"
+                                                            type="button">보드선택
+                                                    </button>
                                                     <span class="-stretch"></span>
                                                     <div class="pin-label-icon">
                                                         <svg aria-label="드롭다운 열기" class="icon" role="img"
