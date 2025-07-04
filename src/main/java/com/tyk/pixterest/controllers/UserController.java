@@ -6,6 +6,7 @@ import com.tyk.pixterest.results.Result;
 import com.tyk.pixterest.results.ResultTuple;
 import com.tyk.pixterest.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -38,7 +39,9 @@ public class UserController {
         ResultTuple<UserEntity> result = this.userService.Login(email, password);
         if (result.getResult() == CommonResult.SUCCESS)
         {
+            HttpSession session = request.getSession();
             request.getSession().setAttribute("signedUser", result.getPayload());
+            session.setMaxInactiveInterval(-1);     // 브라우저 닫기전까지 세션 유지(테스트 코드)
         }
         JSONObject response = new JSONObject();
         response.put("result",result.getResult().toStringLower());
