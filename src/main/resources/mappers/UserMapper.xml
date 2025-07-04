@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tyk.pixterest.mappers.UserMapper">
+    <insert id="insert">
+        INSERT INTO `pixterest`.`users` (`email`, `password`, `name`,`nickname`,`birth`,`created_at`,`modified_at`,`is_admin`,`is_deleted`)
+        VALUES (#{user.email},#{user.password},#{user.name},#{user.nickname},#{user.birth},#{user.createdAt},#{user.modifiedAt},#{user.isAdmin},#{user.isDeleted})
+    </insert>
+    <select id="selectByEmail" resultType="com.tyk.pixterest.entities.UserEntity">
+        SELECT `email`        AS `email`,
+               `password`     AS `password`,
+               `name`         AS `name`,
+               `nickname`     AS `nickname`,
+               `birth`        AS `birth`,
+               `created_at`   AS `createdAt`,
+               `modified_at`  AS `modifiedAt`,
+               `is_admin`     AS `isAdmin`,
+               `is_deleted`   AS `isDeleted`,
+               `is_suspended` AS `isSuspended`
+        FROM `pixterest`.`users`
+        WHERE `email` = #{email}
+    </select>
+</mapper>

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class PinEntity {
     private int id;
     private String userEmail;
+    private Integer boardId;
     private String title;
     private String content;
     private String link;

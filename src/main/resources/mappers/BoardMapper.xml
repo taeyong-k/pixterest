@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tyk.pixterest.mappers.BoardMapper">
+    <select id="selectById" resultType="com.tyk.pixterest.entities.BoardEntity">
+        select `id`          as `id`,
+               `user_email`  as `userEmail`,
+               `name`        as `name`,
+               `created_at`  as `createdAt`,
+               `modified_at` as `modifiedAt`,
+               `is_deleted`  as `isDeleted`
+        from `pixterest`.`boards`
+        where id = #{id}
+        limit 1
+    </select>
+</mapper>

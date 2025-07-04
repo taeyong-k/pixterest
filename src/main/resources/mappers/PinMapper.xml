@@ -7,15 +7,16 @@
             useGeneratedKeys="true"
             keyColumn="id"
             keyProperty="id">
-        insert into `pixterest`.`pins` (`user_email`, `title`, `content`, `link`, `tag`, `image`, `created_at`,
+        insert into `pixterest`.`pins` (`user_email`, `board_id`, `title`, `content`, `link`, `tag`, `image`, `created_at`,
                                         `modified_at`, `is_deleted`)
-        values (#{pin.user_email}, #{pin.title}, #{pin.content}, #{pin.link}, #{pin.tag}, #{pin.image},
-                #{pin.created_at}, #{pin.modified_at}, #{pin.isDeleted});
+        values (#{pin.userEmail}, #{pin.boardId}, #{pin.title}, #{pin.content}, #{pin.link}, #{pin.tag}, #{pin.image},
+                #{pin.createdAt}, #{pin.modifiedAt}, #{pin.isDeleted});
     </insert>
 
     <select id="selectById" resultType="com.tyk.pixterest.entities.PinEntity">
         select `id`          as `id`,
                `user_email`  as `userEmail`,
+               `board_id`    as `boardId`,
                `title`       as `title`,
                `content`     as `content`,
                `link`        as `link`,

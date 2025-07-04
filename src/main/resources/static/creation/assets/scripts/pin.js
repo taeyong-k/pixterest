@@ -18,6 +18,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // ✅ 팝업 요소 저장 setting
+    const $boardInfo = document.querySelectorAll('.board-info');
+    let selectedBoardId = null;
+
+    $boardInfo.forEach($board => {
+        $board.addEventListener('click', () => {
+            selectedBoardId = $board.dataset.boardId;
+
+            const $boardName = $board.querySelector(':scope > .board-name > .name')?.innerText;
+            const $boardUrl = $board.dataset.boardUrl;
+
+            const $boardFlyoutButtonText = $boardFlyoutButton.querySelector('.name');
+            if ($boardFlyoutButtonText) {
+                $boardFlyoutButtonText.innerText = $boardName;
+            }
+
+            const $boardFlyoutButtonImg = $boardFlyoutButton.querySelector('img.thumbnailImg');
+            if ($boardFlyoutButtonImg) {
+                if ($boardUrl) {
+                    $boardFlyoutButtonImg.src = $boardUrl;
+                    $boardFlyoutButtonImg.style.display = "block";
+                } else {
+                    $boardFlyoutButtonImg.style.display = "none";
+                }
+            }
+
+            $boardFlyout.classList.remove('-visible');
+        });
+    });
+
     // ✅ 파일 업로드 기능
     const $fileUpload = document.getElementById('file-upload');
     const $preview = document.querySelector('.pin-upload-preview');
@@ -70,8 +100,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const $pinTagLabel = $pinTag.querySelector(':scope > .pin-label-wrapper > .pin-label');
     const $pinTagInput = $pinTagLabel.querySelector(':scope > .input');
 
-    const titleRegex = /^.{1,100}$/;
-    const contentRegex = /^.{1,800}$/;
+    const titleRegex = /^.{0,100}$/;
+    const contentRegex = /^.{0,800}$/;
     const urlRegex = /^(https?):\/\/([a-z0-9-]+\.)+[a-z0-9]{2,}(\/.*)?$/i;
 
     $pinTitleInput.addEventListener('input', () => {
@@ -142,7 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('content', content);
         formData.append('link', link);
         formData.append('tag', tag);
-        formData.append('image', imageFile);
+        // formData.append('image', imageFile);
+        if (selectedBoardId) {
+            formData.append('boardId', selectedBoardId);
+        }
         xhr.onreadystatechange = () => {
             if (xhr.readyState !== XMLHttpRequest.DONE) {
                 return;
@@ -151,13 +184,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('요청: 처리 오류!!'); // ★모달로 변경★
                 return;
             }
-            const response =JSON.parse(xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
             switch (response.result) {
                 case 'temp':        // ★임시로 쓰는 코드(삭제요망)★
                     alert('임시!!')
                     break;
                 case 'failure_login':   // 비_로그인 상태
                     alert('결과: 비 로그인 상태'); // ★모달로 변경★
+                    break;
+                case 'failure_absent':   // db 데이터 없음
+                    alert('결과: db 데이터 없음'); // ★모달로 변경★
                     break;
                 case 'failure_invalid': // 유효성 검사 실패
                     alert('결과: 정규표현식 실패'); // ★모달로 변경★
@@ -175,7 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         xhr.open('POST', '/creation/pin');
         xhr.send(formData);
-
     };
 
 
@@ -189,29 +224,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

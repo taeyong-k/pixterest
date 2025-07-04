@@ -27,10 +27,11 @@ public class CreationController {
     @RequestMapping(value = "/pin", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getPin(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                          Model model) {
-//        if (signedUser == null || signedUser.isSuspended() || signedUser.isDeleted()) {
-//            model.addAttribute("loginCheck", "접근 권한이 없습니다. 로그인 후 이용해주세요.");
-//            return "redirect:/user/login";
-//        }
+        if (signedUser == null || signedUser.isSuspended() || signedUser.isDeleted()) {
+            model.addAttribute("loginCheck", "접근 권한이 없습니다. 로그인 후 이용해주세요.");
+            System.out.println("로그인 안됨!");
+            return "redirect:/user/login";
+        }
         return "creation/pin";
     }
 
@@ -38,11 +39,11 @@ public class CreationController {
     @ResponseBody
     public String postPin(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                           PinEntity pin) {
-//        if (signedUser == null || signedUser.isSuspended() || signedUser.isDeleted()) {
-//            JSONObject error = new JSONObject();
-//            error.put("result", "failure_login");
-//            return error.toString();
-//        }
+        if (signedUser == null || signedUser.isSuspended() || signedUser.isDeleted()) {
+            JSONObject error = new JSONObject();
+            error.put("result", "failure_login");
+            return error.toString();
+        }
         Result result = creationService.creationPin(signedUser, pin);
         JSONObject response = new JSONObject();
         response.put("result", result.toString().toLowerCase());
