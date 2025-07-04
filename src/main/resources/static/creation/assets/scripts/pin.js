@@ -98,16 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // $pinTagInput.addEventListener('blur', () => {
-    //     const val = $pinTagInput.value;
-    //
-    //     if (val !== '' && val.trim() === '') {
-    //         $pinTagLabel.classList.add('-invalid');
-    //     } else {
-    //         $pinTagLabel.classList.remove('-invalid');
-    //     }
-    // });
-
     // ✅ 핀 만들기
     const $pinPostBtn = document.getElementById('pin-post-btn');
 
@@ -187,9 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
         xhr.send(formData);
 
     };
-
-
-
 
 
 

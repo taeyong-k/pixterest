@@ -4,7 +4,6 @@ import com.tyk.pixterest.entities.PinEntity;
 import com.tyk.pixterest.entities.UserEntity;
 import com.tyk.pixterest.results.Result;
 import com.tyk.pixterest.services.CreationService;
-import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
-
-import java.time.LocalDate;
 
 @Controller
 @RequestMapping(value = "/creation")

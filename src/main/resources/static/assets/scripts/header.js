@@ -50,7 +50,7 @@ function updateFlyoutPosition() {
 }
 
 function hideAllFlyouts() {
-    const allFlyouts = document.querySelectorAll('.-visible');
+    const allFlyouts = document.querySelectorAll('.Flyout.-visible');
     allFlyouts.forEach(f => f.classList.remove('-visible'));
     visibleFlyoutSelector = null;
     visibleTriggerSelector = null;

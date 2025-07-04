@@ -1,0 +1,109 @@
+@charset "UTF-8";
+.grid, .grid * {
+  box-sizing: border-box;
+}
+
+.grid {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.grid-sizer,
+.grid-item {
+  width: calc(12.5% - 20px);
+}
+
+.grid-item {
+  border-radius: 16px;
+  margin-bottom: 0;
+  padding-bottom: 14px;
+  margin-left: 0;
+  margin-right: 0;
+  overflow: hidden;
+  display: block;
+}
+
+.grid-item img {
+  width: 100%;
+  height: auto;
+  border: 0;
+  cursor: pointer;
+  border-radius: 16px;
+  display: block;
+}
+
+@media (max-width: 1750px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc(14.2857% - 20px); /* 7열 */
+  }
+}
+@media (max-width: 1500px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc(16.6666% - 20px); /* 6열 */
+  }
+}
+@media (max-width: 1300px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc(20% - 20px); /* 5열 */
+  }
+}
+@media (max-width: 1100px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc(25% - 20px); /* 4열 */
+  }
+}
+@media (max-width: 900px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc(33.3333% - 20px); /* 3열 */
+  }
+}
+@media (max-width: 700px) {
+  .grid-sizer,
+  .grid-item {
+    width: calc(50% - 20px); /* 2열 */
+  }
+}
+body {
+  background-color: #ffffff;
+}
+
+#home * {
+  box-sizing: border-box;
+}
+
+#home {
+  min-height: 100vh;
+  min-width: 320px;
+  position: relative;
+  display: block;
+  z-index: 1000;
+}
+
+#home .home-layout {
+  flex: 1 1 auto;
+  display: block;
+}
+
+#home .home-wrapper {
+  padding-top: 74px;
+  padding-left: 65px;
+  display: block;
+}
+
+#home .home-container {
+  display: block;
+}
+
+#home .grid-wrapper {
+  padding-top: 24px;
+  padding-left: 14px;
+  box-sizing: border-box;
+}
+
+/*# sourceMappingURL=index.css.map */
