@@ -181,32 +181,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             if (xhr.status < 200 || xhr.status >= 300) {
-                alert('요청: 처리 오류!!'); // ★모달로 변경★
+                alert('요청: 처리 오류!!'); // ★구상중...!★
                 return;
             }
             const response = JSON.parse(xhr.responseText);
             switch (response.result) {
-                case 'temp':        // ★임시로 쓰는 코드(삭제요망)★
-                    alert('임시!!')
+                case 'failure_session_expired':     // 로그인X or 세션만료
+                    toast('로그인이 필요합니다.', '로그인 후 이용해 주세요.');
                     break;
-                case 'failure_login':   // 비_로그인 상태
-                    alert('결과: 비 로그인 상태'); // ★모달로 변경★
+                case 'failure_absent':              // db 데이터 없음
+                    toast('실패', 'DB 데이터가 없습니다.');
                     break;
-                case 'failure_absent':   // db 데이터 없음
-                    alert('결과: db 데이터 없음'); // ★모달로 변경★
+                case 'failure_invalid':             // 유효성 검사 실패
+                    toast('실패', '입력값이 올바르지 않습니다.');
                     break;
-                case 'failure_invalid': // 유효성 검사 실패
-                    alert('결과: 정규표현식 실패'); // ★모달로 변경★
-                    break;
-                case 'failure_no_image': // 이미지 저장 실패
-                    alert('결과: 이미지 미첨부'); // ★모달로 변경★
+                case 'failure_no_image':            // 이미지 저장 실패
+                    toast('실패', '이미지가 첨부되지 않았습니다.');
                     break;
                 case 'success':
-                    alert('결과: 만들기 성공!'); // ★모달로 변경★
+                    alert('성공!');               // ★구상중...!★
                     window.location.reload();
                     break;
                 default:
-                    alert('결과: 이유 모를 오류'); // ★모달로 변경★
+                    alert('결과: 이유 모를 오류'); // ★구상중...!★
             }
         };
         xhr.open('POST', '/creation/pin');

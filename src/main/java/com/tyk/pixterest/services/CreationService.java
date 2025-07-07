@@ -5,6 +5,7 @@ import com.tyk.pixterest.entities.PinEntity;
 import com.tyk.pixterest.entities.UserEntity;
 import com.tyk.pixterest.mappers.BoardMapper;
 import com.tyk.pixterest.mappers.PinMapper;
+import com.tyk.pixterest.results.CommonResult;
 import com.tyk.pixterest.results.CreationResult;
 import com.tyk.pixterest.results.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class CreationService {
     public Result creationPin(UserEntity user, PinEntity pin) {
         //1. 로그인 및 유저 상태 체크
         if (user == null || user.isDeleted() || user.isSuspended()) {
-            return CreationResult.TEMP; // ★나중에 userResult로 변경★
+            return CommonResult.FAILURE_SESSION_EXPIRED;
         }
 
         // 2. 유효성 검사
@@ -59,11 +60,11 @@ public class CreationService {
             BoardEntity dbBoard = this.boardMapper.selectById(pin.getBoardId());
 
             if (dbBoard == null || dbBoard.isDeleted()) {
-                return CreationResult.FAILURE_ABSENT;
+                return CreationResult.FAILURE_BOARD_ABSENT;
             }
 
             if (!dbBoard.getUserEmail().equals(user.getEmail()) && !user.isAdmin()) {
-                return CreationResult.TEMP; // ★나중에 userResult로 변경★
+                return CreationResult.FAILURE_BOARD_FORBIDDEN;
             }
         }
 

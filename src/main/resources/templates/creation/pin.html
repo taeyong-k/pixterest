@@ -8,11 +8,12 @@
     <title>핀 만들기 - PT</title>
     <link rel="stylesheet" type="text/css" href="/assets/styles/common.min.css">
     <link rel="stylesheet" type="text/css" href="/creation/assets/styles/pin.min.css">
-    <script src="/assets/scripts/common.js" type="text/javascript"></script>
-    <script defer src="/assets/scripts/header.js" type="text/javascript"></script>
+    <script defer src="/assets/scripts/components/header.js" type="text/javascript"></script>
+    <script defer src="/assets/scripts/components/toast.js" type="text/javascript"></script>
     <script defer src="/creation/assets/scripts/pin.js" type="text/javascript"></script>
 </head>
 <body>
+<th:block th:replace="~{/fragments/toast :: toast}"></th:block>
 <div id="creation-pin">
     <th:block th:replace="~{/fragments/header :: header}"></th:block>
     <div class="creation-pin-layout">

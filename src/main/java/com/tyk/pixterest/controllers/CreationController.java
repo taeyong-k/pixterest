@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,12 +24,9 @@ public class CreationController {
     }
 
     @RequestMapping(value = "/pin", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getPin(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                         Model model) {
+    public String getPin(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser) {
         if (signedUser == null || signedUser.isSuspended() || signedUser.isDeleted()) {
-            model.addAttribute("loginCheck", "접근 권한이 없습니다. 로그인 후 이용해주세요.");
-            System.out.println("로그인 안됨!");
-            return "redirect:/user/login";
+            return "redirect:/user/login?loginCheck=false";
         }
         return "creation/pin";
     }
