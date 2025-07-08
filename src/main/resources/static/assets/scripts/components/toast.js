@@ -1,9 +1,26 @@
-function showToast({title = '알림', caption = '내용', duration = 5100}) {
+let toastTimeout = null;        // 토스트 자동 숨김 타이머
+let toastInterval = null;       // 초 카운트다운을 담당 타이머
+
+function showToast({
+                       title = '알림',
+                       caption = '내용',
+                       duration = 5100,
+                       showButton = true,
+                       buttonText = '이동하기',
+                       onButtonClick = null
+                   }) {
     const toast = document.querySelector('[data-toast]');
+    console.log(toast);
     const titleEl = toast.querySelector('[data-toast-title]');
     const captionEl = toast.querySelector('[data-toast-caption]');
     const countdown = toast.querySelector('.countdown');
     const closeBtn = toast.querySelector('.close-button');
+    const buttonContainer = toast.querySelector('.button-container');
+    const ctaButton = toast.querySelector('.cta-button');
+    console.log(titleEl, captionEl);
+
+    clearInterval(toastInterval);
+    clearTimeout(toastTimeout);
 
     let remaining = Math.floor(duration / 1000);
     const animationDuration = 400; // ms (CSS 애니메이션 시간)
@@ -12,33 +29,55 @@ function showToast({title = '알림', caption = '내용', duration = 5100}) {
     captionEl.textContent = caption;
     countdown.textContent = `${remaining}s`;
 
-    toast.classList.remove('hide');
+    // 버튼 표시 여부 처리
+    if (showButton) {
+        buttonContainer.classList.add('-visible');
+        ctaButton.textContent = buttonText;
+        ctaButton.onclick = () => {
+            if (typeof onButtonClick === 'function') {
+                onButtonClick();
+            }
+        };
+    } else {
+        buttonContainer.classList.remove('-visible');
+        ctaButton.onclick = null;
+    }
+
+    const isShowing = toast.classList.contains('show'); // 토스트가 보여질때 애니메이션 재실행 방지
+    toast.classList.remove('hide');         // 안전하게 '확실히' hide가 없도록 하기 위함
     toast.style.display = 'flex';
 
-    // toast: show
-    setTimeout(() => {
-        toast.classList.add('show');
-    }, 50);
+    if (!isShowing) {
+        // "애니메이션 재실행을 위해 애니메이션 상태를 초기화하는 작업"
+        toast.classList.remove('show', 'hide'); // 애니메이션 없는 기본상태로 리셋
+        void toast.offsetWidth;                 // 강제 리플로우: 클래스가 완전히 제거되어 반영된 상태
+
+        // toast: show
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 20);
+    }
 
     // 카운트다운
-    const intervalId = setInterval(() => {  // setInterval(fn, interval): 지정한 시간마다(주기적으로) fn 함수를 계속 실행해 줌. (무한반복)
+    toastInterval = setInterval(() => {  // setInterval(fn, interval): 지정한 시간마다(주기적으로) fn 함수를 계속 실행해 줌. (무한반복)
         remaining--;
         countdown.textContent = `${remaining}s`;
 
         if (remaining <= 0) {
-            clearInterval(intervalId);      // 0일때 반복 중단
+            clearInterval(toastInterval);      // 0일때 반복 중단
         }
     }, 1000);
 
     // 수동 닫기 눌렀을 때도 인터벌 클리어 & 토스트 숨기기
     closeBtn.onclick = () => {
-        clearInterval(intervalId);
+        clearInterval(toastInterval);
+        clearTimeout(toastTimeout);
         hideToast(toast);
     };
 
     // 5초 후 토스트 숨기기
-    setTimeout(() => {
-        clearInterval(intervalId);
+    toastTimeout = setTimeout(() => {
+        clearInterval(toastTimeout);
         hideToast(toast);
     }, duration);
 
@@ -53,6 +92,82 @@ function showToast({title = '알림', caption = '내용', duration = 5100}) {
     }
 }
 
-function toast(title, caption, duration = 5100) {   // 기본 5초 (여유 + 0.1s)
-    showToast({ title, caption, duration });
+let alertToastTimeout = null;
+let alertToastInterval = null;
+
+// 경고 toast 메시지
+function showAlertToast({
+                            title = '경고',
+                            caption = '중요 알림',
+                            duration = 8100
+                        }) {
+    const toastAlter = document.querySelector('[data-toast-alert]');
+    const titleEl = toastAlter.querySelector('[data-toast-alter-title]');
+    const captionEl = toastAlter.querySelector('[data-toast-alter-caption]');
+    const countdown = toastAlter.querySelector('.countdown');
+    const closeBtn = toastAlter.querySelector('.close-button');
+    const animationDuration = 400;
+
+    // ✅ 기존 토스트 타이머 정리
+    clearTimeout(alertToastTimeout);
+    clearInterval(alertToastInterval);
+
+    // ✅ 텍스트 설정
+    titleEl.textContent = title;
+    captionEl.textContent = caption;
+
+    // ✅ 토스트가 이미 실행되있다면 등장 애니메이션 재실행 하지 않기
+    const isShowing = toastAlter.classList.contains('show');
+    toastAlter.style.display = 'flex';
+
+    if (!isShowing) {
+        // ✅ 트랜지션 재적용 위한 리셋
+        toastAlter.classList.remove('show', 'hide');
+        void toastAlter.offsetWidth; // ⭐ 리플로우: 트랜지션 재시작 트릭
+
+        // ✅ 토스트 보여주기
+        setTimeout(() => {
+            toastAlter.classList.add('show');
+        }, 20);
+    }
+
+    // ✅ 카운트다운 시작
+    let remaining = Math.floor(duration / 1000);
+    countdown.textContent = `${remaining}s`;
+
+    alertToastInterval = setInterval(() => {
+        remaining--;
+        countdown.textContent = `${remaining}s`;
+        if (remaining <= 0) clearInterval(alertToastInterval);
+    }, 1000);
+
+    // ✅ 닫기 버튼
+    closeBtn.onclick = () => {
+        clearInterval(alertToastInterval);
+        clearTimeout(alertToastTimeout);
+        hide();
+    };
+
+    // ✅ 자동 닫기 타이머 저장
+    alertToastTimeout = setTimeout(() => {
+        clearInterval(alertToastInterval);
+        hide();
+    }, duration);
+
+    // ✅ 닫힘 애니메이션
+    function hide() {
+        toastAlter.classList.remove('show');
+        toastAlter.classList.add('hide');
+        setTimeout(() => {
+            toastAlter.style.display = 'none';
+        }, animationDuration);
+    }
+}
+
+function toast(title, caption, duration = 5100, showButton = false) {   // 기본 5초 (여유 + 0.1s)
+    showToast({title, caption, duration, showButton});
+}
+
+function toastAlter(title, caption, duration = 8100) {
+    showAlertToast({title, caption, duration});
 }

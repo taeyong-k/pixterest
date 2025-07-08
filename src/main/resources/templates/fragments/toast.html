@@ -1,21 +1,31 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<header id="toast" th:fragment="toast">
-    <!--로그인 필요-->
-    <div th:if="${param.loginCheck != null and param.loginCheck.contains('false')}">
-        <script>
-            window.addEventListener('DOMContentLoaded', () => {
-                toast('로그인이 필요합니다', '로그인 후 이용해주세요.');
-            });
-        </script>
-    </div>
-    <!--공통 toast-->
+<!--공통 toast-->
+<div id="toast" th:fragment="toast">
     <div class="toast-wrapper" data-toast>
-        <span class="countdown">5s</span>
-        <button aria-label="닫기" class="close-button" tabindex="0">&times;</button>
+        <div class="toast-controls">
+            <span class="countdown">5s</span>
+            <button aria-label="닫기" class="close-button" tabindex="0">&times;</button>
+        </div>
         <div class="content">
             <div class="title" data-toast-title>알림</div>
             <div class="caption" data-toast-caption>내용</div>
         </div>
+        <div class="button-container">
+            <button aria-label="이동버튼" class="cta-button" tabindex="0" type="button">이동하기</button>
+        </div>
     </div>
-</header>
+</div>
+<!--보안: 경고 toast-->
+<div id="toast-alter" th:fragment="toastAlert">
+    <div class="toast-wrapper" data-toast-alert>
+        <div class="toast-controls">
+            <span class="countdown">8s</span>
+            <button aria-label="닫기" class="close-button" tabindex="0">&times;</button>
+        </div>
+        <div class="content">
+            <div class="title" data-toast-alter-title>경고 알림</div>
+            <div class="caption" data-toast-alter-caption>중요 메시지</div>
+        </div>
+    </div>
+</div>

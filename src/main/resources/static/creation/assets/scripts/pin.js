@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!imageFile) {
-            alert("이미지를 업로드 해주세요."); // ★모달로 변경★
+            toast('이미지가 필요합니다', '이미지를 업로드 해주세요.');
             return;
         }
 
@@ -181,61 +181,55 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             if (xhr.status < 200 || xhr.status >= 300) {
-                alert('요청: 처리 오류!!'); // ★구상중...!★
+                toastAlter('처리 실패', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
                 return;
             }
             const response = JSON.parse(xhr.responseText);
             switch (response.result) {
-                case 'failure_session_expired':     // 로그인X or 세션만료
-                    toast('로그인이 필요합니다.', '로그인 후 이용해 주세요.');
+                case 'failure_session_expired':
+                    toast('로그인이 필요합니다', '로그인 후 이용해 주세요.');
                     break;
-                case 'failure_absent':              // db 데이터 없음
-                    toast('실패', 'DB 데이터가 없습니다.');
+                case 'failure_absent':
+                    toast('요청하신 데이터를 찾을 수 없습니다', '데이터가 삭제되었거나 존재하지 않습니다.');
                     break;
-                case 'failure_invalid':             // 유효성 검사 실패
-                    toast('실패', '입력값이 올바르지 않습니다.');
+                case 'failure_invalid':
+                    toast('입력값이 올바르지 않습니다', '내용을 다시 한 번 확인해 주세요.');
                     break;
-                case 'failure_no_image':            // 이미지 저장 실패
-                    toast('실패', '이미지가 첨부되지 않았습니다.');
+                case 'failure_no_image':
+                    toast('이미지가 필요합니다', '핀을 등록하려면 이미지를 첨부해 주세요.');
+                    break;
+                case 'failure_board_absent':
+                    toast('보드를 찾을 수 없습니다', '선택하신 보드가 존재하지 않습니다.');
+                    break;
+                case 'failure_board_forbidden':
+                    toast('권한이 없습니다', '이 보드에 핀을 추가할 수 있는 권한이 없습니다.');
                     break;
                 case 'success':
-                    alert('성공!');               // ★구상중...!★
+                    sessionStorage.setItem('showToast', 'true');
                     window.location.reload();
                     break;
                 default:
-                    alert('결과: 이유 모를 오류'); // ★구상중...!★
+                    toastAlter('핀을 저장하지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
             }
         };
         xhr.open('POST', '/creation/pin');
         xhr.send(formData);
     };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // 페이지가 다시 로드될 때 (페이지 새로고침)
+    window.onload = () => {
+        if (sessionStorage.getItem('showToast') === 'true') {
+            showToast({
+                title: '핀 저장이 완료되었습니다',
+                caption: '내 보드에서 확인해 보세요.',
+                duration: 8100,
+                buttonText: '마이페이지로 이동',
+                onButtonClick: () => {
+                    window.location.href = '/user/login';       // ★핀 모여있는 페이지로 변경하기!!★
+                }
+            });
+            sessionStorage.removeItem('showToast');
+        }   // sessionStorage = 임시 저장 공간 (탭 안에서는 데이터가 유지)
+    };
 
 
 });

@@ -14,7 +14,14 @@
     <script defer src="/user/assets/scripts/login.js"></script>
 </head>
 <body>
-<th:block th:replace="~{/fragments/toast :: toast}"></th:block>
+<th:block th:replace="~{/fragments/toast :: toastAlert}"></th:block>
+<div th:if="${param.loginCheck != null and param.loginCheck.contains('false')}">
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            toastAlter('접근 불가', '로그인 후 사용해주세요.');
+        });
+    </script>
+</div>
     <div id="dialog" class="">
         <div class="-modal">
             <form novalidate id="registerModalForm" class="">

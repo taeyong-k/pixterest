@@ -25,7 +25,10 @@ public class CreationController {
 
     @RequestMapping(value = "/pin", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getPin(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser) {
-        if (signedUser == null || signedUser.isSuspended() || signedUser.isDeleted()) {
+        if (signedUser == null) {
+            return "redirect:/user/login?loginCheck=false";
+        }
+        if (signedUser.isSuspended() || signedUser.isDeleted()) {
             return "redirect:/user/login?loginCheck=false";
         }
         return "creation/pin";
@@ -37,7 +40,7 @@ public class CreationController {
                           PinEntity pin) {
         if (signedUser == null || signedUser.isSuspended() || signedUser.isDeleted()) {
             JSONObject error = new JSONObject();
-            error.put("result", "failure_login");
+            error.put("result", "failure_session_expired");
             return error.toString();
         }
         Result result = creationService.creationPin(signedUser, pin);
