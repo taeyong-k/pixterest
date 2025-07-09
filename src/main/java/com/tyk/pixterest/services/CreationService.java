@@ -39,8 +39,11 @@ public class CreationService {
     // 새 핀 생성 메서드
     public Result creationPin(UserEntity user, PinEntity pin) {
         //1. 로그인 및 유저 상태 체크
-        if (user == null || user.isDeleted() || user.isSuspended()) {
+        if (user == null) {
             return CommonResult.FAILURE_SESSION_EXPIRED;
+        }
+        if (user.isDeleted() || user.isSuspended()) {
+            return CommonResult.FAILURE_FORBIDDEN;
         }
 
         // 2. 유효성 검사
@@ -75,7 +78,7 @@ public class CreationService {
         pin.setLink(pin.getLink());
         pin.setTag(pin.getTag());
 //        pin.setImage(pin.getImage());
-        pin.setImage("default.png");
+        pin.setImage("default.png");    // ★임시!!★
         pin.setCreatedAt(LocalDateTime.now());
         pin.setModifiedAt(null);
         pin.setDeleted(false);

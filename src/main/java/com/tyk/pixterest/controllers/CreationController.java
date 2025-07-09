@@ -29,7 +29,7 @@ public class CreationController {
             return "redirect:/user/login?loginCheck=false";
         }
         if (signedUser.isSuspended() || signedUser.isDeleted()) {
-            return "redirect:/user/login?loginCheck=false";
+            return "redirect:/user/login?loginCheck=forbidden";
         }
         return "creation/pin";
     }

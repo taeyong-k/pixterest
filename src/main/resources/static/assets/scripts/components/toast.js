@@ -10,14 +10,12 @@ function showToast({
                        onButtonClick = null
                    }) {
     const toast = document.querySelector('[data-toast]');
-    console.log(toast);
     const titleEl = toast.querySelector('[data-toast-title]');
     const captionEl = toast.querySelector('[data-toast-caption]');
     const countdown = toast.querySelector('.countdown');
     const closeBtn = toast.querySelector('.close-button');
     const buttonContainer = toast.querySelector('.button-container');
     const ctaButton = toast.querySelector('.cta-button');
-    console.log(titleEl, captionEl);
 
     clearInterval(toastInterval);
     clearTimeout(toastTimeout);
@@ -99,13 +97,18 @@ let alertToastInterval = null;
 function showAlertToast({
                             title = '경고',
                             caption = '중요 알림',
-                            duration = 8100
+                            duration = 8100,
+                            showButton = true,
+                            buttonText = '이동하기',
+                            onButtonClick = null
                         }) {
     const toastAlter = document.querySelector('[data-toast-alert]');
     const titleEl = toastAlter.querySelector('[data-toast-alter-title]');
     const captionEl = toastAlter.querySelector('[data-toast-alter-caption]');
     const countdown = toastAlter.querySelector('.countdown');
     const closeBtn = toastAlter.querySelector('.close-button');
+    const buttonContainer = toastAlter.querySelector('.button-container');
+    const ctaButton = toastAlter.querySelector('.cta-button');
     const animationDuration = 400;
 
     // ✅ 기존 토스트 타이머 정리
@@ -115,6 +118,20 @@ function showAlertToast({
     // ✅ 텍스트 설정
     titleEl.textContent = title;
     captionEl.textContent = caption;
+
+    // ✅ 텍스트 설정
+    if (showButton) {
+        buttonContainer.classList.add('-visible');
+        ctaButton.textContent = buttonText;
+        ctaButton.onclick = () => {
+            if (typeof onButtonClick === 'function') {
+                onButtonClick();
+            }
+        };
+    } else {
+        buttonContainer.classList.remove('-visible');
+        ctaButton.onclick = null;
+    }
 
     // ✅ 토스트가 이미 실행되있다면 등장 애니메이션 재실행 하지 않기
     const isShowing = toastAlter.classList.contains('show');
@@ -171,3 +188,21 @@ function toast(title, caption, duration = 5100, showButton = false) {   // 기�
 function toastAlter(title, caption, duration = 8100) {
     showAlertToast({title, caption, duration});
 }
+
+// 페이지 이동 + toast 띄우기
+function checkToastParam() {
+    const params = new URLSearchParams(window.location.search);
+    const val = params.get('loginCheck');       // 로그인 관련
+
+    if (val === 'false') {
+        toast('로그인이 필요합니다', '서비스 이용을 위해 로그인이 필요합니다.');
+    } else if (val === 'expired') {
+        toast('로그인이 필요합니다', '세션이 만료되었거나 로그인 상태가 아닙니다.\n다시 로그인해주세요.');
+    } else if (val === 'forbidden') {
+        toastAlter('접근이 제한되었습니다', '회원님의 계정은 현재 이용이 불가능합니다.\n관리자에게 문의해주세요.');
+    }
+
+}
+
+// 페이지 로드 시 실행
+document.addEventListener('DOMContentLoaded', checkToastParam);

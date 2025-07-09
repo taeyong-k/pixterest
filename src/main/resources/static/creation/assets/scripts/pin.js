@@ -24,17 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     $boardInfo.forEach($board => {
         $board.addEventListener('click', () => {
-            selectedBoardId = $board.dataset.boardId;
-
+            selectedBoardId = $board.dataset.boardId;       // [선택한] 보드 data-id
+                                                            // [선택한] 보드 name
             const $boardName = $board.querySelector(':scope > .board-name > .name')?.innerText;
-            const $boardUrl = $board.dataset.boardUrl;
+            const $boardUrl = $board.dataset.boardUrl;      // [선택한] 보드 data-url
 
-            const $boardFlyoutButtonText = $boardFlyoutButton.querySelector('.name');
+            const $boardFlyoutButtonText = $boardFlyoutButton.querySelector('.name');           // [화면] 보드 name
             if ($boardFlyoutButtonText) {
                 $boardFlyoutButtonText.innerText = $boardName;
+                $boardFlyoutButtonText.style.fontWeight = "700";
             }
 
-            const $boardFlyoutButtonImg = $boardFlyoutButton.querySelector('img.thumbnailImg');
+            const $boardFlyoutButtonImg = $boardFlyoutButton.querySelector('img.thumbnailImg'); // [화면] 보드 img
             if ($boardFlyoutButtonImg) {
                 if ($boardUrl) {
                     $boardFlyoutButtonImg.src = $boardUrl;
@@ -181,28 +182,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             if (xhr.status < 200 || xhr.status >= 300) {
-                toastAlter('처리 실패', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
+                toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
                 return;
             }
             const response = JSON.parse(xhr.responseText);
             switch (response.result) {
                 case 'failure_session_expired':
-                    toast('로그인이 필요합니다', '로그인 후 이용해 주세요.');
+                    window.location.href = '/user/login?loginCheck=expired'
                     break;
-                case 'failure_absent':
-                    toast('요청하신 데이터를 찾을 수 없습니다', '데이터가 삭제되었거나 존재하지 않습니다.');
+                case 'failure_forbidden':
+                    window.location.href = '/user/login?loginCheck=forbidden'
                     break;
                 case 'failure_invalid':
                     toast('입력값이 올바르지 않습니다', '내용을 다시 한 번 확인해 주세요.');
                     break;
-                case 'failure_no_image':
-                    toast('이미지가 필요합니다', '핀을 등록하려면 이미지를 첨부해 주세요.');
-                    break;
+                // case 'failure_no_image':
+                //     toast('이미지가 필요합니다', '핀을 등록하려면 이미지를 첨부해 주세요.');
+                //     break;
                 case 'failure_board_absent':
-                    toast('보드를 찾을 수 없습니다', '선택하신 보드가 존재하지 않습니다.');
+                    toast('보드를 찾을 수 없습니다', '선택하신 보드가 존재하지 않거나 삭제된 상태입니다.');
                     break;
                 case 'failure_board_forbidden':
-                    toast('권한이 없습니다', '이 보드에 핀을 추가할 수 있는 권한이 없습니다.');
+                    toastAlter('보드 접근 불가', '선택한 보드에 접근 권한이 없습니다.\n다시 선택해 주세요.');
                     break;
                 case 'success':
                     sessionStorage.setItem('showToast', 'true');
