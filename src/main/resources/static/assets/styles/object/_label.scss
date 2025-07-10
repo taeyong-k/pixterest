@@ -16,12 +16,11 @@
   position: relative; // hover 충돌 방지
 
   // no-border class: wrapper 용
-  &.no-border
-  {
+  &.no-border {
     border: none;
     padding: 0;
-    &:hover
-    {
+
+    &:hover {
       outline: none;
     }
   }

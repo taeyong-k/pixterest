@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<header id="board" th:fragment="board">
+    <div class="board-overlay"></div>
+    <div class="board-info">
+        <div class="board-container">
+            <div class="board-title">
+                <h2 class="title">보드 만들기</h2>
+            </div>
+            <div class="pin-label-name">
+                <div class="pin-label-wrapper">
+                    <div class="title">이름</div>
+                    <label class="obj-label pin-label">
+                        <input aria-invalid="false" class="obj-field input" name="input"
+                               placeholder="예: '가고 싶은 곳'또는 '요리법'" type="text">
+                        <div class="-warning -row">
+                            <div class="warning-icon">
+                                <svg class="icon" role="img" viewbox="0 0 16 16">
+                                    <path d="M9.71 2.86a2 2 0 0 0-3.42 0L.82 11.97A2 2 0 0 0 2.53 15h10.94a2 2 0 0 0 1.71-3.03zM6.03 6.97 8 8.94l1.97-1.97 1.06 1.06L9.06 10l1.97 1.97-1.06 1.06L8 11.06l-1.97 1.97-1.06-1.06L6.94 10 4.97 8.03z"></path>
+                                </svg>
+                            </div>
+                            <span class="caption empty">보드 이름을 지정하세요!</span>
+                            <span class="caption length">50자 이하로 입력하세요.</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div class="board-button">
+                <button aria-label="만들기" class="button -visible" tabindex="0" type="button">
+                    <div class="button-caption">만들기</div>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
