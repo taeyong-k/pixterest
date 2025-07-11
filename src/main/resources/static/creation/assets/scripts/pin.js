@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: '핀 저장이 완료되었습니다',
                 caption: '내 보드에서 확인해 보세요.',
                 duration: 8100,
-                buttonText: '마이페이지로 이동',
+                buttonText: '이동하기',
                 onButtonClick: () => {
                     window.location.href = '/user/login';       // ★핀 모여있는 페이지로 변경하기!!★
                 }

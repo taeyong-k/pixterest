@@ -1692,7 +1692,8 @@ header#header {
   top: 0;
   left: 0;
   position: fixed;
-  z-index: 9999;
+  z-index: 4000;
+  display: none;
 }
 #board > * {
   flex-grow: 0;
@@ -1701,6 +1702,10 @@ header#header {
 #board > .flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
+}
+
+#board.-visible {
+  display: flex;
 }
 
 #board .board-overlay {
@@ -1714,6 +1719,10 @@ header#header {
   overflow-x: hidden;
   overflow-y: scroll;
   position: absolute;
+  display: none;
+}
+
+#board .board-overlay.-visible {
   display: block;
 }
 
@@ -1757,18 +1766,18 @@ header#header {
   -webkit-font-smoothing: antialiased;
 }
 
-#board .pin-label-name {
+#board .board-label-name {
   width: 100%;
   display: block;
 }
 
-#board .pin-label-wrapper {
+#board .board-label-wrapper {
   margin: 0;
   padding: 0;
   z-index: 1001;
 }
 
-#board .pin-label-wrapper .title {
+#board .board-label-wrapper .title {
   margin-bottom: 6px;
   text-align: left;
   color: #000;
@@ -1783,13 +1792,13 @@ header#header {
   display: block;
 }
 
-#board .pin-label {
+#board .board-label {
   cursor: text;
   padding: 9px 12px;
   z-index: 1001;
 }
 
-#board .pin-label .input {
+#board .board-label .input {
   max-width: 100%;
   text-align: left;
   color: #000;
@@ -1813,7 +1822,7 @@ header#header {
   display: block;
 }
 
-#board .pin-label.-invalid .-warning.-row {
+#board .board-label.-invalid .-warning.-row {
   align-items: flex-start;
   display: flex;
   flex-direction: row;
@@ -1822,23 +1831,23 @@ header#header {
   margin: 0;
   padding: 0;
 }
-#board .pin-label.-invalid .-warning.-row > * {
+#board .board-label.-invalid .-warning.-row > * {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#board .pin-label.-invalid .-warning.-row > .flex-stretch {
+#board .board-label.-invalid .-warning.-row > .flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
 
-#board .pin-label .-warning.-row .warning-icon {
+#board .board-label .-warning.-row .warning-icon {
   text-align: left;
   padding-left: 6px;
   padding-top: 3px;
   display: block;
 }
 
-#board .pin-label .-warning.-row .warning-icon .icon {
+#board .board-label .-warning.-row .warning-icon .icon {
   width: 12px;
   height: 12px;
   color: #8a0f0f;
@@ -1848,7 +1857,7 @@ header#header {
   display: block;
 }
 
-#board .pin-label .-warning.-row .caption {
+#board .board-label .-warning.-row .caption {
   text-align: left;
   color: #8a0f0f;
   font-family: inherit;

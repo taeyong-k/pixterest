@@ -185,8 +185,8 @@ function toast(title, caption, duration = 5100, showButton = false) {   // 기�
     showToast({title, caption, duration, showButton});
 }
 
-function toastAlter(title, caption, duration = 8100) {
-    showAlertToast({title, caption, duration});
+function toastAlter(title, caption, duration = 8100, showButton = false) {
+    showAlertToast({title, caption, duration, showButton});
 }
 
 // 페이지 이동 + toast 띄우기

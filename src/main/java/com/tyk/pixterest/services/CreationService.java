@@ -36,6 +36,10 @@ public class CreationService {
         return input == null || input.isEmpty() || input.matches("^(https?)://([a-z0-9-]+\\.)+[a-z0-9]{2,}(/.*)?$");
     }
 
+    public static boolean isNameValid(String input) {
+        return input != null && input.matches("^(.{1,50})$");
+    }
+
     // 새 핀 생성 메서드
     public Result creationPin(UserEntity user, PinEntity pin) {
         //1. 로그인 및 유저 상태 체크
@@ -80,11 +84,52 @@ public class CreationService {
 //        pin.setImage(pin.getImage());
         pin.setImage("default.png");    // ★임시!!★
         pin.setCreatedAt(LocalDateTime.now());
-        pin.setModifiedAt(null);
+        pin.setModifiedAt(LocalDateTime.now());
         pin.setDeleted(false);
 
         // 4. DB 저장
         return this.pinMapper.insert(pin) > 0
+                ? CreationResult.SUCCESS
+                : CreationResult.FAILURE;
+    }
+
+    // 보드 생성 메서드
+    public Result creationBoard(UserEntity user, BoardEntity board) {
+        //1. 로그인 및 유저 상태 체크
+        if (user == null) {
+            return CommonResult.FAILURE_SESSION_EXPIRED;
+        }
+        if (user.isDeleted() || user.isSuspended()) {
+            return CommonResult.FAILURE_FORBIDDEN;
+        }
+
+        // 2. 입력값 유효성 검사
+        if (board == null ||
+                !CreationService.isNameValid(board.getName())) {
+            return CreationResult.FAILURE_INVALID;
+        }
+
+        // 3. 보드 이름 중복 검사
+        BoardEntity dbBoard = this.boardMapper.selectByUserEmailAndName(user.getEmail(), board.getName());
+        if (dbBoard != null && !dbBoard.isDeleted()) {
+            return CreationResult.FAILURE_DUPLICATE;
+        }
+
+        if (dbBoard != null) {
+            if (!dbBoard.getUserEmail().equals(user.getEmail()) && !user.isAdmin()) {
+                return CommonResult.FAILURE_FORBIDDEN;
+            }
+        }
+
+        // 4. 보드 데이터 세팅
+        board.setUserEmail(user.getEmail());
+        board.setName(board.getName());
+        board.setCreatedAt(LocalDateTime.now());
+        board.setModifiedAt(LocalDateTime.now());
+        board.setDeleted(false);
+
+        // 5. DB 저장
+        return this.boardMapper.insert(board) > 0
                 ? CreationResult.SUCCESS
                 : CreationResult.FAILURE;
     }

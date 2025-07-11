@@ -1,16 +1,16 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <header id="board" th:fragment="board">
-    <div class="board-overlay"></div>
+    <div class="board-overlay -visible"></div>
     <div class="board-info">
         <div class="board-container">
             <div class="board-title">
                 <h2 class="title">보드 만들기</h2>
             </div>
-            <div class="pin-label-name">
-                <div class="pin-label-wrapper">
+            <div class="board-label-name">
+                <div class="board-label-wrapper">
                     <div class="title">이름</div>
-                    <label class="obj-label pin-label">
+                    <label class="obj-label board-label">
                         <input aria-invalid="false" class="obj-field input" name="input"
                                placeholder="예: '가고 싶은 곳'또는 '요리법'" type="text">
                         <div class="-warning -row">
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="board-button">
-                <button aria-label="만들기" class="button -visible" tabindex="0" type="button">
+                <button aria-label="만들기" class="button" tabindex="0" type="button">
                     <div class="button-caption">만들기</div>
                 </button>
             </div>

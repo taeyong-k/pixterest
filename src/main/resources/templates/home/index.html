@@ -12,11 +12,14 @@
     <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
     <script src="/assets/scripts/common.js" type="text/javascript"></script>
     <script defer src="/assets/scripts/components/header.js" type="text/javascript"></script>
+    <script defer src="/assets/scripts/components/toast.js" type="text/javascript"></script>
     <script defer src="/assets/scripts/components/board.js" type="text/javascript"></script>
     <script type="module" src="/home/assets/scripts/index.js"></script>
 </head>
 <body>
-<th:block th:replace="~{/fragments/board :: board}"></th:block> <!--테스트중!!!-->
+<th:block th:replace="~{/fragments/toast :: toast}"></th:block>
+<th:block th:replace="~{/fragments/toast :: toastAlert}"></th:block>
+<th:block th:replace="~{/fragments/board :: board}"></th:block>
 <div id="home">
     <th:block th:replace="~{/fragments/header :: header}"></th:block>
     <div class="home-layout">

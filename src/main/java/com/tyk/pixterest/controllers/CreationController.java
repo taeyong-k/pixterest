@@ -1,5 +1,6 @@
 package com.tyk.pixterest.controllers;
 
+import com.tyk.pixterest.entities.BoardEntity;
 import com.tyk.pixterest.entities.PinEntity;
 import com.tyk.pixterest.entities.UserEntity;
 import com.tyk.pixterest.results.Result;
@@ -44,6 +45,21 @@ public class CreationController {
             return error.toString();
         }
         Result result = creationService.creationPin(signedUser, pin);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toString().toLowerCase());
+        return response.toString();
+    }
+
+    @RequestMapping(value = "/board", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String postBoard(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                            BoardEntity board) {
+        if (signedUser == null || signedUser.isSuspended() || signedUser.isDeleted()) {
+            JSONObject error = new JSONObject();
+            error.put("result", "failure_session_expired");
+            return error.toString();
+        }
+        Result result = creationService.creationBoard(signedUser, board);
         JSONObject response = new JSONObject();
         response.put("result", result.toString().toLowerCase());
         return response.toString();
