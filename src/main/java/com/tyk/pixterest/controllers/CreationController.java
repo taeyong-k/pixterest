@@ -3,8 +3,12 @@ package com.tyk.pixterest.controllers;
 import com.tyk.pixterest.entities.BoardEntity;
 import com.tyk.pixterest.entities.PinEntity;
 import com.tyk.pixterest.entities.UserEntity;
+import com.tyk.pixterest.results.CommonResult;
+import com.tyk.pixterest.results.CreationResult;
 import com.tyk.pixterest.results.Result;
+import com.tyk.pixterest.results.ResultTuple;
 import com.tyk.pixterest.services.CreationService;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/creation")
@@ -47,6 +53,32 @@ public class CreationController {
         Result result = creationService.creationPin(signedUser, pin);
         JSONObject response = new JSONObject();
         response.put("result", result.toString().toLowerCase());
+        return response.toString();
+    }
+
+    @RequestMapping(value = "/boards", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String getBoards(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser) {
+        if (signedUser == null || signedUser.isSuspended() || signedUser.isDeleted()) {
+            JSONObject error = new JSONObject();
+            error.put("result", "failure_session_expired");
+            return error.toString();
+        }
+
+        ResultTuple<BoardEntity[]> result = creationService.getByBoards(signedUser);
+        JSONObject response = new JSONObject();
+
+        if (result.getResult() == CommonResult.SUCCESS) {
+            BoardEntity[] boards = result.getPayload();
+            response.put("result", result.getResult().toString().toLowerCase());
+            response.put("boards", boards);
+        } else if (result.getResult() == CreationResult.FAILURE_BOARD_ABSENT) {
+            response.put("result", "empty");
+            response.put("boards", new JSONArray());    // 빈 배열
+        } else {
+            response.put("result", result.getResult().toString().toLowerCase());
+        }
+
         return response.toString();
     }
 

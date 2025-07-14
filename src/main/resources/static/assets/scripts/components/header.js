@@ -148,9 +148,6 @@ function setInitialIconByCurrentPath() {
     }
 }
 
-// document.addEventListener('DOMContentLoaded', () => {
-//     setInitialIconByCurrentPath();
-// });
 document.addEventListener('DOMContentLoaded', () => {
     setInitialIconByCurrentPath();
 
@@ -192,25 +189,42 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     });
 
+    function showBoardModal() {
+        const board = document.getElementById('board');
+        if (!board) return;
+        board.classList.add('-visible');
+        board.querySelector('.board-overlay').classList.add('-visible');
+    }
+
+    function hideBoardModal() {
+        const board = document.getElementById('board');
+        if (!board) return;
+        board.classList.remove('-visible');
+        board.querySelector('.board-overlay').classList.remove('-visible');
+        // 입력값·경고 reset이 필요하면 여기서 초기화
+    }
+
+    // ① 오버레이 클릭 시 닫기
+    document.querySelector('#board .board-overlay')
+        .addEventListener('click', hideBoardModal);
+
+    // ② ESC 누르면 닫기
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') hideBoardModal();
+    });
+
 
 // 팝업 내 핀만들기 버튼
-    document.querySelector('#boardFlyout  .flyout-pin-button:nth-child(1) a').addEventListener('click', (e) => {
+    document.getElementById('pin-button').addEventListener('click', (e) => {
         e.preventDefault(); // 기본 a 태그 이동 막음
         window.location.href = '/creation/pin';
     });
 
 // 팝업 내 보드만들기 버튼
-    document.querySelector('#boardFlyout  .flyout-pin-button:nth-child(2) a').addEventListener('click', (e) => {
-        e.preventDefault();
-        // 팝업 닫기 (필요시)
-        document.getElementById('creationFlyout').setAttribute('aria-hidden', 'true');
-        document.getElementById('creationFlyout').style.display = 'none';
-
-        // 아이콘 원상복구 (필요시, toggleIconPath 함수 활용)
-        // toggleIconPath(...) // 필요하면 호출
-
-        // #board 요소에 -visible 클래스 추가
-        document.getElementById('board').classList.add('-visible');
+    document.getElementById('board-button').addEventListener('click', (e) => {
+        e.preventDefault();          // 새 페이지 이동 막기
+        hideAllFlyouts();            // 플라이아웃 닫기
+        showBoardModal();            // 모달 열기 (아래 함수 새로 작성)
     });
 
     document.querySelector('.option-logo-button button').addEventListener('click', () => {

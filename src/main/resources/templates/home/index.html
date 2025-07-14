@@ -17,9 +17,6 @@
     <script type="module" src="/home/assets/scripts/index.js"></script>
 </head>
 <body>
-<th:block th:replace="~{/fragments/toast :: toast}"></th:block>
-<th:block th:replace="~{/fragments/toast :: toastAlert}"></th:block>
-<th:block th:replace="~{/fragments/board :: board}"></th:block>
 <div id="home">
     <th:block th:replace="~{/fragments/header :: header}"></th:block>
     <div class="home-layout">
@@ -37,5 +34,8 @@
         </div>
     </div>
 </div>
+<th:block th:replace="~{/fragments/toast :: toast}"></th:block>
+<th:block th:replace="~{/fragments/toast :: toastAlert}"></th:block>
+<th:block th:replace="~{/fragments/board :: board}"></th:block>
 </body>
 </html>

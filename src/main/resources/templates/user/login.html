@@ -14,8 +14,6 @@
     <script defer src="/user/assets/scripts/login.js"></script>
 </head>
 <body>
-<th:block th:replace="~{/fragments/toast :: toast}"></th:block>
-<th:block th:replace="~{/fragments/toast :: toastAlert}"></th:block>
 <div id="dialog" class="">
     <div class="-modal">
         <form novalidate id="registerModalForm" class="">
@@ -232,5 +230,7 @@
         </div>
     </form>
 </div>
+<th:block th:replace="~{/fragments/toast :: toast}"></th:block>
+<th:block th:replace="~{/fragments/toast :: toastAlert}"></th:block>
 </body>
 </html>

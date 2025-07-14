@@ -8,10 +8,12 @@ import com.tyk.pixterest.mappers.PinMapper;
 import com.tyk.pixterest.results.CommonResult;
 import com.tyk.pixterest.results.CreationResult;
 import com.tyk.pixterest.results.Result;
+import com.tyk.pixterest.results.ResultTuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class CreationService {
@@ -132,5 +134,32 @@ public class CreationService {
         return this.boardMapper.insert(board) > 0
                 ? CreationResult.SUCCESS
                 : CreationResult.FAILURE;
+    }
+
+    // 보드 데이터 가져오기
+    public ResultTuple<BoardEntity[]> getByBoards (UserEntity user) {
+        if (user == null) {
+            return ResultTuple.<BoardEntity[]>builder()
+                    .result(CommonResult.FAILURE_SESSION_EXPIRED)
+                    .build();
+        }
+
+        if (user.isDeleted() || user.isSuspended()) {
+            return ResultTuple.<BoardEntity[]>builder()
+                    .result(CommonResult.FAILURE_FORBIDDEN)
+                    .build();
+        }
+
+        BoardEntity[] dbBoard = this.boardMapper.selectByUserEmail(user.getEmail());
+        if (dbBoard == null || dbBoard.length == 0) {
+            return ResultTuple.<BoardEntity[]>builder()
+                    .result(CreationResult.FAILURE_BOARD_ABSENT)
+                    .build();
+        }
+
+        return ResultTuple.<BoardEntity[]>builder()
+                .result(CommonResult.SUCCESS)
+                .payload(dbBoard)
+                .build();
     }
 }

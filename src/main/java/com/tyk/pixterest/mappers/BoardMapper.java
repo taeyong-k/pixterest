@@ -11,5 +11,7 @@ public interface BoardMapper {
     BoardEntity selectByUserEmailAndName(@Param("userEmail") String userEmail,
                                          @Param("name") String name);
 
+    BoardEntity[] selectByUserEmail(@Param("userEmail") String userEmail);
+
     BoardEntity selectById(@Param(value = "id")  int id);
 }

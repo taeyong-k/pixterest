@@ -18,36 +18,100 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // ✅ 보드 DB 데이터 땡겨오기
+    function getBoardsXHR() {
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== XMLHttpRequest.DONE) {
+                return;
+            }
+            if (xhr.status < 200 || xhr.status >= 300) {
+                toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
+                return;
+            }
+            const response = JSON.parse(xhr.responseText);
+            switch (response.result) {
+                case 'failure_session_expired':
+                    window.location.href = '/user/login?loginCheck=expired'
+                    break;
+                case 'failure_forbidden':
+                    window.location.href = '/user/login?loginCheck=forbidden'
+                    break;
+                case 'failure_board_absent':
+                    toast('보드를 찾을 수 없습니다', '선택하신 보드가 존재하지 않거나 삭제된 상태입니다.');
+                    break;
+                case 'empty':
+                    toast('보드가 없습니다', '먼저 보드를 만들어 주세요.');
+                    renderBoards([]);
+                    break;
+                case 'success':
+                    renderBoards(response.boards || []);
+                    break;
+                default:
+                    toastAlter('보드 데이터를 불러오지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+            }
+        };
+        xhr.open('GET', '/creation/boards');
+        xhr.send();
+    }
+
+    // ✅ 보드 팝업 render 함수
+    function renderBoards(boards) {
+        const $content = $boardFlyout.querySelector('.boardFlyout-content');
+        $content.innerHTML = '';
+
+        boards.forEach(b => {
+            const item = document.createElement('div');
+            item.className = 'item';
+            item.innerHTML = `
+                <div class="board-info" data-board-id="${b.id}" data-board-url="${b.url || ''}">
+                    <div class="board-thumbnail">
+                        <div class="thumbnail">
+                            <img alt class="thumbnailImg" loading="auto" src="${b.url || ''}">
+                        </div>
+                    </div>
+                    <div class="board-name">
+                        <div class="name" title="${b.name}">${b.name}</div>
+                    </div>
+                </div>`;
+            $content.appendChild(item);
+        });
+        attachBoardClickEvents();   // 함수-동적 클릭 이벤트 부여
+    }
+
     // ✅ 팝업 요소 저장 setting
-    const $boardInfo = document.querySelectorAll('.board-info');
     let selectedBoardId = null;
 
-    $boardInfo.forEach($board => {
-        $board.addEventListener('click', () => {
-            selectedBoardId = $board.dataset.boardId;       // [선택한] 보드 data-id
-                                                            // [선택한] 보드 name
-            const $boardName = $board.querySelector(':scope > .board-name > .name')?.innerText;
-            const $boardUrl = $board.dataset.boardUrl;      // [선택한] 보드 data-url
+    function attachBoardClickEvents() {
+        const $boardInfo = document.querySelectorAll('.board-info');
 
-            const $boardFlyoutButtonText = $boardFlyoutButton.querySelector('.name');           // [화면] 보드 name
-            if ($boardFlyoutButtonText) {
-                $boardFlyoutButtonText.innerText = $boardName;
-                $boardFlyoutButtonText.style.fontWeight = "700";
-            }
+        $boardInfo.forEach($board => {
+            $board.addEventListener('click', () => {
+                selectedBoardId = $board.dataset.boardId;       // [선택한] 보드 data-id
+                                                                // [선택한] 보드 name
+                const $boardName = $board.querySelector(':scope > .board-name > .name')?.innerText;
+                const $boardUrl = $board.dataset.boardUrl;      // [선택한] 보드 data-url
 
-            const $boardFlyoutButtonImg = $boardFlyoutButton.querySelector('img.thumbnailImg'); // [화면] 보드 img
-            if ($boardFlyoutButtonImg) {
-                if ($boardUrl) {
-                    $boardFlyoutButtonImg.src = $boardUrl;
-                    $boardFlyoutButtonImg.style.display = "block";
-                } else {
-                    $boardFlyoutButtonImg.style.display = "none";
+                const $boardFlyoutButtonText = $boardFlyoutButton.querySelector('.name');           // [화면] 보드 name
+                if ($boardFlyoutButtonText) {
+                    $boardFlyoutButtonText.innerText = $boardName;
+                    $boardFlyoutButtonText.style.fontWeight = "700";
                 }
-            }
 
-            $boardFlyout.classList.remove('-visible');
+                const $boardFlyoutButtonImg = $boardFlyoutButton.querySelector('img.thumbnailImg'); // [화면] 보드 img
+                if ($boardFlyoutButtonImg) {
+                    if ($boardUrl) {
+                        $boardFlyoutButtonImg.src = $boardUrl;
+                        $boardFlyoutButtonImg.style.display = "block";
+                    } else {
+                        $boardFlyoutButtonImg.style.display = "none";
+                    }
+                }
+
+                $boardFlyout.classList.remove('-visible');
+            });
         });
-    });
+    }
 
     // ✅ 파일 업로드 기능
     const $fileUpload = document.getElementById('file-upload');
@@ -233,4 +297,5 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
+    getBoardsXHR();
 });
