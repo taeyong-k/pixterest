@@ -9,4 +9,6 @@ public interface PinMapper {
     int insert(@Param(value = "pin") PinEntity pin);
 
     PinEntity selectById(@Param(value = "id")  int id);
+
+    PinEntity[] selectAll();
 }

@@ -285,36 +285,24 @@ body {
 }
 
 #creation-pin .pin-upload-preview {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-  justify-content: flex-end;
-  left: 0;
-  top: 0;
   width: 375px;
-  height: 210.938px;
-  box-sizing: border-box;
   border-radius: 32px;
-  background-repeat: no-repeat;
-  background-size: 375px 210.938px;
-  transform-origin: center center;
-  position: relative;
   overflow: hidden;
+  position: relative;
   display: none;
-  z-index: 1000;
-}
-#creation-pin .pin-upload-preview > * {
-  flex-grow: 0;
-  flex-shrink: 0;
-}
-#creation-pin .pin-upload-preview > .flex-stretch {
-  flex-grow: 1;
-  flex-shrink: 1;
 }
 
 #creation-pin .pin-upload-preview.-visible {
+  display: flex;
+}
+
+#creation-pin .pin-upload-preview img.preview-img {
+  width: 100%;
+  height: auto;
+  border-radius: 32px;
   display: block;
+  object-fit: contain;
+  border: 1px solid #e5e5e5;
 }
 
 #creation-pin .pin-upload-preview .preview-clear-btn {

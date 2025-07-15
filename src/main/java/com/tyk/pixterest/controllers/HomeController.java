@@ -1,9 +1,11 @@
 package com.tyk.pixterest.controllers;
 
+import com.tyk.pixterest.entities.PinEntity;
 import com.tyk.pixterest.services.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -18,7 +20,9 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getHome() {
+    public String getHome(Model model) {
+        PinEntity[] pins = homeService.getHomePinsAll();
+        model.addAttribute("pins", pins);
         return "home/index";
     }
 

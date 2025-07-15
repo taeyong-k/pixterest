@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -25,9 +25,11 @@
                 <div class="grid-wrapper">
                     <div class="grid">
                         <div class="grid-sizer"></div>
-                        <div class="grid-item">
-                            <img src="#">
-                        </div>
+                        <th:block th:each="pin : ${pins}">
+                            <div class="grid-item">
+                                <img th:src="@{'/images/' + ${pin.image}}" alt="핀 이미지" loading="lazy"/>
+                            </div>
+                        </th:block>
                     </div>
                 </div>
             </div>

@@ -30,5 +30,22 @@
         limit 1
     </select>
 
+    <select id="selectAll" resultType="com.tyk.pixterest.entities.PinEntity">
+        select `id`          as `id`,
+               `user_email`  as `userEmail`,
+               `board_id`    as `boardId`,
+               `title`       as `title`,
+               `content`     as `content`,
+               `link`        as `link`,
+               `tag`         as `tag`,
+               `image`       as `image`,
+               `created_at`  as `createdAt`,
+               `modified_at` as `modifiedAt`,
+               `is_deleted`  as `isDeleted`
+        from `pixterest`.`pins`
+        where is_deleted = false
+        order by created_at desc
+    </select>
+
 
 </mapper>

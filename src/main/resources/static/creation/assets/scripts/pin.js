@@ -117,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const $fileUpload = document.getElementById('file-upload');
     const $preview = document.querySelector('.pin-upload-preview');
     const $pinLabelLayout = document.querySelector('.pin-label-layout');
+    const $previewImg = $preview.querySelector('.preview-img');
     const $previewClearBtn = $preview.querySelector('.preview-clear-btn');
     const $pinPost = document.querySelector('.pin-post');
 
@@ -125,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const reader = new FileReader();        // FileReader 객체로 화면에 이미지 보여주기
         reader.onload = function () {
-            $preview.style.backgroundImage = `url(${reader.result})`;
+            $previewImg.src = reader.result;
             document.querySelector('.pin-upload-wrapper').classList.add('-hidden');
             $preview.classList.add('-visible');
             $previewClearBtn.classList.add('-visible');

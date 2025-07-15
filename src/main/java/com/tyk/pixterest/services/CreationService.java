@@ -98,7 +98,9 @@ public class CreationService {
         // 5-1. 이미지 저장
         try {
             String uploadDir = "C:/pixterest/uploads/";
+
             String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+
             Path filePath = Paths.get(uploadDir + filename);
             Files.createDirectories(filePath.getParent());
             imageFile.transferTo(filePath.toFile());
