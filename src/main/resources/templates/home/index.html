@@ -27,7 +27,17 @@
                         <div class="grid-sizer"></div>
                         <th:block th:each="pin : ${pins}">
                             <div class="grid-item">
-                                <img th:src="@{'/images/' + ${pin.image}}" alt="핀 이미지" loading="lazy"/>
+                                <div class="img-wrapper">
+                                    <img th:src="@{'/images/' + ${pin.image}}" alt="핀 이미지" loading="lazy"/>
+                                    <div class="overlay">
+                                        <button class="save-button">저장</button>
+                                        <button class="extra-button">
+                                            <svg class="icon" role="img" viewbox="0 0 16 16">
+                                                <path d="M2 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4m6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </th:block>
                     </div>
