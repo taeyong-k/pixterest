@@ -30,30 +30,33 @@
                 <div class="pin-content-container-layout">
                     <div class="pin-content-container-wrapper">
                         <div class="pin-content-container">
-                            <div class="pin-upload-wrapper">
-                                <div class="pin-upload">
-                                    <div class="pin-upload-container">
-                                        <div class="pin-upload-icon">
-                                            <svg aria-label="파일 추가" class="icon" role="img" viewBox="0 0 24 24">
-                                                <path d="M15.3 12.7 13 10.42V17h-2v-6.59l-2.3 2.3-1.4-1.42L12 6.6l4.7 4.7zM24 12a12 12 0 1 1-24 0 12 12 0 0 1 24 0M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20"></path>
-                                            </svg>
+                            <form id="pinForm" action="/creation/pin" method="post" enctype="multipart/form-data">
+                                <div class="pin-upload-wrapper">
+                                    <div class="pin-upload">
+                                        <div class="pin-upload-container">
+                                            <div class="pin-upload-icon">
+                                                <svg aria-label="파일 추가" class="icon" role="img" viewBox="0 0 24 24">
+                                                    <path d="M15.3 12.7 13 10.42V17h-2v-6.59l-2.3 2.3-1.4-1.42L12 6.6l4.7 4.7zM24 12a12 12 0 1 1-24 0 12 12 0 0 1 24 0M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="pin-upload-caption">
+                                                <span class="caption">파일을 선택하거나 여기로 끌어다 놓으세요.</span>
+                                            </div>
+                                            <div class="pin-upload-explanation">
+                                                <span class="explan">Pinterest는 20 MB 미만의 고화질 .jpg 파일 또는 200 MB 미만의 .mp4 파일 사용을 권장합니다.</span>
+                                            </div>
+                                            <input accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp,video/mp4,video/x-m4v,video/quicktime"
+                                                   aria-label="파일 업로드" multiple="" class="file-upload" id="file-upload"
+                                                   name="imageFile"
+                                                   tabindex="0" type="file">
                                         </div>
-                                        <div class="pin-upload-caption">
-                                            <span class="caption">파일을 선택하거나 여기로 끌어다 놓으세요.</span>
-                                        </div>
-                                        <div class="pin-upload-explanation">
-                                            <span class="explan">Pinterest는 20 MB 미만의 고화질 .jpg 파일 또는 200 MB 미만의 .mp4 파일 사용을 권장합니다.</span>
-                                        </div>
-                                        <input accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp,video/mp4,video/x-m4v,video/quicktime"
-                                               aria-label="파일 업로드" multiple="" class="file-upload" id="file-upload"
-                                               tabindex="0" type="file">
+                                        <div class="-border"></div>
+                                        <button class="url-save" type="button">
+                                            <span class="caption">URL에서 저장</span>
+                                        </button>
                                     </div>
-                                    <div class="-border"></div>
-                                    <button class="url-save" type="button">
-                                        <span class="caption">URL에서 저장</span>
-                                    </button>
                                 </div>
-                            </div>
+                            </form>
                             <div class="pin-upload-preview"> <!--이미지 업로드-->
                                 <button aria-label="이미지 삭제" class="preview-clear-btn" tabindex="0">&times;</button>
                             </div>
@@ -134,12 +137,13 @@
                                                             <span class="title">모든 보드</span>
                                                         </div>
                                                         <div class="boardFlyout-content">
-                                                            <div class="item">
-                                                                <!--추가될때 id, url 넣어주는 설정 해줘야함-->
-                                                                <div class="board-info" data-board-id="1" data-board-url="https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/DKQBBSNYHFB57EHECOEC4GVGBQ.png">
+                                                            <div class="item"> <!--예시-->
+                                                                <div class="board-info" data-board-id="1"
+                                                                     data-board-url="https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/DKQBBSNYHFB57EHECOEC4GVGBQ.png">
                                                                     <div class="board-thumbnail">
                                                                         <div class="thumbnail">
-                                                                            <img alt class="thumbnailImg" loading="auto" src="https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/DKQBBSNYHFB57EHECOEC4GVGBQ.png">
+                                                                            <img alt class="thumbnailImg" loading="auto"
+                                                                                 src="https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/DKQBBSNYHFB57EHECOEC4GVGBQ.png">
                                                                         </div>
                                                                     </div>
                                                                     <div class="board-name">

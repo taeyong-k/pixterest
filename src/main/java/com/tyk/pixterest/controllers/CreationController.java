@@ -13,12 +13,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping(value = "/creation")
@@ -44,13 +40,27 @@ public class CreationController {
     @RequestMapping(value = "/pin", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String postPin(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                          PinEntity pin) {
+                          @RequestParam("title") String title,
+                          @RequestParam("content") String content,
+                          @RequestParam(value = "link", required = false) String link,
+                          @RequestParam(value = "tag", required = false) String tag,
+                          @RequestParam(value = "boardId", required = false) Integer boardId,
+                          @RequestPart("imageFile") MultipartFile imageFile) {
         if (signedUser == null || signedUser.isSuspended() || signedUser.isDeleted()) {
             JSONObject error = new JSONObject();
             error.put("result", "failure_session_expired");
             return error.toString();
         }
-        Result result = creationService.creationPin(signedUser, pin);
+
+        PinEntity pin = new PinEntity();
+        pin.setTitle(title);
+        pin.setContent(content);
+        pin.setLink(link);
+        pin.setTag(tag);
+        pin.setBoardId(boardId);
+
+        Result result = creationService.creationPin(signedUser, pin, imageFile);
+
         JSONObject response = new JSONObject();
         response.put("result", result.toString().toLowerCase());
         return response.toString();

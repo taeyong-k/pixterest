@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('content', content);
         formData.append('link', link);
         formData.append('tag', tag);
-        // formData.append('image', imageFile);
+        formData.append('imageFile', imageFile);
         if (selectedBoardId) {
             formData.append('boardId', selectedBoardId);
         }
@@ -260,9 +260,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'failure_invalid':
                     toast('입력값이 올바르지 않습니다', '내용을 다시 한 번 확인해 주세요.');
                     break;
-                // case 'failure_no_image':
-                //     toast('이미지가 필요합니다', '핀을 등록하려면 이미지를 첨부해 주세요.');
-                //     break;
+                case 'failure_no_image':
+                    toast('이미지가 필요합니다', '핀을 등록하려면 이미지를 첨부해 주세요.');
+                    break;
+                case 'failure_too_large':
+                    toast('이미지 크기가 너무 큽니다', '50MB 이하의 이미지를 업로드해 주세요.');
+                    break;
+                case 'failure_not_image_file':
+                    toast('이미지 파일만 업로드 가능합니다', 'jpg, png 등 이미지 파일을 첨부해 주세요.');
+                    break;
                 case 'failure_board_absent':
                     toast('보드를 찾을 수 없습니다', '선택하신 보드가 존재하지 않거나 삭제된 상태입니다.');
                     break;

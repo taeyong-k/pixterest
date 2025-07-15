@@ -9,11 +9,18 @@ import com.tyk.pixterest.results.CommonResult;
 import com.tyk.pixterest.results.CreationResult;
 import com.tyk.pixterest.results.Result;
 import com.tyk.pixterest.results.ResultTuple;
+import com.tyk.pixterest.utils.FileStorageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class CreationService {
@@ -43,7 +50,7 @@ public class CreationService {
     }
 
     // 새 핀 생성 메서드
-    public Result creationPin(UserEntity user, PinEntity pin) {
+    public Result creationPin(UserEntity user, PinEntity pin, MultipartFile imageFile) {
         //1. 로그인 및 유저 상태 체크
         if (user == null) {
             return CommonResult.FAILURE_SESSION_EXPIRED;
@@ -60,11 +67,22 @@ public class CreationService {
             return CreationResult.FAILURE_INVALID;
         }
 
+        // 3. 이미지파일검사
+        // 3-1. 이미지 존재 확인
+        if (imageFile == null || imageFile.isEmpty()) {
+            return CreationResult.FAILURE_NO_IMAGE;
+        }
+        // 3-2. 파일 크기 체크 (최대: 50MB)
+        if (imageFile.getSize() > 50 * 1024 * 1024) {
+            return CreationResult.FAILURE_TOO_LARGE;
+        }
+        // 3-3. 파일 타입 체크
+        String contentType = imageFile.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            return CreationResult.FAILURE_NOT_IMAGE_FILE;
+        }
 
-        // 이미지파일검사
-
-
-        // (선택한) 보드 존재 유무
+        // 4. (선택한) 보드 존재 유무
         if (pin.getBoardId() != null) {
             BoardEntity dbBoard = this.boardMapper.selectById(pin.getBoardId());
 
@@ -77,19 +95,31 @@ public class CreationService {
             }
         }
 
-        // 3. 핀 데이터 세팅
+        // 5-1. 이미지 저장
+        try {
+            String uploadDir = "C:/pixterest/uploads/";
+            String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+            Path filePath = Paths.get(uploadDir + filename);
+            Files.createDirectories(filePath.getParent());
+            imageFile.transferTo(filePath.toFile());
+
+            pin.setImage(filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return CreationResult.FAILURE;
+        }
+
+        // 5-2. 핀 데이터 세팅
         pin.setUserEmail(user.getEmail());
         pin.setTitle(pin.getTitle());
         pin.setContent(pin.getContent());
         pin.setLink(pin.getLink());
         pin.setTag(pin.getTag());
-//        pin.setImage(pin.getImage());
-        pin.setImage("default.png");    // ★임시!!★
         pin.setCreatedAt(LocalDateTime.now());
         pin.setModifiedAt(LocalDateTime.now());
         pin.setDeleted(false);
 
-        // 4. DB 저장
+        // 6. DB 저장
         return this.pinMapper.insert(pin) > 0
                 ? CreationResult.SUCCESS
                 : CreationResult.FAILURE;
