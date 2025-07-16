@@ -46,9 +46,14 @@ public class CreationController {
                           @RequestParam(value = "tag", required = false) String tag,
                           @RequestParam(value = "boardId", required = false) Integer boardId,
                           @RequestPart("imageFile") MultipartFile imageFile) {
-        if (signedUser == null || signedUser.isSuspended() || signedUser.isDeleted()) {
+        if (signedUser == null) {
             JSONObject error = new JSONObject();
             error.put("result", "failure_session_expired");
+            return error.toString();
+        }
+        if (signedUser.isSuspended() || signedUser.isDeleted()) {
+            JSONObject error = new JSONObject();
+            error.put("result", "failure_forbidden");
             return error.toString();
         }
 
@@ -69,9 +74,14 @@ public class CreationController {
     @RequestMapping(value = "/boards", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getBoards(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser) {
-        if (signedUser == null || signedUser.isSuspended() || signedUser.isDeleted()) {
+        if (signedUser == null) {
             JSONObject error = new JSONObject();
             error.put("result", "failure_session_expired");
+            return error.toString();
+        }
+        if (signedUser.isSuspended() || signedUser.isDeleted()) {
+            JSONObject error = new JSONObject();
+            error.put("result", "failure_forbidden");
             return error.toString();
         }
 
@@ -96,9 +106,14 @@ public class CreationController {
     @ResponseBody
     public String postBoard(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                             BoardEntity board) {
-        if (signedUser == null || signedUser.isSuspended() || signedUser.isDeleted()) {
+        if (signedUser == null) {
             JSONObject error = new JSONObject();
             error.put("result", "failure_session_expired");
+            return error.toString();
+        }
+        if (signedUser.isSuspended() || signedUser.isDeleted()) {
+            JSONObject error = new JSONObject();
+            error.put("result", "failure_forbidden");
             return error.toString();
         }
         Result result = creationService.creationBoard(signedUser, board);

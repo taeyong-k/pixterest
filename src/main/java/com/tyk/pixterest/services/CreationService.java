@@ -9,7 +9,6 @@ import com.tyk.pixterest.results.CommonResult;
 import com.tyk.pixterest.results.CreationResult;
 import com.tyk.pixterest.results.Result;
 import com.tyk.pixterest.results.ResultTuple;
-import com.tyk.pixterest.utils.FileStorageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +18,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service

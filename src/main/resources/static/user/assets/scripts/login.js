@@ -76,7 +76,7 @@ const $loginForm = document.getElementById('loginForm');
                     return;
                 case 'success':
                     alert('로그인 성공! 메인으로 이동합니다.');
-                    location.href = `${origin}/creation/pin`;
+                    location.href = `${origin}/`;
                     return;
                 default:
                     alert('이메일 혹은 비밀번호가 올바르지 않습니다. 다시 한번 확인해 주세요.');

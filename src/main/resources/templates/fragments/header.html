@@ -8,25 +8,28 @@
                 <div class="nags-layout">
                     <div class="nags-wrapper">
                         <div class="nags-button-container">
-                            <div class="search-container">
-                                <div class="search-box">
-                                    <div class="search-box-wrapper">
-                                        <div class="search-box-icon">
-                                            <svg aria-label="검색 아이콘" class="icon" role="img" viewBox="0 0 24 24">
-                                                <path d="M17.33 18.74a10 10 0 1 1 1.41-1.41l4.47 4.47-1.41 1.41zM11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="search-box-input">
-                                            <style>input::placeholder {
-                                                color: #6E6E6E
-                                            }</style>
-                                            <input autocomplete="list" aria-expanded="false" aria-label="검색"
-                                                   autocapitalize="off" class="input" placeholder="검색" role="combobox"
-                                                   type="text">
+                            <form action="/" method="get" class="search-form">
+                                <div class="search-container">
+                                    <div class="search-box">
+                                        <div class="search-box-wrapper">
+                                            <div class="search-box-icon">
+                                                <svg aria-label="검색 아이콘" class="icon" role="img" viewBox="0 0 24 24">
+                                                    <path d="M17.33 18.74a10 10 0 1 1 1.41-1.41l4.47 4.47-1.41 1.41zM11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="search-box-input">
+                                                <style>input::placeholder {
+                                                    color: #6E6E6E
+                                                }</style>
+                                                <input autocomplete="list" aria-expanded="false" aria-label="검색"
+                                                       autocapitalize="off" class="input" placeholder="검색"
+                                                       role="combobox" name="keyword" type="text"
+                                                       th:value="${keyword} ?: ''">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                             <div class="profile-container">
                                 <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ href 수정!!(마이페이지로)-->
                                 <a aria-label="내 프로필" class="profile" href="#" tabindex="0">
@@ -87,7 +90,8 @@
                             </a>
                         </div>
                         <div class="creation-logo-button">
-                            <button aria-haspopup="false" aria-label="만들기" class="creation-button" data-id="create-tab" tabindex="0"
+                            <button aria-haspopup="false" aria-label="만들기" class="creation-button" data-id="create-tab"
+                                    tabindex="0"
                                     type="button">
                                 <div class="logo-layout">
                                     <div class="logo-wrapper">
@@ -101,7 +105,8 @@
                         </div>
                     </div>
                     <div class="option-logo-button">
-                        <button aria-expanded="false" aria-haspopup="menu" aria-label="옵션" class="option-button" data-id="option-tab"
+                        <button aria-expanded="false" aria-haspopup="menu" aria-label="옵션" class="option-button"
+                                data-id="option-tab"
                                 tabindex="0"
                                 type="button">
                             <div class="logo-layout">
@@ -127,7 +132,6 @@
                 </div>
                 <button class="flyout-pin-button" id="pin-button" role="menuitem" tabindex="0">
                     <div class="flyout-pin-layout">
-                        <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ href 수정!!(핀만들기로)-->
                         <a class="flyout-pin-wrapper" href="/creation/pin" tabindex="0" target="_self">
                             <div class="flyout-pin-container">
                                 <div class="flyout-pin-row">
@@ -147,7 +151,6 @@
                 </button>
                 <button class="flyout-pin-button" id="board-button" role="menuitem" tabindex="0">
                     <div class="flyout-pin-layout">
-                        <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ href 수정!!(보드 만들기로)-->
                         <a class="flyout-pin-wrapper" href="" tabindex="0" target="_self">
                             <div class="flyout-pin-container">
                                 <div class="flyout-pin-row">
@@ -269,7 +272,8 @@
                                                     </div>
                                                     <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ thymeleaf (로그인한 사람 정보)-->
                                                     <div class="profile-login-row-content">
-                                                        <div class="profile-login-row-content-name" title="김아무개">김아무개</div>
+                                                        <div class="profile-login-row-content-name" title="김아무개">김아무개
+                                                        </div>
                                                         <div class="profile-login-row-content-type" title="개인">개인</div>
                                                         <div class="profile-login-row-content-email"
                                                              title="abcd1234@naver.com">abcd1234@naver.com

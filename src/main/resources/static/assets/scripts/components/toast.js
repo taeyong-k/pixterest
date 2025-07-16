@@ -201,7 +201,6 @@ function checkToastParam() {
     } else if (val === 'forbidden') {
         toastAlter('접근이 제한되었습니다', '회원님의 계정은 현재 이용이 불가능합니다.\n관리자에게 문의해주세요.');
     }
-
 }
 
 // 페이지 로드 시 실행

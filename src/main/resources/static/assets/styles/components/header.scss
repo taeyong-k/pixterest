@@ -71,6 +71,12 @@ header#header {
   height: 56px;
 }
 
+#headerContent .search-form {
+  width: 100%;
+  flex: 1 1 auto;
+  display: flex;
+}
+
 #headerContent .search-container {
   min-width: 407px;
   min-height: 0;
