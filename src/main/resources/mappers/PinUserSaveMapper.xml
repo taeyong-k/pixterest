@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tyk.pixterest.mappers.PinUserSaveMapper">
+    <insert id="insert"
+            useGeneratedKeys="true"
+            keyColumn="id"
+            keyProperty="id">
+        insert into `pixterest`.`pin_user_saves` (`user_email`, `pin_id`, `saved_at`)
+        values (#{save.userEmail}, #{save.pinId}, #{save.savedAt})
+    </insert>
+
+    <select id="selectByUserEmailAndPinId" resultType="com.tyk.pixterest.entities.PinUserSaveEntity">
+        select `id`         as `id`,
+               `user_email` as `userEmail`,
+               `pin_id`     as `pinId`,
+               `saved_at`   as `savedAt`
+        from `pixterest`.`pin_user_saves`
+        where `user_email` = #{userEmail}
+          and `pin_id` = #{pinId}
+        limit 1
+    </select>
+
+</mapper>

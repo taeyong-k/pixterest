@@ -37,12 +37,12 @@ function showFlyout(triggerSelector, flyoutSelector, xOffset = 0, yOffset = 0, i
 
     // 트리거 위치 계산 (스크롤 포함)
     const rect = trigger.getBoundingClientRect();                   // trigger(버튼) 요소의 위치와 크기 정보를 얻습니다. (현재 화면 뷰포트(viewport) 기준)
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;     // 현재 페이지가 렇마나 [세로]로, 스크롤 됐는지 계산(정확한 절대 위치 값 계산)
-    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;   // 현재 페이지가 렇마나 [가로]로, 스크롤 됐는지 계산(정확한 절대 위치 값 계산)
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;     // 현재 페이지가 얼마나 [세로]로, 스크롤 됐는지 계산(정확한 절대 위치 값 계산)
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;   // 현재 페이지가 얼마나 [가로]로, 스크롤 됐는지 계산(정확한 절대 위치 값 계산)
 
     // 팝업 위치 설정
-    flyout.style.left = `${rect.left + scrollLeft + xOffset}px`;    // 팝업(layout) left 위치 설정
-    flyout.style.top = `${rect.bottom + scrollTop + yOffset}px`;    // 팝업(layout) top 위치 설정
+    flyout.style.left = `${rect.left + xOffset}px`;    // 팝업(layout) left 위치 설정
+    flyout.style.top = `${rect.bottom + yOffset}px`;    // 팝업(layout) top 위치 설정
     flyout.classList.add("-visible");
 
     // ✅ 아이콘 path 토글 처리
@@ -214,13 +214,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-// 팝업 내 핀만들기 버튼
+    // 팝업 내 핀만들기 버튼
     document.getElementById('pin-button').addEventListener('click', (e) => {
         e.preventDefault(); // 기본 a 태그 이동 막음
         window.location.href = '/creation/pin';
     });
 
-// 팝업 내 보드만들기 버튼
+    // 팝업 내 보드만들기 버튼
     document.getElementById('board-button').addEventListener('click', (e) => {
         e.preventDefault();          // 새 페이지 이동 막기
         hideAllFlyouts();            // 플라이아웃 닫기
@@ -254,10 +254,11 @@ document.addEventListener('DOMContentLoaded', () => {
             true
         );
     });
+
 });
 // 화면 리사이즈 또는 스크롤 시 팝업 위치 재계산
 window.addEventListener('resize', updateFlyoutPosition);
-window.addEventListener('scroll', updateFlyoutPosition);
+// window.addEventListener('scroll', updateFlyoutPosition);
 
 // 외부 클릭 시 팝업 닫기
 document.addEventListener('click', (e) => {

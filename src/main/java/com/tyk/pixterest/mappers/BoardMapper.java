@@ -14,4 +14,8 @@ public interface BoardMapper {
     BoardEntity[] selectByUserEmail(@Param("userEmail") String userEmail);
 
     BoardEntity selectById(@Param(value = "id")  int id);
+
+    int updateCoverImage(@Param("boardId") int boardId,
+                         @Param("coverImage") String coverImage);
+
 }

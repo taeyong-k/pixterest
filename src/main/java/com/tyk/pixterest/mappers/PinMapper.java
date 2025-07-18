@@ -17,5 +17,4 @@ public interface PinMapper {
     PinEntity[] search(@Param(value = "searchVo") SearchVo searchVo);
 
     PinEntity[] selectAll();
-
 }

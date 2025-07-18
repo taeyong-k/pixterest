@@ -360,7 +360,7 @@ header#header {
 
 // [ 만들기 팝업 ] @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #creationFlyout {
-  position: absolute;
+  position: fixed;
   left: 16px;
   top: 0;
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
@@ -521,7 +521,7 @@ header#header {
 
 // [ 옵션 팝업 ]@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #optionFlyout {
-  position: absolute;
+  position: fixed;
   left: 16px;
   top: 0;
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
@@ -649,7 +649,7 @@ header#header {
 
 // [ 프로필 팝업 ]@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #profileFlyout {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);

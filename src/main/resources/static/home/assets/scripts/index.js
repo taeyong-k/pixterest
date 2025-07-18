@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     case 'failure_forbidden':
                         window.location.href = '/user/login?loginCheck=forbidden'
                         break;
-                    case 'failure_board_absent':
+                    case 'failure_absent':
                         toast('핀을 찾을 수 없습니다', '선택하신 핀이 존재하지 않거나 삭제된 상태입니다.');
                         break;
                     case 'failure_duplicate':
@@ -62,21 +62,44 @@ document.addEventListener('DOMContentLoaded', () => {
             }   // sessionStorage = 임시 저장 공간 (탭 안에서는 데이터가 유지)
         };
     });
-});
 
 
+    // 핀 - 상세페이지
+    document.querySelectorAll('.img-wrapper').forEach(wrapper => {
+        wrapper.addEventListener('click', (e) => {
+            // 저장 버튼이나 추가 버튼 클릭 시 상세 페이지 이동 막기
+            if (e.target.closest('.save-button') || e.target.closest('.extra-button')) return;
 
+            // .img-wrapper 내부의 save-button에서 pinId 가져오기
+            const saveButton = wrapper.querySelector('.save-button');
+            if (!saveButton) {
+                console.warn('save-button 요소가 없습니다.');
+                return;
+            }
+            const pinId = saveButton.dataset.pinId;
+            if (!pinId) {
+                console.warn('pinId가 없습니다.');
+                return;
+            }
 
-
-
-
-
-
-// 진행중
-document.querySelectorAll('.img-wrapper').forEach(img => {
-    img.addEventListener('click', (e) => {
-        if (e.target.closest('.save-button') || e.target.closest('.extra-button')) return;
-
-
+            // 상세 페이지로 이동 (id 쿼리 파라미터 전달)
+            window.location.href = `/pin/?id=${pinId}`;
+        });
     });
+
+
+
+
+
+
 });
+
+
+
+
+
+
+
+
+
+

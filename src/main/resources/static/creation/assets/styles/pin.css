@@ -612,6 +612,7 @@ body {
   width: 36px;
   height: 36px;
   margin: 4px 12px 4px 0;
+  background-color: #e0e0d9;
   border-radius: 8px;
   flex: 0 0 auto;
   overflow: hidden;
@@ -802,6 +803,11 @@ body {
   flex: 0 0 auto;
   overflow: hidden;
   position: relative;
+  display: block;
+}
+
+#boardFlyout .boardFlyout-content .item .board-info .board-thumbnail .thumbnail .thumbnailImg.default-img {
+  margin: 0 auto;
   display: block;
 }
 

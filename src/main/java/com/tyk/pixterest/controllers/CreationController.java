@@ -90,8 +90,8 @@ public class CreationController {
 
         if (result.getResult() == CommonResult.SUCCESS) {
             BoardEntity[] boards = result.getPayload();
-            response.put("result", result.getResult().toString().toLowerCase());
             response.put("boards", boards);
+            response.put("result", result.getResult().toString().toLowerCase());
         } else if (result.getResult() == CreationResult.FAILURE_BOARD_ABSENT) {
             response.put("result", "empty");
             response.put("boards", new JSONArray());    // 빈 배열

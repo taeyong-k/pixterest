@@ -42,18 +42,17 @@ public class HomeController {
     @ResponseBody
     public String postHome(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                            PinEntity pin) {
+        JSONObject response = new JSONObject();
+
         if (signedUser == null) {
-            JSONObject error = new JSONObject();
-            error.put("result", "failure_session_expired");
-            return error.toString();
+            response.put("result", "failure_session_expired");
+            return response.toString();
         }
         if (signedUser.isSuspended() || signedUser.isDeleted()) {
-            JSONObject error = new JSONObject();
-            error.put("result", "failure_forbidden");
-            return error.toString();
+            response.put("result", "failure_forbidden");
+            return response.toString();
         }
         Result result = this.homeService.savePin(signedUser, pin);
-        JSONObject response = new JSONObject();
         response.put("result", result.toString().toLowerCase());
         return response.toString();
     }

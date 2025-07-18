@@ -9,12 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-public class BoardEntity {
+public class PinUserSaveEntity {
     private int id;
     private String userEmail;
-    private String name;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
-    private boolean isDeleted;
-    private String coverImage;
+    private int pinId;
+    private LocalDateTime savedAt;
 }

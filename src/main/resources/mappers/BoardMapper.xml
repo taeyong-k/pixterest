@@ -7,9 +7,15 @@
             useGeneratedKeys="true"
             keyColumn="id"
             keyProperty="id">
-        insert into `pixterest`.`boards` (`user_email`, `name`, `created_at`, `modified_at`, `is_deleted`)
-        values (#{board.userEmail}, #{board.name}, #{board.createdAt}, #{board.modifiedAt}, #{board.isDeleted});
+        insert into `pixterest`.`boards` (`user_email`, `name`, `created_at`, `modified_at`, `is_deleted`, `cover_image`)
+        values (#{board.userEmail}, #{board.name}, #{board.createdAt}, #{board.modifiedAt}, #{board.isDeleted}, #{board.coverImage})
     </insert>
+
+    <update id="updateCoverImage">
+        update `pixterest`.`boards`
+        set cover_image = #{coverImage}, modified_at = NOW()
+        where id = #{boardId}
+    </update>
 
     <select id="selectByUserEmailAndName" resultType="com.tyk.pixterest.entities.BoardEntity">
         select `id`          as `id`,
@@ -17,7 +23,8 @@
                `name`        as `name`,
                `created_at`  as `createdAt`,
                `modified_at` as `modifiedAt`,
-               `is_deleted`  as `isDeleted`
+               `is_deleted`  as `isDeleted`,
+               `cover_image` as `coverImage`
         from `pixterest`.`boards`
         where `user_email` = #{userEmail}
           and `name` = #{name}
@@ -30,7 +37,8 @@
                `name`        as `name`,
                `created_at`  as `createdAt`,
                `modified_at` as `modifiedAt`,
-               `is_deleted`  as `isDeleted`
+               `is_deleted`  as `isDeleted`,
+               `cover_image` as `coverImage`
         from `pixterest`.`boards`
         where id = #{id}
         limit 1
@@ -42,10 +50,12 @@
                `name`        as `name`,
                `created_at`  as `createdAt`,
                `modified_at` as `modifiedAt`,
-               `is_deleted`  as `isDeleted`
+               `is_deleted`  as `isDeleted`,
+               `cover_image` as `coverImage`
         from `pixterest`.`boards`
         where user_email = #{userEmail}
           and is_deleted = false
         order by created_at desc
     </select>
+
 </mapper>

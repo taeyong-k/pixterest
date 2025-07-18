@@ -64,10 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const item = document.createElement('div');
             item.className = 'item';
             item.innerHTML = `
-                <div class="board-info" data-board-id="${b.id}" data-board-url="${b.url || ''}">
+                <div class="board-info" data-board-id="${b.id}" data-board-url="${b.coverImage || ''}">
                     <div class="board-thumbnail">
                         <div class="thumbnail">
-                            <img alt class="thumbnailImg" loading="auto" src="${b.url || ''}">
+                            <img alt class="thumbnailImg ${!b.coverImage ? 'default-img' : ''}" loading="auto" src="${b.coverImage ? `/images/${b.coverImage}` : '/assets/images/default.png'}">
                         </div>
                     </div>
                     <div class="board-name">
@@ -101,11 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const $boardFlyoutButtonImg = $boardFlyoutButton.querySelector('img.thumbnailImg'); // [화면] 보드 img
                 if ($boardFlyoutButtonImg) {
                     if ($boardUrl) {
-                        $boardFlyoutButtonImg.src = $boardUrl;
-                        $boardFlyoutButtonImg.style.display = "block";
+                        $boardFlyoutButtonImg.src = `/images/${$boardUrl}`;
                     } else {
-                        $boardFlyoutButtonImg.style.display = "none";
+                        $boardFlyoutButtonImg.src = '/assets/images/default.png';
                     }
+                    $boardFlyoutButtonImg.style.display = "block";
                 }
 
                 $boardFlyout.classList.remove('-visible');
@@ -302,7 +302,5 @@ document.addEventListener('DOMContentLoaded', () => {
             sessionStorage.removeItem('showToast');
         }   // sessionStorage = 임시 저장 공간 (탭 안에서는 데이터가 유지)
     };
-
-
     getBoardsXHR();
 });

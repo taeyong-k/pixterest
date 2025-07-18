@@ -119,7 +119,15 @@ public class CreationService {
         pin.setModifiedAt(LocalDateTime.now());
         pin.setDeleted(false);
 
-        // 6. DB 저장
+        // 6. 보드 커버 이미지가 비어있으면 업데이트
+        if (pin.getBoardId() != null) {
+            BoardEntity board = boardMapper.selectById(pin.getBoardId());
+            if (board != null && (board.getCoverImage() == null || board.getCoverImage().isEmpty())) {
+                boardMapper.updateCoverImage(pin.getBoardId(), pin.getImage());
+            }
+        }
+
+        // 7. DB 저장
         return this.pinMapper.insert(pin) > 0
                 ? CreationResult.SUCCESS
                 : CreationResult.FAILURE;

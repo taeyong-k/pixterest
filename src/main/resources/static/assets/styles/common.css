@@ -485,7 +485,7 @@ header#header {
 }
 
 #creationFlyout {
-  position: absolute;
+  position: fixed;
   left: 16px;
   top: 0;
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
@@ -666,7 +666,7 @@ header#header {
 }
 
 #optionFlyout {
-  position: absolute;
+  position: fixed;
   left: 16px;
   top: 0;
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
@@ -815,7 +815,7 @@ header#header {
 }
 
 #profileFlyout {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
