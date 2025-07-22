@@ -104,50 +104,143 @@
   font-weight: 400;
   margin-bottom: 2rem;
 }
-#dialog > .-modal #registerModalForm > .obj-label,
-#dialog > .-modal #loginModalForm > .obj-label {
-  width: 70%;
+#dialog > .-modal #registerModalForm .field-wrapper,
+#dialog > .-modal #loginModalForm .field-wrapper {
+  width: 75%;
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+#dialog > .-modal #registerModalForm .field-wrapper.column,
+#dialog > .-modal #loginModalForm .field-wrapper.column {
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+  justify-content: flex-start;
 }
-#dialog > .-modal #registerModalForm > .obj-label > .caption,
-#dialog > .-modal #loginModalForm > .obj-label > .caption {
-  font-size: 0.875rem;
-  color: #000000;
-  font-weight: 400;
-  margin-bottom: 0.25rem;
+#dialog > .-modal #registerModalForm .field-wrapper.column > *,
+#dialog > .-modal #loginModalForm .field-wrapper.column > * {
+  flex-grow: 0;
+  flex-shrink: 0;
 }
-#dialog > .-modal #registerModalForm > .obj-label > .input,
-#dialog > .-modal #loginModalForm > .obj-label > .input {
+#dialog > .-modal #registerModalForm .field-wrapper.column > .-flex-stretch,
+#dialog > .-modal #loginModalForm .field-wrapper.column > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .obj-label,
+#dialog > .-modal #loginModalForm .field-wrapper > .obj-label {
   width: 100%;
-  border: 0.0625rem solid #757569;
-  border-radius: 1rem;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  transition: border-color 0.3s;
 }
-#dialog > .-modal #registerModalForm > .obj-label > .input:hover,
-#dialog > .-modal #loginModalForm > .obj-label > .input:hover {
-  border: 0.0625rem solid #616157;
+#dialog > .-modal #registerModalForm .field-wrapper > .obj-label > .input-field,
+#dialog > .-modal #loginModalForm .field-wrapper > .obj-label > .input-field {
+  width: 100%;
 }
-#dialog > .-modal #registerModalForm > .obj-label > .input:focus,
-#dialog > .-modal #loginModalForm > .obj-label > .input:focus {
-  border: 0.063rem solid #ffffff;
-  outline: 0.125rem solid #007db8;
+#dialog > .-modal #registerModalForm .field-wrapper > .obj-label:focus-within,
+#dialog > .-modal #loginModalForm .field-wrapper > .obj-label:focus-within {
+  border-color: #ffffff;
+  outline: 1.5px solid #007db8;
+  z-index: 1;
 }
-#dialog > .-modal #registerModalForm > .obj-label > .recoverPassword,
-#dialog > .-modal #loginModalForm > .obj-label > .recoverPassword {
-  margin-top: 0.125rem;
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  justify-content: center;
+  display: none;
+  position: absolute;
+  bottom: -1.5rem;
+  left: 0;
+  color: #e74c3c;
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
-#dialog > .-modal #registerModalForm > .obj-label > .recoverPassword > .link .caption,
-#dialog > .-modal #loginModalForm > .obj-label > .recoverPassword > .link .caption {
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning > *,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning > .-flex-stretch,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning.-visible,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning.-visible {
+  display: flex;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning .warning-icon,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning .warning-icon {
+  width: 12px;
+  height: 12px;
+  color: #8a0f0f;
+  fill: currentColor;
+  stroke-width: 0;
+  vertical-align: middle;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  display: block;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning .warning-icon > .icon,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning .warning-icon > .icon {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning .warning-icon > .icon > *,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning .warning-icon > .icon > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning .warning-icon > .icon > .-flex-stretch,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning .warning-icon > .icon > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning .caption,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning .caption {
+  text-align: left;
+  color: #8a0f0f;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+#dialog > .-modal #registerModalForm > .recoverPassword,
+#dialog > .-modal #loginModalForm > .recoverPassword {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: flex-start;
+}
+#dialog > .-modal #registerModalForm > .recoverPassword > *,
+#dialog > .-modal #loginModalForm > .recoverPassword > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#dialog > .-modal #registerModalForm > .recoverPassword > .-flex-stretch,
+#dialog > .-modal #loginModalForm > .recoverPassword > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#dialog > .-modal #registerModalForm > .recoverPassword > .link .caption,
+#dialog > .-modal #loginModalForm > .recoverPassword > .link .caption {
   color: #1e4b67;
   font-size: 0.875rem;
   font-weight: 500;
 }
-#dialog > .-modal #registerModalForm > .obj-label > .recoverPassword > .link .caption:hover,
-#dialog > .-modal #loginModalForm > .obj-label > .recoverPassword > .link .caption:hover {
+#dialog > .-modal #registerModalForm > .recoverPassword > .link .caption:hover,
+#dialog > .-modal #loginModalForm > .recoverPassword > .link .caption:hover {
   text-decoration: underline;
 }
 #dialog > .-modal #registerModalForm > .button-container,
@@ -159,6 +252,11 @@
   min-height: 2rem;
   padding: 0.125rem 0.75rem;
   width: 17.5rem;
+  font-weight: 500;
+}
+#dialog > .-modal #registerModalForm > .button-container > .-color-gray,
+#dialog > .-modal #loginModalForm > .button-container > .-color-gray {
+  color: #000000;
 }
 #dialog > .-modal #registerModalForm > .confirm,
 #dialog > .-modal #loginModalForm > .confirm {
@@ -306,6 +404,13 @@
   flex-grow: 1;
   flex-shrink: 1;
 }
+#header > .button-container .obj-button {
+  padding: 0.625rem 1rem;
+  font-weight: 500;
+}
+#header > .button-container .obj-button.-color-gray {
+  color: #000000;
+}
 
 #main {
   align-items: center;
@@ -398,42 +503,107 @@
   text-align: center;
   color: #111111;
 }
-#main #loginForm > .obj-label {
-  width: 70%;
-  display: flex;
-  flex-direction: column;
+#main #loginForm > .field-wrapper {
+  width: 75%;
+  position: relative;
   margin-bottom: 1.5rem;
 }
-#main #loginForm > .obj-label > .caption {
-  font-size: 0.875rem;
-  color: #000000;
-  font-weight: 400;
-  margin-bottom: 0.25rem;
+#main #loginForm > .field-wrapper.column {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-start;
 }
-#main #loginForm > .obj-label > .input {
+#main #loginForm > .field-wrapper.column > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#main #loginForm > .field-wrapper.column > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#main #loginForm > .field-wrapper > .obj-label {
   width: 100%;
-  border: 0.0625rem solid #757569;
-  border-radius: 1rem;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  transition: border-color 0.3s;
 }
-#main #loginForm > .obj-label > .input:hover {
-  border: 0.0625rem solid #616157;
+#main #loginForm > .field-wrapper > .obj-label > .input-field {
+  width: 100%;
 }
-#main #loginForm > .obj-label > .input:focus {
-  border: 0.063rem solid #ffffff;
-  outline: 0.125rem solid #007db8;
+#main #loginForm > .field-wrapper > .obj-label:focus-within {
+  border-color: #ffffff;
+  outline: 1.5px solid #007db8;
+  z-index: 1;
 }
-#main #loginForm > .obj-label > .recoverPassword {
-  margin-top: 0.125rem;
+#main #loginForm > .field-wrapper > .-warning {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  justify-content: center;
+  display: none;
+  position: absolute;
+  bottom: -1.5rem;
+  left: 0;
+  color: #e74c3c;
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
-#main #loginForm > .obj-label > .recoverPassword > .link .caption {
+#main #loginForm > .field-wrapper > .-warning > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#main #loginForm > .field-wrapper > .-warning > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#main #loginForm > .field-wrapper > .-warning.-visible {
+  display: flex;
+}
+#main #loginForm > .field-wrapper > .-warning .warning-icon {
+  width: 12px;
+  height: 12px;
+  color: #8a0f0f;
+  fill: currentColor;
+  stroke-width: 0;
+  vertical-align: middle;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  display: block;
+}
+#main #loginForm > .field-wrapper > .-warning .warning-icon > .icon {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+}
+#main #loginForm > .field-wrapper > .-warning .warning-icon > .icon > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#main #loginForm > .field-wrapper > .-warning .warning-icon > .icon > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#main #loginForm > .field-wrapper > .-warning .caption {
+  text-align: left;
+  color: #8a0f0f;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+#main #loginForm > .recoverPassword > .link .caption {
   color: #1e4b67;
   font-size: 0.875rem;
   font-weight: 500;
 }
-#main #loginForm > .obj-label > .recoverPassword > .link .caption:hover {
+#main #loginForm > .recoverPassword > .link .caption:hover {
   text-decoration: underline;
 }
 #main #loginForm > .button-container {
@@ -443,6 +613,7 @@
   min-height: 2rem;
   padding: 0.125rem 0.75rem;
   width: 17.5rem;
+  font-weight: 500;
 }
 #main #loginForm > .confirm {
   margin-bottom: 1rem;
@@ -505,43 +676,100 @@
   text-align: center;
   color: #111111;
 }
-#main #registerForm > .obj-label {
-  width: 70%;
+#main #registerForm > .field-wrapper {
+  width: 75%;
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+#main #registerForm > .field-wrapper.column {
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+  justify-content: flex-start;
 }
-#main #registerForm > .obj-label > .caption {
-  font-size: 0.875rem;
-  color: #000000;
-  font-weight: 400;
-  margin-bottom: 0.25rem;
+#main #registerForm > .field-wrapper.column > * {
+  flex-grow: 0;
+  flex-shrink: 0;
 }
-#main #registerForm > .obj-label > .input {
+#main #registerForm > .field-wrapper.column > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#main #registerForm > .field-wrapper > .obj-label {
   width: 100%;
-  border: 0.0625rem solid #757569;
-  border-radius: 1rem;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  transition: border-color 0.3s;
 }
-#main #registerForm > .obj-label > .input:hover {
-  border: 0.0625rem solid #616157;
+#main #registerForm > .field-wrapper > .obj-label > .input-field {
+  width: 100%;
 }
-#main #registerForm > .obj-label > .input:focus {
-  border: 0.063rem solid #ffffff;
-  outline: 0.125rem solid #007db8;
+#main #registerForm > .field-wrapper > .obj-label:focus-within {
+  border-color: #ffffff;
+  outline: 1.5px solid #007db8;
+  z-index: 1;
 }
-#main #registerForm > .obj-label > .recoverPassword {
-  margin-top: 0.125rem;
+#main #registerForm > .field-wrapper > .-warning {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  justify-content: center;
+  display: none;
+  position: absolute;
+  bottom: -1.5rem;
+  left: 0;
+  color: #e74c3c;
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
-#main #registerForm > .obj-label > .recoverPassword > .link .caption {
-  color: #1e4b67;
-  font-size: 0.875rem;
-  font-weight: 500;
+#main #registerForm > .field-wrapper > .-warning > * {
+  flex-grow: 0;
+  flex-shrink: 0;
 }
-#main #registerForm > .obj-label > .recoverPassword > .link .caption:hover {
-  text-decoration: underline;
+#main #registerForm > .field-wrapper > .-warning > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#main #registerForm > .field-wrapper > .-warning.-visible {
+  display: flex;
+}
+#main #registerForm > .field-wrapper > .-warning .warning-icon {
+  width: 12px;
+  height: 12px;
+  color: #8a0f0f;
+  fill: currentColor;
+  stroke-width: 0;
+  vertical-align: middle;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  display: block;
+}
+#main #registerForm > .field-wrapper > .-warning .warning-icon > .icon {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+}
+#main #registerForm > .field-wrapper > .-warning .warning-icon > .icon > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#main #registerForm > .field-wrapper > .-warning .warning-icon > .icon > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#main #registerForm > .field-wrapper > .-warning .caption {
+  text-align: left;
+  color: #8a0f0f;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
 }
 #main #registerForm > .button-container {
   margin-bottom: 1rem;

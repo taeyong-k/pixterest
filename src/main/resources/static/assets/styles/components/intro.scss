@@ -1,0 +1,69 @@
+@charset "UTF-8";
+@import "../_def";
+
+$global-color-background: #ffffff;
+
+#intro
+{
+  @include flex(column, center, center, 1rem);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $global-color-background;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  transition-duration: 175ms;
+  transition-property: opacity;
+  transition-timing-function: ease;
+  z-index: 9;
+
+  &.-visible
+  {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &.-phase
+  {
+    > .logo {
+      top: 0;
+      pointer-events: auto;
+      animation: pop-in 500ms ease forwards;
+    }
+  }
+
+  > .logo {
+    @include fixedSize(5rem);
+    top: 0.5rem;
+    object-fit: contain;
+    object-position: center;
+    opacity: 0;
+    pointer-events: none;
+    position: relative;
+    transform: scale(2); // 작게 시작
+    width: 2.813rem;
+    height: 2.813rem;
+    color: #e60023;
+    fill: currentColor;
+    display: block;
+    stroke-width: 0;
+    vertical-align: middle;
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

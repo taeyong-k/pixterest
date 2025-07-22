@@ -46,7 +46,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-title-container > .flex-stretch {
+#creation-pin .pin-title-container > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -105,7 +105,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-post .pin-post-btn > .flex-stretch {
+#creation-pin .pin-post .pin-post-btn > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -132,7 +132,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-content-container-layout > .flex-stretch {
+#creation-pin .pin-content-container-layout > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -154,7 +154,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-content-container > .flex-stretch {
+#creation-pin .pin-content-container > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -182,7 +182,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-upload > .flex-stretch {
+#creation-pin .pin-upload > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -205,7 +205,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-upload-container > .flex-stretch {
+#creation-pin .pin-upload-container > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -370,7 +370,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-upload .url-save > .flex-stretch {
+#creation-pin .pin-upload .url-save > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -423,7 +423,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-label-container > .flex-stretch {
+#creation-pin .pin-label-container > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -530,7 +530,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-label.-invalid .-warning.-row > .flex-stretch {
+#creation-pin .pin-label.-invalid .-warning.-row > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -580,7 +580,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-label-board .pin-label > .flex-stretch {
+#creation-pin .pin-label-board .pin-label > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -603,7 +603,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-label-board .pin-label .pin-label-board-button > .flex-stretch {
+#creation-pin .pin-label-board .pin-label .pin-label-board-button > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -765,7 +765,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#boardFlyout .boardFlyout-content .item .board-info > .flex-stretch {
+#boardFlyout .boardFlyout-content .item .board-info > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }

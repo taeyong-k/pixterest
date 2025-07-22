@@ -209,19 +209,47 @@ header#header {
   display: block;
 }
 
-#headerContent .profile-img-wrapper .img {
+#headerContent .profile-img-wrapper .profile-img-circle {
   max-width: 100%;
   width: 100%;
-  height: auto;
   border: 0;
-  color: transparent;
+  color: #fff;
   vertical-align: middle;
   position: absolute;
-  display: block;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
 }
 
 #headerContent .profile-add-container {
   display: block;
+}
+
+#headerContent .login-container .button-container {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#headerContent .login-container .button-container .obj-button {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+#headerContent .login-container .button-container .obj-button.-color-gray {
+  color: #000000;
+}
+
+#headerContent .login-container .button-container .obj-button.-color-red {
+  color: #ffffff;
 }
 
 #headerContent .profile-add-button {
@@ -360,7 +388,7 @@ header#header {
 
 // [ 만들기 팝업 ] @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #creationFlyout {
-  position: fixed;
+  position: absolute;
   left: 16px;
   top: 0;
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
@@ -521,7 +549,7 @@ header#header {
 
 // [ 옵션 팝업 ]@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #optionFlyout {
-  position: fixed;
+  position: absolute;
   left: 16px;
   top: 0;
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
@@ -649,7 +677,7 @@ header#header {
 
 // [ 프로필 팝업 ]@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #profileFlyout {
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
@@ -799,15 +827,21 @@ header#header {
   display: block;
 }
 
-#profileFlyout .profile-login-row-img-wrapper .img {
+#profileFlyout .profile-login-row-img-wrapper .profile-login-row-img-circle {
   max-width: 100%;
   width: 100%;
-  height: auto;
+  height: 100%;
   border: 0;
-  color: transparent;
+  color: #fff;
   position: absolute;
   vertical-align: middle;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 50%;
+  background-color: #ccc;
 }
 
 #profileFlyout .profile-login-row-content {
@@ -980,4 +1014,83 @@ header#header {
   text-decoration: none;
 }
 
+#profileFlyout .login-wrapper {
+  @include flex(column, center, flex-start);
+  min-width: 0;
+  min-height: 0;
+  margin: 12px;
+  flex: 1 1 auto;
+}
 
+#profileFlyout .profile-guest {
+  width: 100%;
+  display: block;
+  margin-top: 12px; // ✅ 추가: 부모 요소로부터 12px 띄움
+  margin-bottom: 8px;
+}
+
+#profileFlyout .profile-guest:not(:first-child) {
+  margin-top: 8px;
+}
+
+#profileFlyout .guest-menu-button {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none; // ✅ 링크 밑줄 제거
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+#profileFlyout .guest-menu-button:hover {
+  background-color: #f0f0eb;
+}
+
+#profileFlyout .guest-menu-button:active {
+  background-color: #deded3;
+  outline: none;
+}
+
+#profileFlyout .guest-menu-button-layout {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0);
+  display: flex;
+  flex-direction: column;
+}
+
+#profileFlyout .guest-menu-button-wrapper {
+  flex: 1 1 auto;
+  margin: 4px 0;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#profileFlyout .guest-menu-button-content {
+  @include flex(row, center, flex-start);
+  margin: 0;
+}
+
+#profileFlyout .guest-menu-button-content .caption {
+  -webkit-line-clamp: 1;
+  text-align: left;
+  color: #215d82;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
+  text-decoration: none;
+}

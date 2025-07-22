@@ -14,9 +14,10 @@ public class CommentEntity {
     private int id;
     private int pinId;
     private String userEmail;
+    private String nickname;
     private Integer commentId;
     private String content;
     private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
     private boolean isDeleted;
-    private String nickname;
 }

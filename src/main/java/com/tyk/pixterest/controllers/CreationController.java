@@ -46,15 +46,15 @@ public class CreationController {
                           @RequestParam(value = "tag", required = false) String tag,
                           @RequestParam(value = "boardId", required = false) Integer boardId,
                           @RequestPart("imageFile") MultipartFile imageFile) {
+        JSONObject response = new JSONObject();
+
         if (signedUser == null) {
-            JSONObject error = new JSONObject();
-            error.put("result", "failure_session_expired");
-            return error.toString();
+            response.put("result", "failure_session_expired");
+            return response.toString();
         }
         if (signedUser.isSuspended() || signedUser.isDeleted()) {
-            JSONObject error = new JSONObject();
-            error.put("result", "failure_forbidden");
-            return error.toString();
+            response.put("result", "failure_forbidden");
+            return response.toString();
         }
 
         PinEntity pin = new PinEntity();
@@ -65,8 +65,6 @@ public class CreationController {
         pin.setBoardId(boardId);
 
         Result result = creationService.creationPin(signedUser, pin, imageFile);
-
-        JSONObject response = new JSONObject();
         response.put("result", result.toString().toLowerCase());
         return response.toString();
     }
@@ -74,19 +72,18 @@ public class CreationController {
     @RequestMapping(value = "/boards", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getBoards(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser) {
+        JSONObject response = new JSONObject();
+
         if (signedUser == null) {
-            JSONObject error = new JSONObject();
-            error.put("result", "failure_session_expired");
-            return error.toString();
+            response.put("result", "failure_session_expired");
+            return response.toString();
         }
         if (signedUser.isSuspended() || signedUser.isDeleted()) {
-            JSONObject error = new JSONObject();
-            error.put("result", "failure_forbidden");
-            return error.toString();
+            response.put("result", "failure_forbidden");
+            return response.toString();
         }
 
         ResultTuple<BoardEntity[]> result = creationService.getByBoards(signedUser);
-        JSONObject response = new JSONObject();
 
         if (result.getResult() == CommonResult.SUCCESS) {
             BoardEntity[] boards = result.getPayload();
@@ -106,18 +103,17 @@ public class CreationController {
     @ResponseBody
     public String postBoard(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                             BoardEntity board) {
+        JSONObject response = new JSONObject();
+
         if (signedUser == null) {
-            JSONObject error = new JSONObject();
-            error.put("result", "failure_session_expired");
-            return error.toString();
+            response.put("result", "failure_session_expired");
+            return response.toString();
         }
         if (signedUser.isSuspended() || signedUser.isDeleted()) {
-            JSONObject error = new JSONObject();
-            error.put("result", "failure_forbidden");
-            return error.toString();
+            response.put("result", "failure_forbidden");
+            return response.toString();
         }
         Result result = creationService.creationBoard(signedUser, board);
-        JSONObject response = new JSONObject();
         response.put("result", result.toString().toLowerCase());
         return response.toString();
     }

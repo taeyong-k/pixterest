@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 duration: 8100,
                 buttonText: '이동하기',
                 onButtonClick: () => {
-                    window.location.href = '/user/login';       // ★핀 모여있는 페이지로 변경하기!!★
+                    window.location.href = '/user/myPage';
                 }
             });
             sessionStorage.removeItem('showToast');

@@ -1,9 +1,12 @@
 package com.tyk.pixterest.services;
 
+import com.tyk.pixterest.entities.BoardEntity;
+import com.tyk.pixterest.entities.PinEntity;
 import com.tyk.pixterest.entities.UserEntity;
 import com.tyk.pixterest.mappers.UserMapper;
 import com.tyk.pixterest.results.*;
 import com.tyk.pixterest.utils.CryptoUtils;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +30,6 @@ public class UserService
     public static boolean isPasswordValid(String input)
     {
         return input != null && input.matches("^([\\da-zA-Z`~!@#$%^&*()\\-_=+\\[{\\]}\\\\|;:'\",<.>/?]{8,50})$");
-    }
-
-    public static boolean isBirthValid(String input)
-    {
-        return input != null && input.matches("^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$");
     }
 
     public Result register(UserEntity user)
@@ -64,6 +62,7 @@ public class UserService
         user.setName(emailId);
         user.setNickname(emailId);
         user.setBirth(user.getBirth());
+        user.setFollowers(0);
         user.setCreatedAt(LocalDateTime.now());
         user.setModifiedAt(LocalDateTime.now());
         user.setDeleted(false);
@@ -114,9 +113,100 @@ public class UserService
                 .build();
     }
 
-    public CommonResult getInfo()
+    public CommonResult logout(UserEntity signedUser, HttpSession session) {
+        if (session == null || session.getAttribute("signedUser") == null) {
+            return CommonResult.FAILURE;
+        }
+
+        // 세션에서 현재 로그인된 사용자 정보
+        UserEntity sessionUser = (UserEntity) session.getAttribute("signedUser");
+
+        // ✅ 전달된 signedUser와 세션 유저 정보 비교
+        if (!sessionUser.getEmail().equals(signedUser.getEmail())) {
+            return CommonResult.FAILURE;
+        }
+
+        // ✅ DB에서 사용자 최신 정보 확인
+        UserEntity dbUser = this.userMapper.selectByEmail(sessionUser.getEmail());
+        if (dbUser == null || !dbUser.getEmail().equals(sessionUser.getEmail())) {
+            return CommonResult.FAILURE;
+        }
+
+        // ✅ 모든 검증 통과 → 세션 무효화
+        session.invalidate();
+        return CommonResult.SUCCESS;
+    }
+
+    public CommonResult changePassword(UserEntity signedUser , String password, String newPassword)
     {
-        return null;
+        if (signedUser == null || signedUser.isDeleted() || signedUser.isSuspended())
+        {
+            return CommonResult.FAILURE_SESSION_EXPIRED;
+        }
+        if (password == null || newPassword == null)
+        {
+            return CommonResult.FAILURE;
+        }
+        if (!UserService.isPasswordValid(password) || !UserService.isPasswordValid(newPassword))
+        {
+            return CommonResult.FAILURE;
+        }
+        if (password.equals(newPassword))
+        {
+            return CommonResult.FAILURE_DUPLICATE;
+        }
+        String hashedPassword = CryptoUtils.hashSha512(password);
+        UserEntity dbUser = this.userMapper.selectByPassword(hashedPassword);
+        if (dbUser == null || dbUser.isDeleted() || dbUser.isSuspended())
+        {
+            return CommonResult.FAILURE;
+        }
+        if (!dbUser.getPassword().equals(hashedPassword))
+        {
+            return CommonResult.FAILURE;
+        }
+        dbUser.setPassword(CryptoUtils.hashSha512(newPassword));
+        return this.userMapper.update(dbUser) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+    }
+
+    public CommonResult deleteUser(UserEntity signedUser, String email)
+    {
+        if (signedUser == null || signedUser.isDeleted() || signedUser.isSuspended())
+        {
+            return CommonResult.FAILURE_SESSION_EXPIRED;
+        }
+        if (!signedUser.isAdmin() && !signedUser.getEmail().equals(email)) {
+            return CommonResult.FAILURE;
+        }
+        return this.userMapper.delete(email) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+    }
+
+    public CommonResult deactivateUser(UserEntity signedUser, String email)
+    {
+        if (signedUser == null || signedUser.isDeleted() || signedUser.isSuspended())
+        {
+            return CommonResult.FAILURE_SESSION_EXPIRED;
+        }
+        if (!signedUser.isAdmin() && !signedUser.getEmail().equals(email)) {
+            return CommonResult.FAILURE;
+        }
+        if (!UserService.isEmailValid(email))
+        {
+            return CommonResult.FAILURE;
+        }
+        UserEntity dbUser = this.userMapper.selectByEmail(email);
+        if (dbUser == null || dbUser.isDeleted() || dbUser.isSuspended())
+        {
+            return CommonResult.FAILURE;
+        }
+        dbUser.setDeleted(true);
+        return this.userMapper.update(dbUser) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
     }
 
     public ResultTuple<String> getTheme(UserEntity signedUser, String theme)

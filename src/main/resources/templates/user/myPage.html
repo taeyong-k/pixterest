@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>myPage</title>
+    <link rel="stylesheet" type="text/css" href="/assets/styles/common.min.css">
+    <link rel="stylesheet" type="text/css" href="/user/assets/styles/myPage.min.css">
+    <script defer src="/assets/scripts/components/toast.js"></script>
+    <script defer src="/assets/scripts/components/header.js" type="text/javascript"></script>
+<!--    <script defer src="/assets/scripts/components/intro.js" type="text/javascript"></script>-->
+<!--    <script defer src="/assets/scripts/components/toggle.js"></script>-->
+    <script defer src="/user/assets/scripts/function/myPage.js"></script>
+</head>
+<body>
+    <th:block th:replace="~{/fragments/toast :: toast}"></th:block>
+    <th:block th:replace="~{/fragments/toast :: toastAlert}"></th:block>
+    <th:block th:replace="~{/fragments/header :: header}"></th:block>
+    <th:block th:replace="~{/fragments/board :: board}"></th:block>
+    <div id="intro" class="" role="none">
+        <svg aria-hidden="true" aria-label class="logo" role="img" viewBox="0 0 24 24">
+            <path d="M7.54 23.15q-.2-2.05.26-3.93L9 14.04a7 7 0 0 1-.35-2.07c0-1.68.81-2.88 2.09-2.88.88 0 1.53.62 1.53 1.8q0 .57-.23 1.28l-.52 1.72q-.15.5-.15.92c0 1.2.91 1.87 2.08 1.87 2.09 0 3.57-2.16 3.57-4.96 0-3.12-2.04-5.12-5.05-5.12-3.36 0-5.49 2.19-5.49 5.24 0 1.22.38 2.36 1.11 3.14-.24.41-.5.48-.88.48-1.2 0-2.34-1.69-2.34-4 0-4 3.2-7.17 7.68-7.17 4.7 0 7.66 3.29 7.66 7.33s-2.88 7.15-5.98 7.15a3.8 3.8 0 0 1-3.06-1.48l-.62 2.5a11 11 0 0 1-1.62 3.67A11.98 11.98 0 0 0 24 12a11.99 11.99 0 1 0-24 0 12 12 0 0 0 7.54 11.15"></path>
+        </svg>
+    </div>
+<!--    <div id="dark" class="toggle-container">-->
+<!--        <button class="toggle" type="button">-->
+<!--            🌙-->
+<!--        </button>-->
+<!--    </div>-->
+    <div id="loading" class="">
+        <div class="load-9">
+            <div class="spinner">
+                <div class="bubble-1"></div>
+                <div class="bubble-2"></div>
+            </div>
+        </div>
+    </div>
+    <div id="main-page" class="-visible">
+        <!--
+        <div class="exit">
+            <button class="obj-button" type="button">
+                <img alt="뒤로가기" class="icon" src="/user/assets/images/back.png">
+            </button>
+        </div>
+        -->
+        <div id="profile">
+            <div class="image-wrapper">
+                <div class="profile-circle"></div>
+            </div>
+            <div class="nickname-wrapper">
+                <span class="caption">닉네임</span>
+            </div>
+            <div class="info-wrapper">
+                <a href="#" class="link">
+                    <span class="caption">링크</span>
+                </a>
+                ·
+                <div class="introduce">
+                    <span class="caption">소개</span>
+                </div>
+            </div>
+            <div class="id-wrapper">
+                <div class="logo">
+                    <svg aria-hidden="true" aria-label class="icon" role="img" viewBox="0 0 24 24">
+                        <path d="M7.54 23.15q-.2-2.05.26-3.93L9 14.04a7 7 0 0 1-.35-2.07c0-1.68.81-2.88 2.09-2.88.88 0 1.53.62 1.53 1.8q0 .57-.23 1.28l-.52 1.72q-.15.5-.15.92c0 1.2.91 1.87 2.08 1.87 2.09 0 3.57-2.16 3.57-4.96 0-3.12-2.04-5.12-5.05-5.12-3.36 0-5.49 2.19-5.49 5.24 0 1.22.38 2.36 1.11 3.14-.24.41-.5.48-.88.48-1.2 0-2.34-1.69-2.34-4 0-4 3.2-7.17 7.68-7.17 4.7 0 7.66 3.29 7.66 7.33s-2.88 7.15-5.98 7.15a3.8 3.8 0 0 1-3.06-1.48l-.62 2.5a11 11 0 0 1-1.62 3.67A11.98 11.98 0 0 0 24 12a11.99 11.99 0 1 0-24 0 12 12 0 0 0 7.54 11.15"></path>
+                    </svg>
+                    <span class="caption">아이디</span>
+                </div>
+            </div>
+            <div class="button-container">
+                <button class="obj-button -color-gray" name="edit" type="button">프로필 수정</button>
+            </div>
+            <div class="category">
+                <div class="created " th:classappend="${category} == 'created' ? 'active' : ''">
+                    <a href="/user/created" class="link"><span class="caption">생성됨</span></a>
+                </div>
+                <div class="saved " th:classappend="${category} == 'saved' ? 'active' : ''">
+                    <a href="/user/saved" class="link"><span class="caption">저장됨</span></a>
+                </div>
+            </div>
+        </div>
+        <div id="main">
+            <div class="content">
+                <div class="space">
+                    <div class="boards">
+                        <div class="board" th:each="board : ${boards}">
+                            <div class="image">
+                                <img alt="보드 이미지" class="background"
+                                     th:if="${board.coverImage != null}"
+                                     th:src="@{/images/{file}(file=${board.coverImage})}">
+                                <img alt="보드 이미지" class="background"
+                                     th:unless="${board.coverImage != null}"
+                                     th:src="@{/assets/images/default.png}">
+
+                                <button class="obj-button edit-button" title="수정">
+                                    <img alt="" class="icon" src="/user/assets/images/edit-button.png">
+                                </button>
+                            </div>
+                            <div class="content">
+                                <span class="title" th:text="${board.name}">Board 이름</span>
+                                <div class="text">
+                                    <span class="time" th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}">시간</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pins">
+                        <div class="pin" th:each="pin : ${pins}">
+                            <img alt="img" class="image" th:src="@{/images/{file}(file=${pin.image})}">
+                            <button class="obj-button edit-button" title="수정">
+                                <img alt="" class="icon" src="/user/assets/images/edit-button.png">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="edit-page">
+        <div class="menu-container">
+            <nav class="modifyNav">
+                <ul class="menu">
+                    <li class="item" data-path="modifyForm">
+                        <span class="caption">프로필 수정</span>
+                    </li>
+                    <li class="item" data-path="accountForm">
+                        <span class="caption">계정 관리</span>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="form-container">
+            <form novalidate id="modifyForm" class="">
+                <h2 class="title">프로필 수정</h2>
+                <span class="caption">개인 정보는 비공개로 유지하세요. 여기에 추가한 정보는 회원님의 프로필을 볼 수 있는 모든 사람에게 표시됩니다.</span>
+                <div class="field-wrapper column">
+                    <div class="row">
+                        <div class="field">
+                            <label class="obj-label">
+                                <span class="caption">이름</span>
+                                <input required autocomplete="off" class="input -field" maxlength="50" minlength="8"
+                                       name="name" spellcheck="false" type="text">
+                            </label>
+                        </div>
+                        <div class="field">
+                            <label class="obj-label">
+                                <span class="caption">성</span>
+                                <input required autocomplete="off" class="input -field" name="first" type="text">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="-warning" role="alert" aria-live="polite">
+                        <div class="warning-icon">
+                            <svg class="icon" role="img" viewBox="0 0 16 16">
+                                <path d="M9.71 2.86a2 2 0 0 0-3.42 0L.82 11.97A2 2 0 0 0 2.53 15h10.94a2 2 0 0 0 1.71-3.03zM6.03 6.97 8 8.94l1.97-1.97 1.06 1.06L9.06 10l1.97 1.97-1.06 1.06L8 11.06l-1.97 1.97-1.06-1.06L6.94 10 4.97 8.03z"></path>
+                            </svg>
+                        </div>
+                        <span class="caption">올바른 이름을 입력해 주세요.</span>
+                    </div>
+                </div>
+
+                <label class="obj-label">
+                    <span class="-caption">소개</span>
+                    <input autocomplete="off" class="obj-field" placeholder="회원님의 이야기를 들려주세요." name="introduce" spellcheck="false">
+                </label>
+                <label class="obj-label">
+                    <span class="-caption">웹사이트</span>
+                    <input required autocomplete="off" class="obj-field" placeholder="https://" name="site" spellcheck="false" type="text">
+                </label>
+                <label class="obj-label">
+                    <span class="-caption">사용자 이름</span>
+                    <input required autocomplete="off" class="obj-field" name="nickname" type="url">
+                    <span class="-warning">프로필에 이름을 입력하세요</span>
+                </label>
+            </form>
+            <form novalidate id="accountForm">
+                <h2 class="title">계정 관리</h2>
+                <span class="caption">개인 정보 또는 계정 유형을 변경합니다.</span>
+                <h2 class="sub-title">내 계정</h2>
+                <label class="obj-label">
+                    <span class="-caption">이메일</span>
+                    <input disabled required autocomplete="email" class="obj-field" name="email" type="email">
+                </label>
+                <div class="field-wrapper column">
+                    <div class="row">
+                        <div class="field">
+                            <label class="obj-label">
+                                <span class="caption">비밀번호</span>
+                                <input required autocomplete="off" class="input -field" maxlength="50" minlength="8"
+                                       name="password" spellcheck="false" placeholder="현재 비밀번호" type="password">
+                            </label>
+                        </div>
+                        <div class="field">
+                            <label class="obj-label">
+                                <span class="caption">새 비밀번호</span>
+                                <input required autocomplete="off" class="input -field" maxlength="50" minlength="8"
+                                       name="newPassword" spellcheck="false" placeholder="새 비밀번호" type="password">
+                            </label>
+                        </div>
+                    </div>
+                    <button disabled class="obj-button -color-gray" name="change" type="button">변경</button>
+                </div>
+                <h2 class="sub-title">개인 정보</h2>
+                <span class="-caption">생년월일</span>
+                <label class="obj-label">
+                    <input required class="obj-field" name="birth" spellcheck="false" type="date">
+                </label>
+                <h2 class="sub-title">비활성화 및 삭제</h2>
+                <div class="account-delete">
+                    <div class="row inactive">
+                        <div class="info ">
+                            <span class="subject">계정 비활성화</span>
+                            <span class="caption">프로필, 핀, 보드를 일시적으로 숨깁니다.</span>
+                        </div>
+                        <button class="obj-button -color-gray" name="deactivate" type="button">계정 비활성화</button>
+                    </div>
+                    <div class="row delete">
+                        <div class="info">
+                            <span class="subject">데이터 및 계정 삭제</span>
+                            <span class="caption">데이터 및 계정과 관련된 모든 정보를 영구적으로 삭제합니다.</span>
+                        </div>
+                        <button class="obj-button -color-gray" name="remove" type="button">계정 삭제</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="button-container">
+            <button disabled class="obj-button -color-gray" name="reset" type="button">재설정</button>
+            <button disabled class="obj-button -color-red" name="save" type="submit"> 저장</button>
+        </div>
+    </div>
+</body>
+</html>

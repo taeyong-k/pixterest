@@ -1,0 +1,951 @@
+@charset "UTF-8";
+
+@import "../../../assets/styles/_def";
+
+body
+{
+  background: #fff;
+  color: #111;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark
+{
+  background-color: #111;
+  color: #fff;
+
+  a, .caption, .title, .text, .message {
+    color: #fff; // 링크/텍스트
+  }
+
+  .obj-button {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #666;
+
+    &.-color-red {
+      background-color: #a33;
+    }
+
+    &.-color-gray {
+      background-color: #555;
+    }
+  }
+
+  .edit-button > .icon {
+    fill: #fff;
+  }
+
+  .background {
+    opacity: 0.9; // 이미지 덜 튀게 조정
+  }
+
+  .category > .created:hover,
+  .category > .saved:hover,
+  .menu > .item:hover {
+    background-color: #222;
+  }
+}
+
+
+#dark
+{
+  position: fixed;
+  top: 4.5rem; // 👈 헤더 높이보다 아래로 내림 (예: 72px)
+  right: 1.25rem;
+  z-index: 9999;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  .toggle {
+    font-size: 1.5rem;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+}
+
+#main-page
+{
+  @include flex(column, center, center);
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  display: none;
+
+  .exit
+  {
+    @include flex(column, flex-start, flex-start);
+    width: 100%;
+    padding: 0 4rem;
+    display: none;
+
+    > .obj-button
+    {
+      top: 5%;
+      left: 5%;
+      position: absolute;
+      transform: translate(-5%, -5%);
+      > .icon
+      {
+        width: 1.875rem;
+      }
+    }
+
+    > .-visible
+    {
+      display: flex;
+    }
+  }
+
+  &.-visible
+  {
+    display: flex;
+  }
+
+  > #profile
+  {
+    @include flex(column, center, center, 0.25rem);
+    margin-top: 5rem; // 상단 여백
+
+    .image-wrapper {
+      width: 7.5rem;
+      height: 7.5rem;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #ccc;
+      margin-bottom: 1rem;
+      display: flex;         // 랜덤 원형 글자도 가운데 정렬
+      align-items: center;
+      justify-content: center;
+
+      > .profile-circle {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: #fff;
+        font-weight: bold;
+        user-select: none;
+      }
+
+      // 기존 이미지 스타일 유지 (혹시 이미지가 들어오는 경우 대비)
+      > .image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    }
+
+
+    > .nickname-wrapper
+    {
+      > .caption
+      {
+        color: #000000;
+        font-size: 2.25rem;
+        font-weight: 700;
+      }
+    }
+
+    > .info-wrapper
+    {
+      @include flex(row, center, center, 0.25rem);
+      display: none;
+
+      &.-visible
+      {
+        display: flex;
+      }
+
+      > .link
+      {
+        > .caption
+        {
+          color: #000000;
+          font-size: 1rem;
+          font-weight: 700;
+          text-decoration: none;
+
+          &.hover
+          {
+            color: #272721;
+            text-decoration: underline;
+          }
+        }
+      }
+
+      > .introduce
+      {
+        color: #000000;
+        font-size: 1rem;
+        font-weight: 400;
+      }
+    }
+
+    > .id-wrapper
+    {
+      > .logo
+      {
+        @include flex(row, center, center, 0.125rem);
+
+        > .icon
+        {
+          width: 1rem;
+          color: #57574c;
+          fill: currentColor;
+          display: block;
+          stroke-width: 0;
+          vertical-align: middle;
+        }
+
+        > .caption
+        {
+          color: #000000;
+          font-weight: 400;
+        }
+      }
+    }
+
+    > .follower-wrapper
+    {
+      @include flex(row, center, center, 0.25rem);
+
+      > .caption
+      {
+        color: #000000;
+        font-weight: 400;
+      }
+    }
+
+    > .button-container
+    {
+      @include flex(row, center, center, 0.375rem);
+      margin-top: 0.5rem;
+      > .obj-button
+      {
+        padding: 0.625rem 1rem;
+        color: #000000;
+        font-weight: 500;
+      }
+    }
+
+    > .category
+    {
+      @include flex(row, center, center, 0.5rem);
+      margin-top: 2rem;
+      position: static;
+
+      > .created,
+      > .saved
+      {
+        @include flex(row, center, center);
+        height: 3rem;
+        min-width: 3.75rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 1rem;
+
+        &.active
+        {
+          position: relative;
+
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 0.25rem;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #000000;
+            border-radius: 1px;
+          }
+        }
+
+        > .link
+        {
+          color: #000000;
+          font-size: 1rem;
+          font-weight: 500;
+          user-select: none;
+        }
+
+        &:hover
+        {
+          background-color: #e0e0d9;
+        }
+
+        &:focus > .link
+        {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  > #main
+  {
+    width: 100%;
+    position: relative;
+    z-index: 2;
+
+    > .content
+    {
+      > .empty
+      {
+        @include flex(column, center, center, 1rem);
+        top: 60%;
+        left: 50%;
+        display: none;
+        position: absolute;
+        transform: translate(-50%, -60%);
+
+        > .message
+        {
+          font-size: 1rem;
+          font-weight: 400;
+        }
+
+        > .obj-button
+        {
+          padding: 0.375rem 0.75rem;
+          height: 2.25rem;
+        }
+
+        &.-visible
+        {
+          display: flex;
+        }
+      }
+
+      > .space
+      {
+        @include flex(column, center, center);
+        width: 100%;
+
+        > .boards
+        {
+          @include flex(row, flex-start, flex-start, 0.5rem);
+          flex-wrap: wrap;
+          width: 100%;
+          height: auto;
+          padding-left: 5rem;
+          margin-top: 1.5rem;
+          border-bottom: 0.0625rem solid #d1d1c7;
+
+          > .board
+          {
+            @include flex(column, flex-start, flex-start);
+            margin-bottom: 1rem;
+
+            > .image
+            {
+              @include flex(row, flex-start, flex-start, 0.5rem);
+              width: 14.875rem;
+              height: 13.938rem;
+              border-radius: 1rem;
+              overflow: hidden;
+              position: relative;
+
+              margin-bottom: 1rem;
+
+              &::before
+              {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.6);
+                z-index: 1;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+              }
+
+              &:hover::before
+              {
+                opacity: 1;
+              }
+
+              > .background
+              {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+              }
+
+              > .edit-button
+              {
+                @include flex(row, flex-end, flex-end);
+                position: absolute;
+                bottom: 0.75rem;
+                left: 99%;
+                transform: translateX(-100%);
+                background-color: #f0f0eb;
+                border-radius: 1rem;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 2;
+
+                > .icon
+                {
+                  width: 1rem;
+                  height: 1rem;
+                  fill: #000000;
+                }
+              }
+
+              &:hover > .edit-button
+              {
+                opacity: 1;
+                pointer-events: auto;
+              }
+            }
+
+            > .content
+            {
+              > .title
+              {
+                color: #000000;
+                font-size: 1.25rem;
+                font-weight: 500;
+              }
+              > .text
+              {
+                color: #000000;
+                font-size: 0.75rem;
+                font-weight: 400;
+
+                > .time
+                {
+                  color: #57574c;
+                  font-size: 0.75rem;
+                  font-weight: 400;
+                }
+              }
+            }
+          }
+        }
+
+        > .pins
+        {
+          @include flex(row, flex-start, flex-start, 0.5rem);
+          flex-wrap: wrap;
+          width: 100%;
+          height: auto;
+          padding-left: 5rem;
+          margin-top: 1.5rem;
+          margin-bottom: 1.5rem;
+
+
+          > .pin
+          {
+            @include flex(row, flex-start, flex-start, 0.5rem);
+            width: 14.888rem;
+            height: 19.813rem;
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+            z-index: 3;
+
+            &::before
+            {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(0, 0, 0, 0.6);
+              z-index: 1;
+              opacity: 0;
+              transition: opacity 0.3s ease;
+            }
+
+            &:hover::before {
+              opacity: 1;
+            }
+
+            > .image
+            {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              display: block;
+            }
+
+            > .edit-button
+            {
+              @include flex(row, flex-end, flex-end);
+              position: absolute;
+              bottom: 0.75rem;
+              left: 99%;
+              transform: translateX(-100%);
+              background-color: #f0f0eb;
+              border-radius: 1rem;
+              opacity: 0;
+              pointer-events: none;
+              transition: opacity 0.3s ease;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              z-index: 2;
+
+              > .icon {
+                width: 1rem;
+                height: 1rem;
+                fill: #000000;
+              }
+            }
+
+            &:hover > .edit-button {
+              opacity: 1;
+              pointer-events: auto;
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
+#edit-page
+{
+  @include flex(row, flex-start, flex-start);
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  padding-top: 5rem;
+  padding-left: 4.5rem;
+  display: none;
+
+  input
+  {
+    border: none;
+  }
+
+  &.-visible
+  {
+    display: flex;
+  }
+
+  > .menu-container
+  {
+    position: relative;
+    width: 20%;
+    margin-top: 1.5rem;
+
+    > .modifyNav
+    {
+      width: 100%;
+
+      > .menu
+      {
+        @include flex(column, flex-start, flex-start);
+        width: 95%;
+        margin-left: 1rem;
+
+        > .item
+        {
+          @include flex(column, center, center);
+          height: 3rem;
+          margin-bottom: 0.5rem;
+          min-width: 3.75rem;
+          border-radius: 0.5rem;
+          padding: 0.5rem;
+
+          &.active
+          {
+            > .caption::after
+            {
+              transform: scaleX(1); // 활성화시 밑줄 표시
+            }
+          }
+
+          > .caption
+          {
+            position: relative;
+            font-size: 1rem;
+            color: #000000;
+            font-weight: 700;
+
+            &::after
+            {
+              content: "";
+              position: absolute;
+              bottom: -2px; // 텍스트 밑에 살짝 띄움
+              left: 0;
+              width: 100%;
+              height: 2px;
+              background-color: #000000;
+              transform: scaleX(0); // 초기 숨김
+              transform-origin: left;
+              transition: transform 0.3s ease;
+            }
+          }
+
+          &:hover
+          {
+            cursor: pointer;
+            background-color: #E8E8E8;
+          }
+        }
+      }
+    }
+  }
+
+  > .form-container
+  {
+    margin-left: 2rem;
+    flex-grow: 1; // 나머지 영역 차지
+    max-width: 30.5rem;
+    padding-bottom: 3.5rem; // ✅ 고정 버튼 공간 확보
+
+    > #modifyForm
+    {
+      @include flex(column, flex-start, flex-start, 1rem);
+      width: 100%;
+      max-width: 30.5rem;
+      margin-top: 2rem;
+      display: none;
+
+      &.-visible
+      {
+        display: flex;
+      }
+
+      > .field-wrapper
+      {
+        width: 100%;
+        position: relative;
+        margin-bottom: 1.5rem;
+
+        &.column {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem; // ✅ row와 버튼 사이 약간만 간격
+        }
+
+        > .row {
+          @include flex(row, flex-start, flex-start);
+          width: 100%;
+          flex-grow: 1;
+          flex-shrink: 1;
+          gap: 0.25rem; // ✅ row 안의 두 필드 사이 미세 간격
+
+          > .field {
+            flex: 1 1 50%; // ✅ 각 필드 50% 차지
+            margin: 0;     // ✅ 불필요 margin 제거
+
+            .obj-label {
+
+              .caption {
+                font-size: 0.85rem; // ✅ 살짝만 축소
+                color: #000000;
+                font-weight: 500;
+              }
+
+              .input-field,
+              .input.-field {
+                width: 100%;
+                height: 2.25rem;           // ✅ 기존 2.75rem → 조금 더 낮게
+                padding: 0.4rem 0.65rem;   // ✅ padding도 줄임
+                font-size: 0.95rem;        // ✅ 글자 크기 약간 축소
+                box-sizing: border-box;
+              }
+
+              &:focus-within {
+                border-color: #ffffff;
+                outline: 1.5px solid #007db8;
+                z-index: 1;
+              }
+            }
+          }
+        }
+
+        .obj-button {
+          width: 100%;
+          color: #000000;
+          font-weight: 500;
+          align-self: flex-start;
+          margin-top: 0.5rem;
+        }
+
+        > .-warning {
+          @include flex(row, center, center, 0.25rem);
+          display: none;
+          position: absolute;
+          bottom: -1.5rem;
+          left: 0;
+          color: #e74c3c;
+          font-size: 0.8rem;
+
+          &.-visible {
+            display: flex;
+          }
+
+          .warning-icon {
+            width: 12px;
+            height: 12px;
+            color: #8a0f0f;
+          }
+
+          .caption {
+            font-size: 12px;
+            color: #8a0f0f;
+          }
+        }
+      }
+
+
+      > .title
+      {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #000;
+      }
+
+      > .caption
+      {
+        font-size: 1rem;
+        font-weight: 400;
+        color: #000;
+      }
+    }
+
+    > #accountForm
+    {
+      @include flex(column, flex-start, flex-start, 1rem);
+      width: 100%;
+      max-width: 30.5rem;
+      margin-top: 2rem;
+      display: none;
+
+      &.-visible
+      {
+        display: flex;
+      }
+
+      > .title
+      {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #000;
+      }
+
+      > .sub-title
+      {
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: #000;
+      }
+
+      > .obj-label
+      {
+        > .-row
+        {
+          > .content
+          {
+            @include flex(row, flex-start, flex-start, 0.25rem);
+            max-width: 14.975rem;
+          }
+        }
+
+        > button[name="change"]
+        {
+          margin-top: 1rem;
+        }
+      }
+
+      > .field-wrapper
+      {
+        width: 100%;
+        position: relative;
+        margin-bottom: 1.5rem;
+
+        &.column {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem; // ✅ row와 버튼 사이 약간만 간격
+        }
+
+        > .row {
+          @include flex(row, flex-start, flex-start);
+          width: 100%;
+          flex-grow: 1;
+          flex-shrink: 1;
+          gap: 0.25rem; // ✅ row 안의 두 필드 사이 미세 간격
+
+          > .field {
+            flex: 1 1 50%; // ✅ 각 필드 50% 차지
+            margin: 0;     // ✅ 불필요 margin 제거
+
+            .obj-label {
+
+              .caption {
+                font-size: 0.85rem; // ✅ 살짝만 축소
+                color: #000000;
+                font-weight: 500;
+              }
+
+              .input-field,
+              .input.-field {
+                width: 100%;
+                height: 2.25rem;           // ✅ 기존 2.75rem → 조금 더 낮게
+                padding: 0.4rem 0.65rem;   // ✅ padding도 줄임
+                font-size: 0.95rem;        // ✅ 글자 크기 약간 축소
+                box-sizing: border-box;
+              }
+
+              &:focus-within {
+                border-color: #ffffff;
+                outline: 1.5px solid #007db8;
+                z-index: 1;
+              }
+            }
+          }
+        }
+
+        .obj-button {
+          width: 100%;
+          color: #000000;
+          font-weight: 500;
+          align-self: flex-start;
+          margin-top: 0.5rem;
+        }
+
+        > .-warning {
+          @include flex(row, center, center, 0.25rem);
+          display: none;
+          position: absolute;
+          bottom: -1.5rem;
+          left: 0;
+          color: #e74c3c;
+          font-size: 0.8rem;
+
+          &.-visible {
+            display: flex;
+          }
+
+          .warning-icon {
+            width: 12px;
+            height: 12px;
+            color: #8a0f0f;
+          }
+
+          .caption {
+            font-size: 12px;
+            color: #8a0f0f;
+          }
+        }
+      }
+
+      > .caption
+      {
+        font-size: 1rem;
+        font-weight: 400;
+        color: #000;
+      }
+
+      > .-caption
+      {
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: #000;
+      }
+
+      > .account-delete
+      {
+        @include flex(column, flex-start, flex-start, 1rem);
+
+        > .row {
+          @include flex(row, flex-start, flex-start);
+          width: 100%;
+
+          &.inactive
+          {
+            gap: 7.875rem;
+          }
+
+          &.delete
+          {
+            gap: 1rem;
+          }
+
+          > .info
+          {
+            @include flex(column, flex-start, flex-start);
+
+            > .subject
+            {
+              color: #000000;
+              font-size: 1rem;
+              font-weight: 700;
+            }
+
+            > .caption
+            {
+              color: #000000;
+              font-size: 1rem;
+              font-weight: 400;
+            }
+          }
+
+          > .obj-button
+          {
+            padding: 0.75rem 1rem;
+
+            color: #000000;
+            font-size: 1rem;
+            font-weight: 500;
+          }
+        }
+      }
+
+    }
+  }
+
+  > .button-container {
+    @include flex(row, center, center, 0.5rem);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3rem;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    z-index: 99;
+    padding: 0.75rem 1rem;
+
+    > .-color-gray
+    {
+      color: #000000;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    > .-color-red
+    {
+      color: #ffffff;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+  }
+}
+
+
+
+

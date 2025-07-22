@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <header id="header" th:fragment="header">
     <div class="header-wrapper">
-        <!--검색 네비게이션-->
+        <!--검색 네이게이션-->
         <div id="headerContent" data-id="header">
             <div class="nags">
                 <div class="nags-layout">
@@ -30,23 +30,30 @@
                                     </div>
                                 </div>
                             </form>
-                            <div class="profile-container">
-                                <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ href 수정!!(마이페이지로)-->
-                                <a aria-label="내 프로필" class="profile" href="#" tabindex="0">
+                            <div class="profile-container" th:if="${session.signedUser != null}">
+                                <a aria-label="내 프로필" class="profile" href="/user/myPage" tabindex="0">
                                     <div class="profile-layout">
                                         <div class="profile-wrapper">
                                             <div class="profile-content">
                                                 <div class="profile-svg">
                                                     <div class="profile-img-wrapper">
-                                                        <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ src 수정!!(로그인한 사람 이미지로)-->
-                                                        <img class="img" alt="내 프로필" fetchpriority="auto" loading="auto"
-                                                             src="https://i.pinimg.com/75x75_RS/ab/af/43/abaf431ac6c2a4e7ec23f4bd37037e2d.jpg">
+                                                        <div class="profile-img-circle"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </a>
+                            </div>
+                            <div class="login-container" th:if="${session.signedUser == null}">
+                                <div class="button-container">
+                                    <button class="obj-button -color-gray" name="login">
+                                        <span class="caption">로그인</span>
+                                    </button>
+                                    <button class="obj-button -color-red" name="register">
+                                        <span class="caption">가입하기</span>
+                                    </button>
+                                </div>
                             </div>
                             <div class="profile-add-container">
                                 <button class="profile-add-button">
@@ -64,7 +71,7 @@
                 </div>
             </div>
         </div>
-        <!--사이드 네비게이션-->
+        <!--사이드 네이게이션-->
         <nav id="VerticalNavContent">
             <div class="nav-layout">
                 <div class="nav-wrapper">
@@ -249,7 +256,7 @@
     <!--프로필 팝업-->
     <div id="profileFlyout" class="Flyout" tabindex="0" aria-hidden="true" role="menu">
         <div class="profile-flyout-wrapper" tabindex="-1">
-            <div class="flyout-wrapper">
+            <div class="flyout-wrapper" th:if="${session.signedUser != null}">
                 <div aria-label="현재 로그인 계정" class="profile-login">
                     <div class="profile-login-title">
                         <span class="title">현재 로그인 계정</span>
@@ -260,17 +267,13 @@
                                 <div class="profile-login-1-layout">
                                     <div class="profile-login-1-wrapper">
                                         <div class="profile-login-1">
-                                            <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ href 수정!!(마이페이지로)-->
-                                            <a class="profile-login-1-content" href="#">
+                                            <a class="profile-login-1-content">
                                                 <div class="profile-login-row">
                                                     <div class="profile-login-row-img">
                                                         <div class="profile-login-row-img-wrapper">
-                                                            <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ src 수정!!(로그인한 사람 이미지)-->
-                                                            <img alt="" class="img" fetchpriority="auto" loading="auto"
-                                                                 src="https://i.pinimg.com/75x75_RS/ab/af/43/abaf431ac6c2a4e7ec23f4bd37037e2d.jpg">
+                                                            <div class="profile-login-row-img-circle"></div>
                                                         </div>
                                                     </div>
-                                                    <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ thymeleaf (로그인한 사람 정보)-->
                                                     <div class="profile-login-row-content">
                                                         <div class="profile-login-row-content-name" title="김아무개">김아무개
                                                         </div>
@@ -308,18 +311,21 @@
                     </button>
                 </div>
             </div>
+            <div class="login-wrapper" th:if="${session.signedUser == null}">
+                <div class="profile-guest">
+                    <a href="https://policy.pinterest.com/ko/terms-of-service" class="guest-menu-button" role="menuitem"
+                       tabindex="0">
+                        <div class="guest-menu-button-layout">
+                            <div class="guest-menu-button-wrapper">
+                                <div class="guest-menu-button-content">
+                                    <span class="caption">서비스 약관 및 개인정보 보호정책</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </header>
 </html>
-
-
-
-
-
-
-
-
-
-
-

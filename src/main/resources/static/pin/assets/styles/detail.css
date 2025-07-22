@@ -47,7 +47,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .pinDetail-content-row > .flex-stretch {
+#pinDetail .pinDetail-content-row > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -81,7 +81,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .pinDetail-backButton .backButton > .flex-stretch {
+#pinDetail .pinDetail-backButton .backButton > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -130,7 +130,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .pinDetail-content > .flex-stretch {
+#pinDetail .pinDetail-content > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -153,7 +153,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .pinDetail-overlay > .flex-stretch {
+#pinDetail .pinDetail-overlay > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -176,7 +176,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .pinDetail-overlay .extra-button > .flex-stretch {
+#pinDetail .pinDetail-overlay .extra-button > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -208,7 +208,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .pinDetail-overlay .extra-button .icon > .flex-stretch {
+#pinDetail .pinDetail-overlay .extra-button .icon > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -293,7 +293,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .pinDetail-main-content > .flex-stretch {
+#pinDetail .pinDetail-main-content > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -360,7 +360,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .pinDetail-comment > .flex-stretch {
+#pinDetail .pinDetail-comment > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -382,7 +382,7 @@ body {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 0;
   justify-content: flex-start;
   max-height: 722px;
   width: 100%;
@@ -390,12 +390,13 @@ body {
   scrollbar-gutter: stable;
   overscroll-behavior: auto;
   padding: 12px 8px 0 8px;
+  overflow-y: auto;
 }
 #pinDetail .commentContainer > * {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .commentContainer > .flex-stretch {
+#pinDetail .commentContainer > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -403,6 +404,8 @@ body {
 #pinDetail .commentContainer .comment {
   width: 100%;
   margin: 0;
+  padding-bottom: 16px;
+  padding-left: 0;
   display: flex;
   flex-direction: row;
 }
@@ -419,7 +422,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .commentContainer .comment .head > .flex-stretch {
+#pinDetail .commentContainer .comment .head > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -476,7 +479,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .commentContainer .comment .body > .flex-stretch {
+#pinDetail .commentContainer .comment .body > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -498,7 +501,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .commentContainer .comment .body .body-box-head > .flex-stretch {
+#pinDetail .commentContainer .comment .body .body-box-head > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -537,7 +540,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .commentContainer .comment .body .body-box-body > .flex-stretch {
+#pinDetail .commentContainer .comment .body .body-box-body > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -547,17 +550,23 @@ body {
   display: block;
 }
 
+#pinDetail .commentContainer .comment .body .body-box-body .reply,
+#pinDetail .commentContainer .comment .body .body-box-body .modify,
 #pinDetail .commentContainer .comment .body .body-box-body .delete {
   cursor: pointer;
   display: block;
   transition: color 85ms ease-out;
 }
 
+#pinDetail .commentContainer .comment .body .body-box-body .reply:hover,
+#pinDetail .commentContainer .comment .body .body-box-body .modify:hover,
 #pinDetail .commentContainer .comment .body .body-box-body .delete:hover {
   text-decoration: underline;
   color: #3f3f38;
 }
 
+#pinDetail .commentContainer .comment .body .body-box-body .reply:active,
+#pinDetail .commentContainer .comment .body .body-box-body .modify:active,
 #pinDetail .commentContainer .comment .body .body-box-body .delete:active {
   color: #2a2a24;
 }
@@ -579,7 +588,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .commentForm > .flex-stretch {
+#pinDetail .commentForm > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -600,7 +609,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .commentForm .obj-label > .flex-stretch {
+#pinDetail .commentForm .obj-label > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -653,7 +662,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .commentForm .obj-label .submit-button > .flex-stretch {
+#pinDetail .commentForm .obj-label .submit-button > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -688,9 +697,335 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#pinDetail .commentForm .obj-label .submit-button .icon > .flex-stretch {
+#pinDetail .commentForm .obj-label .submit-button .icon > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
+}
+
+#pinDetail .modify-form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: flex-start;
+  width: 100%;
+  padding-left: 24px;
+  display: none;
+}
+#pinDetail .modify-form > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#pinDetail .modify-form > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#pinDetail .modify-form .obj-label {
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: flex-start;
+  width: 100%;
+  height: auto;
+  position: relative;
+  padding-bottom: 15px;
+  transition: padding-bottom 0.2s ease, height 0.3s ease;
+}
+#pinDetail .modify-form .obj-label > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#pinDetail .modify-form .obj-label > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#pinDetail .modify-form .obj-label textarea {
+  min-width: 0;
+  width: 100%;
+  min-height: 23px;
+  max-height: 100px;
+  overflow-y: auto;
+  resize: none;
+  box-sizing: border-box;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  text-align: left;
+  color: #000;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  border: none;
+  outline: none;
+  background: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+  transition: height 0.2s ease;
+}
+
+#pinDetail .modify-form .button-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  justify-content: flex-end;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  width: 100%;
+}
+#pinDetail .modify-form .button-container > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#pinDetail .modify-form .button-container > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#pinDetail .modify-form .button-container .cancel {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  width: auto;
+  min-height: 32px;
+  background: #e5e5e0;
+  border: none;
+  border-radius: 11px;
+  cursor: pointer;
+  padding: 6px 12px;
+  text-align: center;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #000000;
+  transition: transform 85ms ease-out, right 0.2s ease;
+}
+#pinDetail .modify-form .button-container .cancel > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#pinDetail .modify-form .button-container .cancel > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#pinDetail .modify-form .button-container .cancel:hover {
+  background-color: #d9d9d4;
+}
+
+#pinDetail .modify-form .button-container .cancel:active {
+  background-color: #cfcfc8;
+  transform: scale(0.934426);
+}
+
+#pinDetail .modify-form .button-container .write {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  width: auto;
+  min-height: 32px;
+  background: #e60023;
+  border: none;
+  border-radius: 11px;
+  cursor: pointer;
+  padding: 6px 12px;
+  text-align: center;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #ffffff;
+  transition: transform 85ms ease-out, right 0.2s ease;
+}
+#pinDetail .modify-form .button-container .write > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#pinDetail .modify-form .button-container .write > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#pinDetail .modify-form .button-container .write:hover {
+  background-color: #cc001f;
+}
+
+#pinDetail .modify-form .button-container .write:active {
+  background-color: #b2001a;
+  transform: scale(0.934426);
+}
+
+#pinDetail .reply-form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: flex-start;
+  width: 100%;
+  padding-left: 48px;
+  display: none;
+}
+#pinDetail .reply-form > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#pinDetail .reply-form > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#pinDetail .reply-form .obj-label {
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: flex-start;
+  width: 100%;
+  height: auto;
+  position: relative;
+  padding-bottom: 15px;
+  transition: padding-bottom 0.2s ease, height 0.3s ease;
+}
+#pinDetail .reply-form .obj-label > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#pinDetail .reply-form .obj-label > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#pinDetail .reply-form .obj-label textarea {
+  min-width: 0;
+  width: 100%;
+  min-height: 23px;
+  max-height: 100px;
+  overflow-y: auto;
+  resize: none;
+  box-sizing: border-box;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  text-align: left;
+  color: #000;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  border: none;
+  outline: none;
+  background: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+  transition: height 0.2s ease;
+}
+
+#pinDetail .reply-form .button-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  justify-content: flex-end;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  width: 100%;
+}
+#pinDetail .reply-form .button-container > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#pinDetail .reply-form .button-container > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#pinDetail .reply-form .button-container .cancel {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  width: auto;
+  min-height: 32px;
+  background: #e5e5e0;
+  border: none;
+  border-radius: 11px;
+  cursor: pointer;
+  padding: 6px 12px;
+  text-align: center;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #000000;
+  transition: transform 85ms ease-out, right 0.2s ease;
+}
+#pinDetail .reply-form .button-container .cancel > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#pinDetail .reply-form .button-container .cancel > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#pinDetail .reply-form .button-container .cancel:hover {
+  background-color: #d9d9d4;
+}
+
+#pinDetail .reply-form .button-container .cancel:active {
+  background-color: #cfcfc8;
+  transform: scale(0.934426);
+}
+
+#pinDetail .reply-form .button-container .write {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+  width: auto;
+  min-height: 32px;
+  background: #e60023;
+  border: none;
+  border-radius: 11px;
+  cursor: pointer;
+  padding: 6px 12px;
+  text-align: center;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #ffffff;
+  transition: transform 85ms ease-out, right 0.2s ease;
+}
+#pinDetail .reply-form .button-container .write > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#pinDetail .reply-form .button-container .write > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#pinDetail .reply-form .button-container .write:hover {
+  background-color: #cc001f;
+}
+
+#pinDetail .reply-form .button-container .write:active {
+  background-color: #b2001a;
+  transform: scale(0.934426);
 }
 
 /*# sourceMappingURL=detail.css.map */

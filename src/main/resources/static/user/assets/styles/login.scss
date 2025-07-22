@@ -106,62 +106,96 @@
         margin-bottom: 2rem;
       }
 
-      > .obj-label
+      .field-wrapper
       {
-        width: 70%;
+        width: 75%;
+        position: relative;
+        margin-bottom: 2.5rem;
 
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 1.5rem;
-
-        > .caption
+        &.column
         {
-          font-size: 0.875rem;
-          color: #000000;
-          font-weight: 400;
-          margin-bottom: 0.25rem;
+          @include flex(column, flex-start, flex-start, 0.5rem);
         }
 
-        > .input
-        {
+        > .obj-label {
           width: 100%;
-          border: 0.0625rem solid #757569;
-          border-radius: 1rem;
-          padding: 0.75rem 1rem;
 
-          font-size: 1rem;
-          transition: border-color 0.3s;
-
-
-          &:hover
-          {
-            border: 0.0625rem solid #616157;
+          > .input-field {
+            width: 100%;
           }
 
-          &:focus
-          {
-            border: 0.063rem solid #ffffff;
-            outline: 0.125rem solid #007db8;
+          &:focus-within {
+            border-color: #ffffff;
+            outline: 1.5px solid #007db8;
+            z-index: 1;
           }
-
         }
 
-        > .recoverPassword
+        > .-warning
         {
-          margin-top: 0.125rem;
 
-          > .link
+          @include flex(row, center, center, 0.25rem);
+          display: none;
+          position: absolute;
+          bottom: -1.5rem; // 라벨 하단에서 살짝 띄우기
+          left: 0;
+          color: #e74c3c;
+          font-size: 0.8rem;
+          white-space: nowrap; // 줄 바꿈 방지 (필요 시 제거)
+
+          &.-visible {
+            display: flex;
+          }
+
+          .warning-icon
           {
-            .caption
-            {
-              color: #1e4b67;
-              font-size: 0.875rem;
-              font-weight: 500;
+            width: 12px;
+            height: 12px;
+            color: #8a0f0f;
+            fill: currentColor;
+            stroke-width: 0;
+            vertical-align: middle;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 0;
+            line-height: 1.5;
+            display: block;
 
-              &:hover
-              {
-                text-decoration: underline;
-              }
+            > .icon
+            {
+              @include flex(row, center, center, 0);
+            }
+          }
+
+          .caption
+          {
+            text-align: left;
+            color: #8a0f0f;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0;
+            line-height: 1.5;
+            word-wrap: break-word;
+            -webkit-font-smoothing: antialiased;
+          }
+        }
+      }
+
+      > .recoverPassword
+      {
+        @include flex(row, flex-start, flex-start);
+        > .link
+        {
+          .caption
+          {
+            color: #1e4b67;
+            font-size: 0.875rem;
+            font-weight: 500;
+
+            &:hover
+            {
+              text-decoration: underline;
             }
           }
         }
@@ -176,6 +210,11 @@
           min-height: 2rem;
           padding: 0.125rem 0.75rem;
           width: 17.5rem;
+          font-weight: 500;
+        }
+        > .-color-gray
+        {
+          color: #000000;
         }
       }
 
@@ -302,6 +341,17 @@
   > .button-container
   {
     @include flex(row, center, center, 0.5rem);
+
+    .obj-button
+    {
+      padding: 0.625rem 1rem;
+      font-weight: 500;
+
+      &.-color-gray
+      {
+        color: #000000;
+      }
+    }
   }
 }
 
@@ -394,62 +444,97 @@
       color: #111111;
     }
 
-    > .obj-label
-    {
-      width: 70%;
 
-      display: flex;
-      flex-direction: column;
+    > .field-wrapper
+    {
+      width: 75%;
+      position: relative;
       margin-bottom: 1.5rem;
 
-      > .caption
+      &.column
       {
-        font-size: 0.875rem;
-        color: #000000;
-        font-weight: 400;
-        margin-bottom: 0.25rem;
+        @include flex(column, flex-start, flex-start, 0.5rem);
       }
 
-      > .input
-      {
+      > .obj-label {
         width: 100%;
-        border: 0.0625rem solid #757569;
-        border-radius: 1rem;
-        padding: 0.75rem 1rem;
 
-        font-size: 1rem;
-        transition: border-color 0.3s;
-
-
-        &:hover
-        {
-          border: 0.0625rem solid #616157;
+        > .input-field {
+          width: 100%;
+          // 기존 스타일 유지
         }
 
-        &:focus
-        {
-          border: 0.063rem solid #ffffff;
-          outline: 0.125rem solid #007db8;
+        &:focus-within {
+          border-color: #ffffff;
+          outline: 1.5px solid #007db8;
+          z-index: 1;
         }
-
       }
 
-      > .recoverPassword
+      > .-warning
       {
-        margin-top: 0.125rem;
 
-        > .link
+        @include flex(row, center, center, 0.25rem);
+        display: none;
+        position: absolute;
+        bottom: -1.5rem; // 라벨 하단에서 살짝 띄우기
+        left: 0;
+        color: #e74c3c;
+        font-size: 0.8rem;
+        white-space: nowrap; // 줄 바꿈 방지 (필요 시 제거)
+
+        &.-visible {
+          display: flex;
+        }
+
+        .warning-icon
         {
-          .caption
-          {
-            color: #1e4b67;
-            font-size: 0.875rem;
-            font-weight: 500;
+          width: 12px;
+          height: 12px;
+          color: #8a0f0f;
+          fill: currentColor;
+          stroke-width: 0;
+          vertical-align: middle;
+          font-size: 16px;
+          font-weight: 400;
+          letter-spacing: 0;
+          line-height: 1.5;
+          display: block;
 
-            &:hover
-            {
-              text-decoration: underline;
-            }
+          > .icon
+          {
+            @include flex(row, center, center, 0);
+          }
+        }
+
+        .caption
+        {
+          text-align: left;
+          color: #8a0f0f;
+          font-family: inherit;
+          font-size: 12px;
+          font-weight: 400;
+          letter-spacing: 0;
+          line-height: 1.5;
+          word-wrap: break-word;
+          -webkit-font-smoothing: antialiased;
+        }
+      }
+    }
+
+    > .recoverPassword
+    {
+      > .link
+      {
+        .caption
+        {
+          color: #1e4b67;
+          font-size: 0.875rem;
+          font-weight: 500;
+
+          &:hover
+          {
+            text-decoration: underline;
           }
         }
       }
@@ -464,6 +549,7 @@
         min-height: 2rem;
         padding: 0.125rem 0.75rem;
         width: 17.5rem;
+        font-weight: 500;
       }
     }
 
@@ -539,63 +625,79 @@
       color: #111111;
     }
 
-    > .obj-label
+    > .field-wrapper
     {
-      width: 70%;
+      width: 75%;
+      position: relative;
+      margin-bottom: 2.5rem;
 
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1.5rem;
-
-      > .caption
+      &.column
       {
-        font-size: 0.875rem;
-        color: #000000;
-        font-weight: 400;
-        margin-bottom: 0.25rem;
+        @include flex(column, flex-start, flex-start, 0.5rem);
       }
 
-      > .input
-      {
+      > .obj-label {
         width: 100%;
-        border: 0.0625rem solid #757569;
-        border-radius: 1rem;
-        padding: 0.75rem 1rem;
 
-        font-size: 1rem;
-        transition: border-color 0.3s;
-
-
-        &:hover
-        {
-          border: 0.0625rem solid #616157;
+        > .input-field {
+          width: 100%;
+          // 기존 스타일 유지
         }
 
-        &:focus
-        {
-          border: 0.063rem solid #ffffff;
-          outline: 0.125rem solid #007db8;
+        &:focus-within {
+          border-color: #ffffff;
+          outline: 1.5px solid #007db8;
+          z-index: 1;
         }
-
       }
 
-      > .recoverPassword
+      > .-warning
       {
-        margin-top: 0.125rem;
 
-        > .link
+        @include flex(row, center, center, 0.25rem);
+        display: none;
+        position: absolute;
+        bottom: -1.5rem; // 라벨 하단에서 살짝 띄우기
+        left: 0;
+        color: #e74c3c;
+        font-size: 0.8rem;
+        white-space: nowrap; // 줄 바꿈 방지 (필요 시 제거)
+
+        &.-visible {
+          display: flex;
+        }
+
+        .warning-icon
         {
-          .caption
-          {
-            color: #1e4b67;
-            font-size: 0.875rem;
-            font-weight: 500;
+          width: 12px;
+          height: 12px;
+          color: #8a0f0f;
+          fill: currentColor;
+          stroke-width: 0;
+          vertical-align: middle;
+          font-size: 16px;
+          font-weight: 400;
+          letter-spacing: 0;
+          line-height: 1.5;
+          display: block;
 
-            &:hover
-            {
-              text-decoration: underline;
-            }
+          > .icon
+          {
+            @include flex(row, center, center, 0);
           }
+        }
+
+        .caption
+        {
+          text-align: left;
+          color: #8a0f0f;
+          font-family: inherit;
+          font-size: 12px;
+          font-weight: 400;
+          letter-spacing: 0;
+          line-height: 1.5;
+          word-wrap: break-word;
+          -webkit-font-smoothing: antialiased;
         }
       }
     }

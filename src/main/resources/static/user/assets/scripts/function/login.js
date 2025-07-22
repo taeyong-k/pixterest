@@ -1,5 +1,16 @@
 const $loginForm = document.getElementById('loginForm');
 
+// 쿼리 파라미터 확인
+const urlParams = new URLSearchParams(window.location.search);
+const isRegister = urlParams.get('register');
+
+if (isRegister === 'true') {
+    // 로그인 폼 숨기고
+    $loginForm.classList.remove('-visible');
+    // 가입 폼 보여주기
+    $registerForm.classList.add('-visible');
+}
+
 [$loginForm, $loginModalForm].forEach(($form) =>
 {
     if (!$form) return;
@@ -8,8 +19,16 @@ const $loginForm = document.getElementById('loginForm');
     const $passwordInput = $form['password'];
     const $emailLabel = $form.querySelector('.obj-label input[name="email"]')?.parentElement;
     const $passwordLabel = $form.querySelector('.obj-label input[name="password"]')?.parentElement;
-    const $emailWarning = $emailLabel?.querySelector('.-warning');
-    const $passwordWarning = $passwordLabel?.querySelector('.-warning');
+
+
+    $emailInput.addEventListener('focusout', () =>
+        validateEmail($emailInput, $emailLabel)
+    );
+
+    $passwordInput.addEventListener('focusout', () =>
+        validatePassword($passwordInput, $passwordLabel)
+    );
+
 
     $form.onsubmit = (e) =>
     {
@@ -19,38 +38,17 @@ const $loginForm = document.getElementById('loginForm');
         {
             $label.classList.remove('-invalid');
         });
-        if ($emailInput.value === '')
+        if (!validateEmail($emailInput, $emailLabel))
         {
             $emailInput.focus();
-            $emailLabel.classList.add('-invalid');
-            $emailWarning.innerText = '빠뜨린 부분이 있네요! 이메일 추가하는 것을 잊지 마세요.';
             return;
         }
-
-        if (!emailRegex.test($emailInput.value))
+        if (!validatePassword($passwordInput, $passwordLabel))
         {
-            $emailLabel.classList.add('-invalid');
-            $emailInput.focus();
-            $emailWarning.innerText = '음... 올바른 이메일 주소가 아닙니다.';
-            return;
-        }
-
-        if ($passwordInput.value === '')
-        {
-            console.log($passwordLabel)
-            $passwordLabel.classList.add('-invalid');
             $passwordInput.focus();
-            $passwordWarning.innerText = '올바르지 않은 비밀번호를 입력했습니다. 다시 시도하거나 비밀번호 재설정하세요.';
             return;
         }
 
-        if (!passwordRegex.test($passwordInput.value))
-        {
-            $passwordLabel.classList.add('-invalid');
-            $passwordInput.focus();
-            $passwordWarning.innerText = '올바르지 않은 비밀번호를 입력했습니다. 다시 시도하거나 비밀번호 재설정하세요.';
-            return;
-        }
 
         const formData = new FormData();
         formData.append('email', $emailInput.value);
@@ -65,21 +63,20 @@ const $loginForm = document.getElementById('loginForm');
             $loading.classList.remove('-visible')
             if (xhr.status < 200 || xhr.status >= 300)
             {
-                alert('요청 실패. 잠시 후 다시 시도해주세요.');
+                toastAlter('요청 실패', '잠시 후 다시 시도해 주세요.')
                 return;
             }
             const response = JSON.parse(xhr.responseText);
             switch (response['result'])
             {
                 case 'failure_suspended':
-                    alert('정지된 계정의 로그인 요청입니다 자세한 사항은 관리자에게 문의 주세요.');
+                    toastAlter('계정 정지', '정지된 계정의 로그인 요청입니다\n 자세한 사항은 관리자에게 문의 주세요.')
                     return;
                 case 'success':
-                    alert('로그인 성공! 메인으로 이동합니다.');
-                    location.href = `${origin}/`;
+                    location.href = `${origin}/`
                     return;
                 default:
-                    alert('이메일 혹은 비밀번호가 올바르지 않습니다. 다시 한번 확인해 주세요.');
+                    toastAlter('로그인에 실패하였습니다.', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
                     return;
             }
         };

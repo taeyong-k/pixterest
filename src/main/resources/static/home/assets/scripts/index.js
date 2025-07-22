@@ -1,7 +1,16 @@
 import MasonryInit from '../../../assets/scripts/libraries/masonry.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    MasonryInit();
+    const loading = document.getElementById('loading');
+    const grid = document.querySelector('.grid');
+
+    if (grid) {
+        imagesLoaded(grid, () => {
+            loading.style.display = 'none';      // 스피너 숨기기
+            grid.style.display = 'block';        // 이미지 그리드 보여주기
+            MasonryInit();                       // Masonry 레이아웃 초기화
+        });
+    }
 
     // home-page: 핀 저장하기
     document.querySelectorAll('.overlay .save-button').forEach(($btn) => {
@@ -20,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
                 const response = JSON.parse(xhr.responseText);
-                console.log(response.result)
                 switch (response.result) {
                     case 'failure_session_expired':
                         window.location.href = '/user/login?loginCheck=expired'
@@ -55,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     duration: 8100,
                     buttonText: '이동하기',
                     onButtonClick: () => {
-                        window.location.href = '/user/login';       // ★핀 모여있는 페이지로 변경하기!!★
+                        window.location.href = '/user/myPage';
                     }
                 });
                 sessionStorage.removeItem('showToast');

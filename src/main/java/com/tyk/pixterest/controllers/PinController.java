@@ -8,6 +8,7 @@ import com.tyk.pixterest.results.Result;
 import com.tyk.pixterest.results.ResultTuple;
 import com.tyk.pixterest.services.CommentService;
 import com.tyk.pixterest.services.PinService;
+import com.tyk.pixterest.vos.CommentVo;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -76,37 +77,48 @@ public class PinController {
     // add comment
     @RequestMapping(value = "/comment", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public CommentEntity[] getComment (@RequestParam(value = "id",required = false) int pinId) {
-        ResultTuple<CommentEntity[]> result = commentService.getCommentsByPinId(pinId);
+    public CommentVo[] getComment (@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                                   @RequestParam(value = "id",required = false) int pinId) {
+        ResultTuple<CommentVo[]> result = commentService.getCommentsByPinId(pinId);
         if (result.getResult() == CommonResult.SUCCESS) {
-            CommentEntity[] comments = result.getPayload();
-            for (CommentEntity comment : comments) {
+            CommentVo[] comments = result.getPayload();
+            String signedUserEmail = signedUser == null ? null : signedUser.getEmail();
+            for (CommentVo comment : comments) {
                 if (comment.isDeleted()) {
                     comment.setContent(null);
                 }
+                comment.setMine(comment.getUserEmail().equals(signedUserEmail));
             }
             return comments;
         }
+        return new CommentVo[0];
+    }
 
-        return new CommentEntity[0];
+    @RequestMapping(value = "/comment", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String patchComment(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                               CommentEntity comment) {
+        Result result = this.commentService.modify(signedUser, comment);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toString().toLowerCase());
+        return response.toString();
     }
 
     @RequestMapping(value = "/comment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String postComment(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                               CommentEntity comment) {
+        JSONObject response = new JSONObject();
+
         if (signedUser == null) {
-            JSONObject error = new JSONObject();
-            error.put("result", "failure_session_expired");
-            return error.toString();
+            response.put("result", "failure_session_expired");
+            return response.toString();
         }
         if (signedUser.isSuspended() || signedUser.isDeleted()) {
-            JSONObject error = new JSONObject();
-            error.put("result", "failure_forbidden");
-            return error.toString();
+            response.put("result", "failure_forbidden");
+            return response.toString();
         }
         Result result = this.commentService.write(signedUser, comment);
-        JSONObject response = new JSONObject();
         response.put("result", result.toString().toLowerCase());
         return response.toString();
     }
@@ -115,18 +127,17 @@ public class PinController {
     @ResponseBody
     public String deleteComment(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                                 CommentEntity comment) {
+        JSONObject response = new JSONObject();
+
         if (signedUser == null) {
-            JSONObject error = new JSONObject();
-            error.put("result", "failure_session_expired");
-            return error.toString();
+            response.put("result", "failure_session_expired");
+            return response.toString();
         }
         if (signedUser.isSuspended() || signedUser.isDeleted()) {
-            JSONObject error = new JSONObject();
-            error.put("result", "failure_forbidden");
-            return error.toString();
+            response.put("result", "failure_forbidden");
+            return response.toString();
         }
         Result result = this.commentService.delete(signedUser, comment);
-        JSONObject response = new JSONObject();
         response.put("result", result.toString().toLowerCase());
         return response.toString();
     }

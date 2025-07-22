@@ -1,14 +1,19 @@
 package com.tyk.pixterest.mappers;
 
 import com.tyk.pixterest.entities.CommentEntity;
+import com.tyk.pixterest.vos.CommentVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface CommentMapper {
-    int update(@Param(value = "comment") CommentEntity comment);
-
     int insert(@Param(value = "comment") CommentEntity comment);
 
-    CommentEntity[] selectAllByPinId(@Param(value = "pinId") int pinId);
+    int updateContent(@Param("comment") CommentEntity comment);
+
+    int updateDeleted(@Param("comment") CommentEntity comment);
+
+    CommentEntity selectById(@Param(value = "id") int id);
+
+    CommentVo[] selectAllByPinId(@Param(value = "pinId") int pinId);
 }

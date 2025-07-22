@@ -37,8 +37,8 @@ function showFlyout(triggerSelector, flyoutSelector, xOffset = 0, yOffset = 0, i
 
     // 트리거 위치 계산 (스크롤 포함)
     const rect = trigger.getBoundingClientRect();                   // trigger(버튼) 요소의 위치와 크기 정보를 얻습니다. (현재 화면 뷰포트(viewport) 기준)
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;     // 현재 페이지가 얼마나 [세로]로, 스크롤 됐는지 계산(정확한 절대 위치 값 계산)
-    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;   // 현재 페이지가 얼마나 [가로]로, 스크롤 됐는지 계산(정확한 절대 위치 값 계산)
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;     // 현재 페이지가 렇마나 [세로]로, 스크롤 됐는지 계산(정확한 절대 위치 값 계산)
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;   // 현재 페이지가 렇마나 [가로]로, 스크롤 됐는지 계산(정확한 절대 위치 값 계산)
 
     // 팝업 위치 설정
     flyout.style.left = `${rect.left + xOffset}px`;    // 팝업(layout) left 위치 설정
@@ -64,6 +64,105 @@ function showFlyout(triggerSelector, flyoutSelector, xOffset = 0, yOffset = 0, i
     visibleTriggerSelector = triggerSelector;
     offsetX = xOffset;
     offsetY = yOffset;
+
+    // 로그아웃 버튼 클릭시 로그아웃
+    const logoutButton = document.querySelector('#profile-my-button');
+    if (logoutButton)
+    {
+        logoutButton.addEventListener('click', () => {
+            const xhr = new XMLHttpRequest();
+            const formData = new FormData();
+
+
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState !== XMLHttpRequest.DONE)
+                {
+                    return;
+                }
+                if (xhr.status < 200 || xhr.status >= 300)
+                {
+                    toastAlter('경고', '요청이 잘못되었습니다. 잠시 후 다시 시도해 주세요.')
+                    return;
+                }
+                const response = JSON.parse(xhr.responseText)
+                switch (response.result)
+                {
+                    case 'failure':
+                        toastAlter('로그아웃', '로그아웃에 실패하셨습니다. 세션에 정보가 없거나 유효하지 않는 유저입니다.')
+                        break;
+                    case 'success':
+                        showToast({
+                            title: '로그아웃',
+                            caption: '로그아웃에 성공하셨습니다.',
+                            duration: 5100,
+                            showButton: true,
+                            buttonText: '이동하기',
+                            onButtonClick: () => location.href = `${origin}/`
+                        })
+
+                        break;
+                    default:
+                        toastAlter('로그아웃', '서버가 불안정합니다. 잠시 후 다시 시도해 주세요.')
+                }
+            };
+            xhr.open('POST','/user/logout');
+            xhr.send(formData);
+
+        })
+    }
+}
+
+function loadProfileData() {
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) return;
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+            // ✅ 로그인 상태: 프로필 데이터 적용
+            const data = JSON.parse(xhr.responseText);
+            applyProfileData(data);
+        } else if (xhr.status === 401 || xhr.status === 400) {
+            // 👤 비로그인 상태: 게스트 UI 표시
+        } else {
+            // ❌ 기타 에러
+            console.error("❌ 프로필 요청 실패:", xhr.status);
+        }
+    };
+
+    xhr.open('GET', '/user/info');
+    xhr.send();
+}
+
+function applyProfileData(data) {
+    const headerProfileCircle = document.querySelector('.profile-container .profile-img-circle');
+
+    if (!data || !data.userInfo) return;
+
+    const { name, email, profileColor } = data.userInfo;
+    const emailPrefix = (email || '').split('@')[0].toUpperCase();
+
+    // headerContent 프로필 업데이트
+    if (headerProfileCircle) {
+        headerProfileCircle.style.backgroundColor = profileColor || '#CCC';
+        headerProfileCircle.textContent = emailPrefix;
+    }
+
+    const flyoutProfileCircle = document.querySelector('#profileFlyout .profile-login-row-img-circle');
+    const flyoutName = document.querySelector('#profileFlyout .profile-login-row-content-name');
+    const flyoutType = document.querySelector('#profileFlyout .profile-login-row-content-type');
+    const flyoutEmail = document.querySelector('#profileFlyout .profile-login-row-content-email');
+
+
+    // profileFlyout 프로필 업데이트
+    if (flyoutProfileCircle) {
+        flyoutProfileCircle.style.backgroundColor = profileColor || '#CCC';
+        flyoutProfileCircle.textContent = emailPrefix;
+    }
+    if (flyoutName) flyoutName.textContent = name || '';
+    if (flyoutType) flyoutType.textContent = '개인';
+    if (flyoutEmail) flyoutEmail.textContent = email || '';
 }
 
 // 화면 크기 변경(resize)이나 스크롤 이벤트가 발생했을 때 호출하는 함수
@@ -76,7 +175,6 @@ function updateFlyoutPosition() {
 function hideAllFlyouts() {
     const allFlyouts = document.querySelectorAll('.Flyout.-visible');
     allFlyouts.forEach(f => f.classList.remove('-visible'));
-
     resetPreviousIcon();
 
     visibleFlyoutSelector = null;
@@ -149,7 +247,13 @@ function setInitialIconByCurrentPath() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 서버에서 렌더링할 때 로그인 여부 넣어주기
+
     setInitialIconByCurrentPath();
+
+    loadProfileData();
+
+    setupLoginButtons();
 
 // 버튼 클릭 시 각각의 팝업 표시
     document.querySelector('.home-logo-button a').addEventListener('click', (e) => {
@@ -214,13 +318,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // 팝업 내 핀만들기 버튼
+// 팝업 내 핀만들기 버튼
     document.getElementById('pin-button').addEventListener('click', (e) => {
         e.preventDefault(); // 기본 a 태그 이동 막음
         window.location.href = '/creation/pin';
     });
 
-    // 팝업 내 보드만들기 버튼
+// 팝업 내 보드만들기 버튼
     document.getElementById('board-button').addEventListener('click', (e) => {
         e.preventDefault();          // 새 페이지 이동 막기
         hideAllFlyouts();            // 플라이아웃 닫기
@@ -254,8 +358,8 @@ document.addEventListener('DOMContentLoaded', () => {
             true
         );
     });
-
 });
+
 // 화면 리사이즈 또는 스크롤 시 팝업 위치 재계산
 window.addEventListener('resize', updateFlyoutPosition);
 // window.addEventListener('scroll', updateFlyoutPosition);
@@ -276,8 +380,24 @@ document.addEventListener('click', (e) => {
 });
 
 
+// 비로그인시 로그인,가입창 넘어가기
+function setupLoginButtons() {
+    // login-container 내부 버튼들 선택
+    const loginButtons = document.querySelectorAll('.login-container .obj-button');
 
+    loginButtons.forEach((button) => {
+        const name = button.getAttribute('name');
 
-
+        if (name === 'login') {
+            button.addEventListener('click', () => {
+                window.location.href = '/user/login';
+            });
+        } else if (name === 'register') {
+            button.addEventListener('click', () => {
+                window.location.href = '/user/login?register=true';
+            });
+        }
+    });
+}
 
 
