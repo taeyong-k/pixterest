@@ -18,40 +18,113 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // ✅ 보드 DB 데이터 땡겨오기
+    function getBoardsXHR() {
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== XMLHttpRequest.DONE) {
+                return;
+            }
+            if (xhr.status < 200 || xhr.status >= 300) {
+                toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
+                return;
+            }
+            const response = JSON.parse(xhr.responseText);
+            switch (response.result) {
+                case 'failure_session_expired':
+                    window.location.href = '/user/login?loginCheck=expired'
+                    break;
+                case 'failure_forbidden':
+                    window.location.href = '/user/login?loginCheck=forbidden'
+                    break;
+                case 'failure_board_absent':
+                    toast('보드를 찾을 수 없습니다', '선택하신 보드가 존재하지 않거나 삭제된 상태입니다.');
+                    break;
+                case 'empty':
+                    renderBoards([]);
+                    break;
+                case 'success':
+                    renderBoards(response.boards || []);
+                    break;
+                default:
+                    toastAlter('보드 데이터를 불러오지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+            }
+        };
+        xhr.open('GET', '/creation/boards');
+        xhr.send();
+    }
+
+    // ✅ 보드 팝업 render 함수
+    function renderBoards(boards) {
+        const $content = $boardFlyout.querySelector('.boardFlyout-content');
+        $content.innerHTML = '';
+
+        if (boards.length === 0) {
+            const emptyMsg = document.createElement('div');
+            emptyMsg.className = 'empty-message';
+            emptyMsg.textContent = '생성된 보드가 없습니다. 먼저 보드를 만들어주세요!';
+            $content.appendChild(emptyMsg);
+            return;
+        }
+
+        boards.forEach(b => {
+            const item = document.createElement('div');
+            item.className = 'item';
+            item.innerHTML = `
+                <div class="board-info" data-board-id="${b.id}" data-board-url="${b.coverImage || ''}">
+                    <div class="board-thumbnail">
+                        <div class="thumbnail">
+                            <img alt class="thumbnailImg ${!b.coverImage ? 'default-img' : ''}" loading="auto" src="${b.coverImage ? `/images/${b.coverImage}` : '/assets/images/default.png'}">
+                        </div>
+                    </div>
+                    <div class="board-name">
+                        <div class="name" title="${b.name}">${b.name}</div>
+                    </div>
+                </div>`;
+            $content.appendChild(item);
+        });
+        attachBoardClickEvents();   // 함수-동적 클릭 이벤트 부여
+    }
+
     // ✅ 팝업 요소 저장 setting
-    const $boardInfo = document.querySelectorAll('.board-info');
     let selectedBoardId = null;
 
-    $boardInfo.forEach($board => {
-        $board.addEventListener('click', () => {
-            selectedBoardId = $board.dataset.boardId;
+    function attachBoardClickEvents() {
+        const $boardInfo = document.querySelectorAll('.board-info');
 
-            const $boardName = $board.querySelector(':scope > .board-name > .name')?.innerText;
-            const $boardUrl = $board.dataset.boardUrl;
+        $boardInfo.forEach($board => {
+            $board.addEventListener('click', () => {
+                selectedBoardId = $board.dataset.boardId;       // [선택한] 보드 data-id
+                                                                // [선택한] 보드 name
+                const $boardName = $board.querySelector(':scope > .board-name > .name')?.innerText;
+                const $boardUrl = $board.dataset.boardUrl;      // [선택한] 보드 data-url
 
-            const $boardFlyoutButtonText = $boardFlyoutButton.querySelector('.name');
-            if ($boardFlyoutButtonText) {
-                $boardFlyoutButtonText.innerText = $boardName;
-            }
-
-            const $boardFlyoutButtonImg = $boardFlyoutButton.querySelector('img.thumbnailImg');
-            if ($boardFlyoutButtonImg) {
-                if ($boardUrl) {
-                    $boardFlyoutButtonImg.src = $boardUrl;
-                    $boardFlyoutButtonImg.style.display = "block";
-                } else {
-                    $boardFlyoutButtonImg.style.display = "none";
+                const $boardFlyoutButtonText = $boardFlyoutButton.querySelector('.name');           // [화면] 보드 name
+                if ($boardFlyoutButtonText) {
+                    $boardFlyoutButtonText.innerText = $boardName;
+                    $boardFlyoutButtonText.style.fontWeight = "700";
                 }
-            }
 
-            $boardFlyout.classList.remove('-visible');
+                const $boardFlyoutButtonImg = $boardFlyoutButton.querySelector('img.thumbnailImg'); // [화면] 보드 img
+                if ($boardFlyoutButtonImg) {
+                    if ($boardUrl) {
+                        $boardFlyoutButtonImg.src = `/images/${$boardUrl}`;
+                    } else {
+                        $boardFlyoutButtonImg.src = '/assets/images/default.png';
+                    }
+                    $boardFlyoutButtonImg.style.display = "block";
+                }
+
+                $boardFlyout.classList.remove('-visible');
+            });
         });
-    });
+    }
 
     // ✅ 파일 업로드 기능
     const $fileUpload = document.getElementById('file-upload');
     const $preview = document.querySelector('.pin-upload-preview');
     const $pinLabelLayout = document.querySelector('.pin-label-layout');
+    const $previewImg = $preview.querySelector('.preview-img');
     const $previewClearBtn = $preview.querySelector('.preview-clear-btn');
     const $pinPost = document.querySelector('.pin-post');
 
@@ -60,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const reader = new FileReader();        // FileReader 객체로 화면에 이미지 보여주기
         reader.onload = function () {
-            $preview.style.backgroundImage = `url(${reader.result})`;
+            $previewImg.src = reader.result;
             document.querySelector('.pin-upload-wrapper').classList.add('-hidden');
             $preview.classList.add('-visible');
             $previewClearBtn.classList.add('-visible');
@@ -162,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!imageFile) {
-            alert("이미지를 업로드 해주세요."); // ★모달로 변경★
+            toast('이미지가 필요합니다', '이미지를 업로드 해주세요.');
             return;
         }
 
@@ -172,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('content', content);
         formData.append('link', link);
         formData.append('tag', tag);
-        // formData.append('image', imageFile);
+        formData.append('imageFile', imageFile);
         if (selectedBoardId) {
             formData.append('boardId', selectedBoardId);
         }
@@ -181,64 +254,60 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             if (xhr.status < 200 || xhr.status >= 300) {
-                alert('요청: 처리 오류!!'); // ★모달로 변경★
+                toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
                 return;
             }
             const response = JSON.parse(xhr.responseText);
             switch (response.result) {
-                case 'temp':        // ★임시로 쓰는 코드(삭제요망)★
-                    alert('임시!!')
+                case 'failure_session_expired':
+                    window.location.href = '/user/login?loginCheck=expired'
                     break;
-                case 'failure_login':   // 비_로그인 상태
-                    alert('결과: 비 로그인 상태'); // ★모달로 변경★
+                case 'failure_forbidden':
+                    window.location.href = '/user/login?loginCheck=forbidden'
                     break;
-                case 'failure_absent':   // db 데이터 없음
-                    alert('결과: db 데이터 없음'); // ★모달로 변경★
+                case 'failure_invalid':
+                    toast('입력값이 올바르지 않습니다', '내용을 다시 한 번 확인해 주세요.');
                     break;
-                case 'failure_invalid': // 유효성 검사 실패
-                    alert('결과: 정규표현식 실패'); // ★모달로 변경★
+                case 'failure_no_image':
+                    toast('이미지가 필요합니다', '핀을 등록하려면 이미지를 첨부해 주세요.');
                     break;
-                case 'failure_no_image': // 이미지 저장 실패
-                    alert('결과: 이미지 미첨부'); // ★모달로 변경★
+                case 'failure_too_large':
+                    toast('이미지 크기가 너무 큽니다', '50MB 이하의 이미지를 업로드해 주세요.');
+                    break;
+                case 'failure_not_image_file':
+                    toast('이미지 파일만 업로드 가능합니다', 'jpg, png 등 이미지 파일을 첨부해 주세요.');
+                    break;
+                case 'failure_board_absent':
+                    toast('보드를 찾을 수 없습니다', '선택하신 보드가 존재하지 않거나 삭제된 상태입니다.');
+                    break;
+                case 'failure_board_forbidden':
+                    toastAlter('보드 접근 불가', '선택한 보드에 접근 권한이 없습니다.\n다시 선택해 주세요.');
                     break;
                 case 'success':
-                    alert('결과: 만들기 성공!'); // ★모달로 변경★
+                    sessionStorage.setItem('showToast', 'true');
                     window.location.reload();
                     break;
                 default:
-                    alert('결과: 이유 모를 오류'); // ★모달로 변경★
+                    toastAlter('핀을 저장하지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
             }
         };
         xhr.open('POST', '/creation/pin');
         xhr.send(formData);
     };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // 페이지가 다시 로드될 때 (페이지 새로고침)
+    window.onload = () => {
+        if (sessionStorage.getItem('showToast') === 'true') {
+            showToast({
+                title: '핀 저장이 완료되었습니다',
+                caption: '내 보드에서 확인해 보세요.',
+                duration: 8100,
+                buttonText: '이동하기',
+                onButtonClick: () => {
+                    window.location.href = '/user/myPage';
+                }
+            });
+            sessionStorage.removeItem('showToast');
+        }   // sessionStorage = 임시 저장 공간 (탭 안에서는 데이터가 유지)
+    };
+    getBoardsXHR();
 });

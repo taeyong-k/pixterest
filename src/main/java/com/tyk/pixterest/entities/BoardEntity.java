@@ -13,6 +13,7 @@ public class BoardEntity {
     private int id;
     private String userEmail;
     private String name;
+    private String coverImage;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private boolean isDeleted;

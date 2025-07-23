@@ -46,7 +46,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-title-container > .flex-stretch {
+#creation-pin .pin-title-container > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -105,7 +105,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-post .pin-post-btn > .flex-stretch {
+#creation-pin .pin-post .pin-post-btn > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -132,7 +132,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-content-container-layout > .flex-stretch {
+#creation-pin .pin-content-container-layout > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -154,7 +154,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-content-container > .flex-stretch {
+#creation-pin .pin-content-container > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -182,7 +182,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-upload > .flex-stretch {
+#creation-pin .pin-upload > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -205,7 +205,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-upload-container > .flex-stretch {
+#creation-pin .pin-upload-container > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -285,36 +285,24 @@ body {
 }
 
 #creation-pin .pin-upload-preview {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-  justify-content: flex-end;
-  left: 0;
-  top: 0;
   width: 375px;
-  height: 210.938px;
-  box-sizing: border-box;
   border-radius: 32px;
-  background-repeat: no-repeat;
-  background-size: 375px 210.938px;
-  transform-origin: center center;
-  position: relative;
   overflow: hidden;
+  position: relative;
   display: none;
-  z-index: 1000;
-}
-#creation-pin .pin-upload-preview > * {
-  flex-grow: 0;
-  flex-shrink: 0;
-}
-#creation-pin .pin-upload-preview > .flex-stretch {
-  flex-grow: 1;
-  flex-shrink: 1;
 }
 
 #creation-pin .pin-upload-preview.-visible {
+  display: flex;
+}
+
+#creation-pin .pin-upload-preview img.preview-img {
+  width: 100%;
+  height: auto;
+  border-radius: 32px;
   display: block;
+  object-fit: contain;
+  border: 1px solid #e5e5e5;
 }
 
 #creation-pin .pin-upload-preview .preview-clear-btn {
@@ -382,7 +370,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-upload .url-save > .flex-stretch {
+#creation-pin .pin-upload .url-save > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -435,7 +423,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-label-container > .flex-stretch {
+#creation-pin .pin-label-container > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -542,7 +530,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-label.-invalid .-warning.-row > .flex-stretch {
+#creation-pin .pin-label.-invalid .-warning.-row > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -581,7 +569,7 @@ body {
 }
 
 #creation-pin .pin-label-board .pin-label {
-  align-items: flex-start;
+  align-items: center;
   display: flex;
   flex-direction: row;
   gap: 0;
@@ -592,33 +580,60 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#creation-pin .pin-label-board .pin-label > .flex-stretch {
+#creation-pin .pin-label-board .pin-label > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
 
 #creation-pin .pin-label-board .pin-label .pin-label-board-button {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: flex-start;
+  flex: 1 1 auto;
   width: 100%;
   border-radius: 8px;
   cursor: pointer;
   appearance: none;
   background: none;
   border: none;
-  padding: 4px 0;
-  text-align: left;
+}
+#creation-pin .pin-label-board .pin-label .pin-label-board-button > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#creation-pin .pin-label-board .pin-label .pin-label-board-button > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#creation-pin .pin-label .pin-label-board-button .thumbnailImg {
+  width: 36px;
+  height: 36px;
+  margin: 4px 12px 4px 0;
+  background-color: #e0e0d9;
+  border-radius: 8px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  position: relative;
+  display: none;
+}
+
+#creation-pin .pin-label .pin-label-board-button .name {
   display: block;
   color: #57574c;
   font-family: inherit;
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0;
-  line-height: 1.5;
+  line-height: 2;
   word-wrap: break-word;
+  white-space: nowrap;
   -webkit-font-smoothing: antialiased;
-}
-
-#creation-pin .pin-label-board .pin-label .-stretch {
-  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
 }
 
 #creation-pin .pin-label .pin-label-icon {
@@ -725,6 +740,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+#boardFlyout .boardFlyout-content .empty-message {
+  padding-bottom: 12px;
+  text-align: center;
+  color: #e0e0d9;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
 #boardFlyout .boardFlyout-content .item {
   width: 100%;
   border-radius: 0;
@@ -750,7 +774,7 @@ body {
   flex-grow: 0;
   flex-shrink: 0;
 }
-#boardFlyout .boardFlyout-content .item .board-info > .flex-stretch {
+#boardFlyout .boardFlyout-content .item .board-info > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -780,6 +804,22 @@ body {
   display: block;
 }
 
+#boardFlyout .boardFlyout-content .item .board-info .board-thumbnail .thumbnail .thumbnailImg {
+  width: 36px;
+  height: 36px;
+  margin: 4px 12px 4px 0;
+  border-radius: 8px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  position: relative;
+  display: block;
+}
+
+#boardFlyout .boardFlyout-content .item .board-info .board-thumbnail .thumbnail .thumbnailImg.default-img {
+  margin: 0 auto;
+  display: block;
+}
+
 #boardFlyout .boardFlyout-content .item .board-name {
   min-width: 0;
   min-height: 0;
@@ -804,6 +844,24 @@ body {
   -webkit-box-orient: vertical;
   display: -webkit-box;
   overflow: hidden;
+}
+
+@media (max-width: 1050px) {
+  #creation-pin .pin-content-container {
+    flex-direction: column;
+    gap: 34px;
+  }
+  #creation-pin .pin-upload-wrapper {
+    width: 100%;
+    align-items: center;
+    display: flex;
+  }
+  #creation-pin .pin-upload .-border {
+    width: 320px;
+  }
+  #creation-pin .pin-upload .url-save {
+    width: 320px;
+  }
 }
 
 /*# sourceMappingURL=pin.css.map */

@@ -1,0 +1,126 @@
+DROP DATABASE IF EXISTS pixterest; # 전체 다 지우기
+
+CREATE SCHEMA `pixterest`;
+
+CREATE TABLE `pixterest`.`users`
+(
+    `email`        VARCHAR(50)  NOT NULL COMMENT '이메일',
+    `password`     VARCHAR(255) NOT NULL COMMENT '비밀번호(암호화된)',
+    `name`         VARCHAR(50)  NOT NULL COMMENT '실명',
+    `nickname`     VARCHAR(10)  NOT NULL COMMENT '닉네임',
+    `birth`        DATE         NOT NULL COMMENT '생년월일',
+    `created_at`   DATETIME     NOT NULL DEFAULT NOW() COMMENT '가입일자',
+    `modified_at`  DATETIME     NOT NULL DEFAULT NOW() COMMENT '최종 수정일자',
+    `is_admin`     BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '관리자 여부',
+    `is_deleted`   BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '탈퇴 여부',
+    `is_suspended` BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '정지 여부',
+    CONSTRAINT PRIMARY KEY (`email`),
+    CONSTRAINT UNIQUE (`nickname`)
+);
+
+CREATE TABLE `pixterest`.`pins`
+(
+    `id`          INT UNSIGNED  NOT NULL AUTO_INCREMENT COMMENT '핀 번호(댓글 구분용)',
+    `user_email`  VARCHAR(50)   NOT NULL COMMENT '사용자 이메일',
+    `board_id`    INT UNSIGNED  null comment '저장될 보드 아이디',
+    `title`       VARCHAR(100)  NOT NULL COMMENT '제목',
+    `content`     VARCHAR(800)  NOT NULL COMMENT '내용',
+    `link`        varchar(1000) not null comment '링크',
+    `tag`         varchar(100)  not null comment '태그',
+    `image`       VARCHAR(1000) NOT NULL COMMENT '이미지',
+    `created_at`  DATETIME      NOT NULL DEFAULT NOW() COMMENT '생성일자',
+    `modified_at` DATETIME      NULL     DEFAULT NOW() COMMENT '최종 수정일자',
+    `is_deleted`  BOOLEAN       NOT NULL DEFAULT FALSE COMMENT '삭제 여부',
+    CONSTRAINT PRIMARY KEY (`id`),
+    CONSTRAINT FOREIGN KEY (`user_email`) REFERENCES `pixterest`.`users` (`email`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT FOREIGN KEY (`board_id`) REFERENCES `pixterest`.`boards` (`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+# 핀 중복저장 방지
+CREATE TABLE `pixterest`.`pin_user_saves`
+(
+    `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+    `user_email` VARCHAR(50)  NOT NULL,
+    `pin_id`     INT UNSIGNED NOT NULL,
+    `saved_at`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PRIMARY KEY (`id`),
+    CONSTRAINT UNIQUE (`user_email`, `pin_id`),
+    CONSTRAINT FOREIGN KEY (`user_email`) REFERENCES `pixterest`.`users` (`email`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT FOREIGN KEY (`pin_id`) REFERENCES `pixterest`.`pins` (`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE `pixterest`.`boards`
+(
+    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '보드 번호',
+    `user_email`  VARCHAR(50)  NOT NULL COMMENT '사용자 이메일',
+    `name`        VARCHAR(100) NOT NULL COMMENT '보드 이름',
+    `created_at`  DATETIME     NOT NULL DEFAULT NOW() COMMENT '생성일자',
+    `modified_at` DATETIME     NOT NULL DEFAULT NOW() COMMENT '최종 수정일자',
+    `is_deleted`  BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '삭제 여부',
+    CONSTRAINT PRIMARY KEY (`id`),
+    constraint unique (`user_email`, `name`),
+    CONSTRAINT FOREIGN KEY (`user_email`) REFERENCES `pixterest`.`users` (`email`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+ALTER TABLE `pixterest`.`boards`
+    ADD COLUMN `cover_image` VARCHAR(1000) NULL DEFAULT NULL COMMENT '커버 이미지';
+
+CREATE TABLE `pixterest`.`comments`
+(
+    `id`         INT UNSIGNED  NOT NULL AUTO_INCREMENT COMMENT '코멘트 번호',
+    `pin_id`     INT UNSIGNED  NOT NULL,
+    `user_email` VARCHAR(50)   NOT NULL,
+    `comment_id` INT UNSIGNED  NULL     DEFAULT NULL,
+    `content`    VARCHAR(1000) NOT NULL,
+    `created_at` DATETIME      NOT NULL DEFAULT NOW(),
+    `is_deleted` BOOLEAN       NOT NULL DEFAULT FALSE,
+    CONSTRAINT PRIMARY KEY (`id`),
+    CONSTRAINT FOREIGN KEY (`pin_id`) REFERENCES `pixterest`.`pins` (`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT FOREIGN KEY (`user_email`) REFERENCES `pixterest`.`users` (`email`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT FOREIGN KEY (`comment_id`) REFERENCES `pixterest`.`comments` (`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+ALTER TABLE `pixterest`.`comments`
+    ADD COLUMN `nickname` VARCHAR(50) NULL DEFAULT NULL COMMENT '댓글 작성자 닉네임';
+
+CREATE TABLE `pixterest`.`pin_user_likes`
+(
+    `pin_id`     INT UNSIGNED NOT NULL,
+    `user_email` VARCHAR(50)  NOT NULL,
+    `created_at` DATETIME     NOT NULL DEFAULT NOW(),
+    CONSTRAINT PRIMARY KEY (`pin_id`, `user_email`),
+    CONSTRAINT FOREIGN KEY (`pin_id`) REFERENCES `pixterest`.`pins` (`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT FOREIGN KEY (`user_email`) REFERENCES `pixterest`.`users` (`email`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE `pixterest`.`user_follows`
+(
+    `follower_email`  VARCHAR(50) NOT NULL COMMENT '팔로우하는 사람 (나)',
+    `following_email` VARCHAR(50) NOT NULL COMMENT '팔로우 당하는 사람 (상대)',
+    `created_at`      DATETIME    NOT NULL DEFAULT NOW() COMMENT '팔로우한 시각',
+    CONSTRAINT PRIMARY KEY (`follower_email`, `following_email`),
+    CONSTRAINT FOREIGN KEY (`follower_email`) REFERENCES `pixterest`.`users` (`email`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT FOREIGN KEY (`following_email`) REFERENCES `pixterest`.`users` (`email`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
