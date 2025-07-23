@@ -29,15 +29,8 @@ public class PinController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getIndex(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                           @RequestParam(value = "id", required = false) Long pinId,
+    public String getIndex(@RequestParam(value = "id", required = false) Long pinId,
                            Model model) {
-        if (signedUser == null) {
-            return "redirect:/user/login?loginCheck=false";
-        }
-        if (signedUser.isSuspended() || signedUser.isDeleted()) {
-            return "redirect:/user/login?loginCheck=forbidden";
-        }
         if (pinId == null) {
             return "redirect:/?pin:error";
         }
@@ -77,8 +70,8 @@ public class PinController {
     // add comment
     @RequestMapping(value = "/comment", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public CommentVo[] getComment (@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                                   @RequestParam(value = "id",required = false) int pinId) {
+    public CommentVo[] getComment(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                                  @RequestParam(value = "id", required = false) int pinId) {
         ResultTuple<CommentVo[]> result = commentService.getCommentsByPinId(pinId);
         if (result.getResult() == CommonResult.SUCCESS) {
             CommentVo[] comments = result.getPayload();

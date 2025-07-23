@@ -1,14 +1,22 @@
 const $header = document.getElementById('header');
 const $dialog = document.getElementById('dialog');
 const emailRegex = /^[\w.\-]{4,}@[\w\-]+\.[\w.]{2,}$/;
-const passwordRegex =/^[\w`~!@#$%^&*()\-=+[\]{}|;:'",.<>/?]{8,50}$/;
+const passwordRegex =/^[\w`~!@#$%^&*()\-=+[\]{}|;:'",.<>/?]{6,50}$/;
 const $loginButton = $header.querySelector('button[name="login"]');
 const $registerButton = $header.querySelector('button[name="register"]');
 const $cancelButtons = $dialog.querySelectorAll('.cancel');
 const $registerModalForm = document.getElementById('registerModalForm');
 const $loginModalForm = document.getElementById('loginModalForm');
 
+const $modals = $dialog.querySelectorAll('.-modal');
 
+$dialog.addEventListener('click', (e) => {
+    // 만약 클릭한 게 모달(.modal) 내부면 무시
+    if ([...$modals].some(modal => modal.contains(e.target))) return;
+    // 아니면 모달 닫기
+    $dialog.classList.remove('-visible');
+    $modals.forEach(modal => modal.classList.remove('-visible'));
+});
 
 $loginButton.addEventListener('click', () =>
 {
@@ -51,6 +59,10 @@ function validateEmail($emailInput, $emailLabel) {
     $warning.classList.remove('-visible');
 
     if ($emailInput.value === '') {
+        return true;
+    }
+
+    if ($emailInput.value.length < 2) {
         $emailLabel.classList.add('-invalid');
         $warningCaption.innerText = '빠뜨린 부분이 있네요! 이메일 추가하는 것을 잊지 마세요.';
         $warning.classList.add('-visible');
@@ -77,6 +89,10 @@ function validatePassword($passwordInput, $passwordLabel) {
     $passwordWarning.classList.remove('-visible');
 
     if ($passwordInput.value === '') {
+        return true;
+    }
+
+    if ($passwordInput.value.length < 6) {
         $passwordLabel.classList.add('-invalid');
         $warningCaption.innerText = '비밀번호가 너무 짧네요! 6자 이상 입력하세요.';
         $passwordWarning.classList.add('-visible');

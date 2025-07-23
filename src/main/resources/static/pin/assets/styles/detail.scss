@@ -44,6 +44,15 @@ body {
   overflow: hidden;
 }
 
+@media screen and (max-width: 1200px) {
+  #pinDetail .pinDetail-content-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 #pinDetail .pinDetail-backButton-wrapper {
   position: relative;
 }
@@ -89,7 +98,7 @@ body {
 
 #pinDetail .pinDetail-content {
   @include flex(column, center, flex-start);
-  min-width: 300px;
+  min-width: 500px;
   max-width: 550px;
   width: calc((100% - 62px - 40px) / 2);
   height: 100%;
@@ -261,7 +270,7 @@ body {
 
 #pinDetail .pinDetail-comment {
   @include flex(column, center, flex-start);
-  min-width: 300px;
+  min-width: 550px;
   max-width: 650px;
   width: calc((100% - 62px - 40px) / 2);
   height: 100%;

@@ -21,11 +21,11 @@ if (isRegister === 'true') {
     const $passwordLabel = $form.querySelector('.obj-label input[name="password"]')?.parentElement;
 
 
-    $emailInput.addEventListener('focusout', () =>
+    $emailInput.addEventListener('blur', () =>
         validateEmail($emailInput, $emailLabel)
     );
 
-    $passwordInput.addEventListener('focusout', () =>
+    $passwordInput.addEventListener('blur', () =>
         validatePassword($passwordInput, $passwordLabel)
     );
 
@@ -93,3 +93,9 @@ $gotoRegister.addEventListener('click', () =>
     $loginForm.classList.remove('-visible');
     $registerForm.classList.add('-visible')
 })
+
+const $gotoRegisterModal = $loginModalForm.querySelector(':scope > .register > .link > .caption');
+$gotoRegisterModal.addEventListener('click', () => {
+    $loginModalForm.classList.remove('-visible');
+    $registerModalForm.classList.add('-visible');
+});

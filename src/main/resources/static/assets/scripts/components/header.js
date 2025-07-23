@@ -383,7 +383,7 @@ document.addEventListener('click', (e) => {
 // 비로그인시 로그인,가입창 넘어가기
 function setupLoginButtons() {
     // login-container 내부 버튼들 선택
-    const loginButtons = document.querySelectorAll('.login-container .obj-button');
+    const loginButtons = document.querySelectorAll('.login-container .button');
 
     loginButtons.forEach((button) => {
         const name = button.getAttribute('name');

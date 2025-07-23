@@ -67,13 +67,13 @@
         WHERE `password` = #{password}
     </select>
     <select id="selectBoardsByEmail" resultType="com.tyk.pixterest.entities.BoardEntity">
-        SELECT b.`id`                                          AS `id`,
-               b.`user_email`                                  AS `userEmail`,
-               b.`name`                                        AS `name`,
-               IFNULL(p.`image`, '/assets/images/default.png') AS `coverImage`, -- 첫 번째 핀 이미지 또는 기본 이미지
-               b.`created_at`                                  AS `createdAt`,
-               b.`modified_at`                                 AS `modifiedAt`,
-               b.`is_deleted`                                  AS `isDeleted`
+        SELECT b.`id`          AS `id`,
+               b.`user_email`  AS `userEmail`,
+               b.`name`        AS `name`,
+               p.`image`       AS `coverImage`, -- 첫 번째 핀 이미지 또는 기본 이미지
+               b.`created_at`  AS `createdAt`,
+               b.`modified_at` AS `modifiedAt`,
+               b.`is_deleted`  AS `isDeleted`
         FROM pixterest.boards b
                  LEFT JOIN pixterest.pins p
                            ON p.board_id = b.id

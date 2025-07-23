@@ -13,15 +13,15 @@ const $registerForm = document.getElementById('registerForm');
     const $passwordLabel = $form.querySelector('.obj-label input[name="password"]')?.parentElement;
     const $birthLabel = $form.querySelector('.obj-label input[name="birth"]')?.parentElement;
 
-    $emailInput.addEventListener('focusout', () =>
+    $emailInput.addEventListener('blur', () =>
         validateEmail($emailInput, $emailLabel)
     );
 
-    $passwordInput.addEventListener('focusout', () =>
+    $passwordInput.addEventListener('blur', () =>
         validatePassword($passwordInput, $passwordLabel)
     );
 
-    $birthInput.addEventListener('focusout', () =>
+    $birthInput.addEventListener('blur', () =>
         validateBirth($birthInput, $birthLabel)
     );
 
@@ -76,15 +76,8 @@ const $registerForm = document.getElementById('registerForm');
                     break;
                 case 'success':
                     setProfile($emailInput.value, profileColor);
-                    showToast({
-                        title: '가입이 완료되었습니다.',
-                        caption: '로그인 창으로 이동합니다.',
-                        duration: 8100,
-                        buttonText: '로그인 창으로 이동',
-                        onButtonClick: () => {
-                            window.location.href = '/user/login';  // 이동 페이지 조정 가능
-                        }
-                    });
+                    sessionStorage.setItem('showToast', 'true');
+                    window.location.reload();
                     return;
                 default:
                     toastAlter('로그인에 성공하지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
@@ -107,6 +100,12 @@ $gotoLogin.addEventListener('click', () =>
     $loginForm.classList.add('-visible');
 })
 
+const $gotoLoginModal = $registerModalForm.querySelector(':scope > .register > .link > .login');
+$gotoLoginModal.addEventListener('click', () => {
+    $registerModalForm.classList.remove('-visible');
+    $loginModalForm.classList.add('-visible');
+});
+
 // 유저 프로필 이미지 생성
 function randomHexColor() {
     return `#${Math.floor(Math.random() * 0xFFFFFF)
@@ -123,4 +122,11 @@ function setProfile(email, profileColor) {
     if (!profileCircle) return;
 
     profileCircle.style.backgroundColor = profileColor;       // 배경색 설정
+}
+
+window.onload = () => {
+    if (sessionStorage.getItem('showToast') === 'true') {
+        toast('가입 완료', '환영합니다! 로그인해서 시작해보세요.')
+        sessionStorage.removeItem('showToast');
+    }
 }

@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 댓글 + 대댓글 재귀 렌더링 함수 (전역 또는 모듈 최상단에)
     function appendComments(container, targetComments, allComments, depth = 0) {
         for (const comment of targetComments) {
-            const paddingLeft = 48 * depth;
+            const paddingLeft = 24 * depth;
             container.insertAdjacentHTML('beforeend', `
             <div class="comment ${comment.commentId ? 'reply' : ''} ${comment.deleted ? 'deleted' : ''}" data-id="${comment.id}" style="padding-left: ${paddingLeft}px;">
                 <div class="head">
@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             </div>
-            <form class="reply-form"  data-parent-id="${comment.id}" style="display:none;">
+            <form class="reply-form"  data-parent-id="${comment.id}" style="display:none; padding-left: ${paddingLeft + 24}px;">
                 <label class="obj-label">
                     <textarea aria-invalid="false" class="obj-field textarea"
                               name="input" placeholder="답변을 남기세요" spellcheck="false"
@@ -354,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button class="write" tabindex="0" type="button">작성</button>
                 </div>
             </form>
-            <form class="modify-form" novalidate style="display:none;">
+            <form class="modify-form" style="display:none; padding-left: ${paddingLeft + 12}px;">
                 <label class="obj-label">
                     <textarea aria-invalid="false" class="obj-field textarea"
                               name="input" placeholder="댓글을 입력하세요" spellcheck="false"
@@ -506,7 +506,9 @@ document.addEventListener('DOMContentLoaded', () => {
     $commentForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const textarea = $commentForm.querySelector('textarea');
-        writeComment({pinId, content: textarea.value});
+        const commentContentRaw = textarea.value;
+        const commentContent = commentContentRaw.trim();
+        writeComment({pinId, content: commentContent});
         textarea.value = '';
     });
 

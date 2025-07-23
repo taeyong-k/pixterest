@@ -192,14 +192,21 @@ function toastAlter(title, caption, duration = 8100, showButton = false) {
 // 페이지 이동 + toast 띄우기
 function checkToastParam() {
     const params = new URLSearchParams(window.location.search);
-    const val = params.get('loginCheck');       // 로그인 관련
+    const valLogin = params.get('loginCheck');       // 로그인 관련
+    const valPin = params.get('pin');                // 핀 관련
 
-    if (val === 'false') {
+    if (valLogin === 'false') {
         toast('로그인이 필요합니다', '서비스 이용을 위해 로그인이 필요합니다.');
-    } else if (val === 'expired') {
+    } else if (valLogin === 'expired') {
         toast('로그인이 필요합니다', '세션이 만료되었거나 로그인 상태가 아닙니다.\n다시 로그인해주세요.');
-    } else if (val === 'forbidden') {
+    } else if (valLogin === 'forbidden') {
         toastAlter('접근이 제한되었습니다', '회원님의 계정은 현재 이용이 불가능합니다.\n관리자에게 문의해주세요.');
+    }
+
+    if (valPin === 'error') {
+        toast('잘못된 접근입니다', '핀 정보가 정상적으로 전달되지 않았습니다.\n다시 시도해주세요.');
+    } else if (valPin === 'false') {
+        toast('존재하지 않는 핀입니다', '삭제되었거나 존재하지 않는 핀입니다.\n홈으로 이동되었습니다.');
     }
 }
 

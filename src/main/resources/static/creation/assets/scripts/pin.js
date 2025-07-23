@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     toast('보드를 찾을 수 없습니다', '선택하신 보드가 존재하지 않거나 삭제된 상태입니다.');
                     break;
                 case 'empty':
-                    toast('보드가 없습니다', '먼저 보드를 만들어 주세요.');
                     renderBoards([]);
                     break;
                 case 'success':
@@ -59,6 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderBoards(boards) {
         const $content = $boardFlyout.querySelector('.boardFlyout-content');
         $content.innerHTML = '';
+
+        if (boards.length === 0) {
+            const emptyMsg = document.createElement('div');
+            emptyMsg.className = 'empty-message';
+            emptyMsg.textContent = '생성된 보드가 없습니다. 먼저 보드를 만들어주세요!';
+            $content.appendChild(emptyMsg);
+            return;
+        }
 
         boards.forEach(b => {
             const item = document.createElement('div');
