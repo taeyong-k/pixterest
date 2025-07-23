@@ -28,7 +28,7 @@
   flex-grow: 0;
   flex-shrink: 0;
 }
-#header > .search > .flex-stretch {
+#header > .search > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -70,7 +70,7 @@
   flex-grow: 0;
   flex-shrink: 0;
 }
-#header .button-container > .flex-stretch {
+#header .button-container > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -126,8 +126,8 @@
   flex-grow: 0;
   flex-shrink: 0;
 }
-#dialog > .-modal #registerModalForm > .flex-stretch,
-#dialog > .-modal #loginModalForm > .flex-stretch {
+#dialog > .-modal #registerModalForm > .-flex-stretch,
+#dialog > .-modal #loginModalForm > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -273,7 +273,7 @@
   flex-grow: 0;
   flex-shrink: 0;
 }
-#main > .flex-stretch {
+#main > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -299,7 +299,7 @@
   flex-grow: 0;
   flex-shrink: 0;
 }
-#main .search-box > .flex-stretch {
+#main .search-box > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -314,7 +314,7 @@
   flex-grow: 0;
   flex-shrink: 0;
 }
-#main .search-box > .obj-label.search > .flex-stretch {
+#main .search-box > .obj-label.search > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
 }
