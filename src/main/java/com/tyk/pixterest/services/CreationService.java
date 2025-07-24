@@ -10,6 +10,7 @@ import com.tyk.pixterest.results.CreationResult;
 import com.tyk.pixterest.results.Result;
 import com.tyk.pixterest.results.ResultTuple;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +31,9 @@ public class CreationService {
         this.pinMapper = pinMapper;
         this.boardMapper = boardMapper;
     }
+
+    @Value("${upload.dir}")
+    private String uploadDir;
 
     public static boolean isTitleValid(String input) {
         return input != null && input.matches("^(.{0,100})$");
@@ -95,8 +99,6 @@ public class CreationService {
 
         // 5-1. 이미지 저장
         try {
-            String uploadDir = "C:/pixterest/uploads/";
-
             String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
 
             Path filePath = Paths.get(uploadDir + filename);
