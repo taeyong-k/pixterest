@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setupLoginButtons();
 
-// 버튼 클릭 시 각각의 팝업 표시
+    // 버튼 클릭 시 각각의 팝업 표시
     document.querySelector('.home-logo-button a').addEventListener('click', (e) => {
         e.preventDefault();  // 일단 이동 막고
 

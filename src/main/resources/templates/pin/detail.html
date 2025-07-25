@@ -31,11 +31,13 @@
                     </div>
                     <div class="pinDetail-content">
                         <div class="pinDetail-overlay">
-                            <button class="extra-button">
+                            <button class="extra-button" th:attr="data-pin-id=${pin.id}">
                                 <svg class="icon" role="img" viewBox="0 0 16 16">
                                     <path d="M2 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4m6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4"></path>
                                 </svg>
-                                <button class="save-button" th:attr="data-pin-id=${pin.id}">저장</button>
+                            </button>
+                            <button class="save-button" th:classappend="${isSaved} ? ' active' : ''" th:attr="data-pin-id=${pin.id}">
+                                <span th:text="${isSaved} ? '저장됨' : '저장'"></span>
                             </button>
                         </div>
                         <div class="pinDetail-main">
@@ -59,9 +61,8 @@
                                 <div class="head">
                                     <a aria-label="내 프로필" class="profile" href="#" tabindex="0">
                                         <div class="profile-img-wrapper">
-                                            <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ src 수정!!(로그인한 사람 이미지로)-->
                                             <img class="img" alt="내 프로필" fetchpriority="auto" loading="auto"
-                                                 src="https://i.pinimg.com/75x75_RS/ab/af/43/abaf431ac6c2a4e7ec23f4bd37037e2d.jpg">
+                                                 src="#">
                                         </div>
                                     </a>
                                 </div>
@@ -96,8 +97,18 @@
         </div>
     </div>
 </div>
+<div id="extraFlyout" tabindex="0" aria-hidden="true" role="menu">
+    <div class="extraFlyout">
+        <div class="flyout-menu">
+            <button class="flyout-item edit-pin">
+                <div class="caption">핀 수정</div>
+            </button>
+        </div>
+    </div>
+</div>
 <th:block th:replace="~{fragments/toast :: toast}"></th:block>
 <th:block th:replace="~{fragments/toast :: toastAlert}"></th:block>
 <th:block th:replace="~{fragments/board :: board}"></th:block>
+<th:block th:replace="~{fragments/editPin :: editPin}"></th:block>
 </body>
 </html>

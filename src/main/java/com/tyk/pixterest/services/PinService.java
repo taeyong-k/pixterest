@@ -33,6 +33,14 @@ public class PinService {
         return this.detailMapper.selectById(pinId);
     }
 
+    public boolean isPinSavedByUser(UserEntity user, int pinId) {
+        PinUserSaveEntity save = this.pinUserSaveMapper.selectByUserEmailAndPinId(user.getEmail(), pinId);
+        if (save == null) {
+            return false;
+        }
+        return true;
+    }
+
     public Result savePin(UserEntity user, int pinId) {
         if (user == null) {
             return CommonResult.FAILURE_SESSION_EXPIRED;
@@ -64,6 +72,29 @@ public class PinService {
         newSave.setSavedAt(LocalDateTime.now());
 
         return this.pinUserSaveMapper.insert(newSave) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+    }
+
+    public Result hidePin(UserEntity user, int pinId) {
+        if (user == null) {
+            return CommonResult.FAILURE_SESSION_EXPIRED;
+        }
+        if (user.isSuspended() || user.isDeleted()) {
+            return CommonResult.FAILURE_FORBIDDEN;
+        }
+        if (pinId < 1) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+
+        PinEntity dbPin = this.pinMapper.selectById(pinId);
+        if (dbPin == null) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+
+        dbPin.setDeleted(true);
+
+        return this.pinMapper.update(dbPin) > 0
                 ? CommonResult.SUCCESS
                 : CommonResult.FAILURE;
     }

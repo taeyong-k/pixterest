@@ -13,6 +13,13 @@
                 #{pin.createdAt}, #{pin.modifiedAt}, #{pin.isDeleted});
     </insert>
 
+    <update id="update">
+        update `pixterest`.`pins`
+        set is_deleted = #{pinId.isDeleted},
+            modified_at = now()
+        where id = #{pinId.id}
+    </update>
+
     <select id="selectById" resultType="com.tyk.pixterest.entities.PinEntity">
         select `id`          as `id`,
                `user_email`  as `userEmail`,

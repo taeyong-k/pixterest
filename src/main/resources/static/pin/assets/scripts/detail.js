@@ -89,49 +89,164 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 핀 저장 버튼 클릭 이벤트
-    document.querySelectorAll('.pinDetail-content .save-button').forEach(($btn) => {
-        $btn.addEventListener('click', () => {
-            const pinId = $btn.dataset.pinId;
+    // extraFlyout 팝업
+    const extraFlyout = document.getElementById('extraFlyout');
+    const $extraButton = document.querySelector('.pinDetail-content .extra-button');
 
-            const xhr = new XMLHttpRequest();
-            const formData = new FormData();
-            formData.append('id', pinId);
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState !== XMLHttpRequest.DONE) {
-                    return;
-                }
-                if (xhr.status < 200 || xhr.status >= 300) {
-                    toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
-                    return;
-                }
-                const response = JSON.parse(xhr.responseText);
-                switch (response.result) {
-                    case 'failure_session_expired':
-                        window.location.href = '/user/login?loginCheck=expired';
-                        break;
-                    case 'failure_forbidden':
-                        window.location.href = '/user/login?loginCheck=forbidden';
-                        break;
-                    case 'failure_absent':
-                        toast('핀을 찾을 수 없습니다', '선택하신 핀이 존재하지 않거나 삭제된 상태입니다.');
-                        break;
-                    case 'failure_duplicate':
-                        toast('이미 저장된 핀입니다', '선택하신 핀이 이미 내 보드에 저장되어 있습니다.');
-                        break;
-                    case 'success':
-                        $btn.classList.add('active');
-                        $btn.textContent = "저장됨";
-                        sessionStorage.setItem('showToast', 'true');
-                        window.location.reload();
-                        break;
-                    default:
-                        toastAlter('핀을 저장하지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
-                }
-            };
-            xhr.open('POST', '/pin/');
-            xhr.send(formData);
-        });
+    $extraButton.addEventListener('click', (e) => {
+        e.stopPropagation();    // 바깥 클릭 막기
+
+        extraFlyout.style.display = 'block';
+
+        const rect = $extraButton.getBoundingClientRect();
+        const top = rect.top + window.scrollY + $extraButton.offsetHeight;
+        const left = rect.left + window.scrollX + ($extraButton.offsetWidth / 2) - (extraFlyout.offsetWidth / 2);
+
+        extraFlyout.style.top = `${top}px`;
+        extraFlyout.style.left = `${left}px`;
+        extraFlyout.setAttribute('aria-hidden', 'false');
+
+        const pinId = $extraButton.dataset?.pinId;
+        if (pinId) {
+            extraFlyout.setAttribute('data-target-pin-id', pinId);
+        }
+    });
+
+    // 팝업 외부 클릭 시 숨김
+    document.addEventListener('click', () => {
+        extraFlyout.style.display = 'none';
+        extraFlyout.setAttribute('aria-hidden', 'true');
+        extraFlyout.removeAttribute('data-target-pin-id');
+    });
+
+    // 팝업 내부 클릭 시 닫히지 않게
+    extraFlyout.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // extraFlyout 팝업 > 핀 수정하기
+    const $editPinButton = document.querySelector('.flyout-item.edit-pin');
+    const $editPin = document.getElementById('editPin');
+
+    $editPinButton.addEventListener('click', (e) => {
+        const pinId = e.currentTarget.getAttribute('data-pin-id');
+
+        if (!pinId){
+            toastAlter('오류', '핀 ID를 찾을 수 없습니다.');
+            return;
+        }
+
+        $editPin.setAttribute('data-pin-id', pinId);
+
+        // 3. 필요한 핀 정보들을 (제목, 설명 등) 불러와서 input/textarea에 넣는 작업(선택사항)
+        // 예: $editPin.querySelector('input[name="input"]').value = '불러온 제목';
+
+        $editPin.classList.add('-visible');
+        document.body.style.overflow = 'hidden';
+        extraFlyout.style.display = 'none';
+    });
+
+    document.querySelector('.editPin-overlay').addEventListener('click', () => {
+        $editPin.classList.remove('-visible');
+        document.body.style.overflow = '';
+    });
+
+    $editPin.querySelector('.editPin-button').addEventListener('click', () => {
+        $editPin.classList.remove('-visible');
+        document.body.style.overflow = '';
+    });
+
+    // 핀 수정하기 > 삭제 버튼 처리 이벤트
+    $editPin.querySelector('.button.delete').addEventListener('click', () => {
+        const PinId = $editPin.getAttribute('data-pin-id');
+        if (!PinId) return;
+
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append('pinId', PinId);
+
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== XMLHttpRequest.DONE) {
+                return;
+            }
+            if (xhr.status < 200 || xhr.status >= 300) {
+                toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
+                return;
+            }
+
+            const response = JSON.parse(xhr.responseText);
+            switch (response.result) {
+                case 'failure_session_expired':
+                    window.location.href = '/user/login?loginCheck=expired'
+                    break;
+                case 'failure_forbidden':
+                    window.location.href = '/user/login?loginCheck=forbidden'
+                    break;
+                case 'failure_absent':
+                    toast('핀을 찾을 수 없습니다', '선택하신 핀이 존재하지 않거나 삭제된 상태입니다.');
+                    break;
+                case 'success':
+                    sessionStorage.setItem('showToast-hide', 'true');
+                    window.location.href = '/'
+                    break;
+                default:
+                    toastAlter('핀을 저장하지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+            }
+        };
+        xhr.open('POST', '/pin/hide');
+        xhr.send(formData);
+    });
+
+
+    // 핀 저장 버튼 클릭 이벤트
+    const $saveButton = document.querySelector('.pinDetail-content .save-button');
+    $saveButton.addEventListener('click', () => {
+        const pinId = $saveButton.dataset.pinId;
+
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append('id', pinId);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== XMLHttpRequest.DONE) {
+                return;
+            }
+            if (xhr.status < 200 || xhr.status >= 300) {
+                toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
+                return;
+            }
+            const response = JSON.parse(xhr.responseText);
+            switch (response.result) {
+                case 'failure_session_expired':
+                    window.location.href = '/user/login?loginCheck=expired';
+                    break;
+                case 'failure_forbidden':
+                    window.location.href = '/user/login?loginCheck=forbidden';
+                    break;
+                case 'failure_absent':
+                    toast('핀을 찾을 수 없습니다', '선택하신 핀이 존재하지 않거나 삭제된 상태입니다.');
+                    break;
+                case 'failure_duplicate':
+                    showToast({
+                        title: '이미 저장된 핀입니다',
+                        caption: '선택하신 핀이 이미 내 보드에 저장되어 있습니다.',
+                        duration: 8100,
+                        buttonText: '이동하기',
+                        onButtonClick: () => {
+                            window.location.href = '/user/myPage';
+                        }
+                    });
+                    break;
+                case 'success':
+                    sessionStorage.setItem('showToast', 'true');
+                    window.location.reload();
+                    break;
+                default:
+                    toastAlter('핀을 저장하지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+            }
+        };
+        xhr.open('POST', '/pin/');
+        xhr.send(formData);
+
     });
 
     // add comment
@@ -325,8 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="head">
                     <a aria-label="내 프로필" class="profile" href="#" tabindex="0">
                         <div class="profile-img-wrapper">
-                            <img class="img" alt="내 프로필" fetchpriority="auto" loading="auto"
-                                 src="${comment.profileImage || 'https://i.pinimg.com/75x75_RS/ab/af/43/abaf431ac6c2a4e7ec23f4bd37037e2d.jpg'}">
+                            <div class="profile-img-circle"></div>
                         </div>
                     </a>
                 </div>
@@ -477,7 +591,7 @@ document.addEventListener('DOMContentLoaded', () => {
         xhr.onreadystatechange = () => {
             if (xhr.readyState !== XMLHttpRequest.DONE) return;
             if (xhr.status < 200 || xhr.status >= 300) {
-                toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.');
+                toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
                 return;
             }
             const response = JSON.parse(xhr.responseText);
@@ -513,7 +627,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     loadComments();
+    loadProfileImageToAll();
 });
+
 // 페이지 로드 시 저장 완료 토스트 표시
 window.onload = () => {
     if (sessionStorage.getItem('showToast') === 'true') {
@@ -529,3 +645,26 @@ window.onload = () => {
         sessionStorage.removeItem('showToast');
     }
 };
+
+function loadProfileImageToAll() {
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) return;
+        if (xhr.status < 200 || xhr.status >= 300) {
+            toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
+            return;
+        }
+
+        const response = JSON.parse(xhr.responseText);
+        if (response.result === 'success') {
+            const userInfo = response.userInfo;
+            const images = document.querySelectorAll('.profile-img-circle');
+            images.forEach(image => {
+                image.style.backgroundColor = userInfo.profileColor;
+                image.textContent = userInfo.name.trim().toUpperCase();
+            });
+        }
+    };
+    xhr.open('GET', '/user/info');
+    xhr.send();
+}

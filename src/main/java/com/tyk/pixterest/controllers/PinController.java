@@ -29,7 +29,8 @@ public class PinController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getIndex(@RequestParam(value = "id", required = false) Long pinId,
+    public String getIndex(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                           @RequestParam(value = "id", required = false) Long pinId,
                            Model model) {
         if (pinId == null) {
             return "redirect:/?pin:error";
@@ -38,7 +39,15 @@ public class PinController {
         if (pin == null) {
             return "redirect:/?pin:false";
         }
+
+        boolean isSaved = false;
+        if (signedUser != null) {
+            isSaved = this.pinService.isPinSavedByUser(signedUser, pinId.intValue());
+        }
+
         model.addAttribute("pin", pin);
+        model.addAttribute("isSaved", isSaved);
+
         return "pin/detail";
     }
 
@@ -63,6 +72,25 @@ public class PinController {
         }
 
         Result result = this.pinService.savePin(signedUser, pinId.intValue());
+        response.put("result", result.toString().toLowerCase());
+        return response.toString();
+    }
+
+    @RequestMapping(value = "/hide", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String hidePin(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                          @RequestParam(value = "pinId") int pinId) {
+        JSONObject response = new JSONObject();
+
+        if (signedUser == null) {
+            response.put("result", "failure_session_expired");
+            return response.toString();
+        }
+        if (signedUser.isDeleted() || signedUser.isSuspended()) {
+            response.put("result", "failure_forbidden");
+            return response.toString();
+        }
+        Result result = this.pinService.hidePin(signedUser, pinId);
         response.put("result", result.toString().toLowerCase());
         return response.toString();
     }

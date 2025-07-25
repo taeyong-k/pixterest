@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Param;
 public interface PinMapper {
     int insert(@Param(value = "pin") PinEntity pin);
 
+    int update(@Param(value = "pinId") PinEntity pinId);
+
     PinEntity selectById(@Param(value = "id") int id);
 
     PinEntity selectByUserEmailAndId(@Param("userEmail") String userEmail,

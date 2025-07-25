@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.overlay .save-button').forEach(($btn) => {
         $btn.addEventListener('click', () => {
             const pinId = $btn.dataset.pinId;
-            
+
             const xhr = new XMLHttpRequest();
             const formData = new FormData();
             formData.append('id', pinId);
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     case 'success':
                         $btn.classList.add('active');
                         $btn.textContent = "저장됨"
-                        sessionStorage.setItem('showToast', 'true');
+                        sessionStorage.setItem('showToast-save', 'true');
                         window.location.reload();
                         break;
                     default:
@@ -55,22 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             xhr.open('POST', '/');
             xhr.send(formData);
         });
-        window.onload = () => {
-            if (sessionStorage.getItem('showToast') === 'true') {
-                showToast({
-                    title: '핀 저장이 완료되었습니다',
-                    caption: '내 보드에서 확인해 보세요.',
-                    duration: 8100,
-                    buttonText: '이동하기',
-                    onButtonClick: () => {
-                        window.location.href = '/user/myPage';
-                    }
-                });
-                sessionStorage.removeItem('showToast');
-            }   // sessionStorage = 임시 저장 공간 (탭 안에서는 데이터가 유지)
-        };
     });
-
 
     // 핀 - 상세페이지
     document.querySelectorAll('.img-wrapper').forEach(wrapper => {
@@ -97,12 +82,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-
-
 });
 
-
+window.onload = () => {
+    if (sessionStorage.getItem('showToast-save') === 'true') {
+        showToast({
+            title: '핀 저장이 완료되었습니다',
+            caption: '내 보드에서 확인해 보세요.',
+            duration: 8100,
+            buttonText: '이동하기',
+            onButtonClick: () => {
+                window.location.href = '/user/myPage';
+            }
+        });
+        sessionStorage.removeItem('showToast-save');
+    }
+    if (sessionStorage.getItem('showToast-hide') === 'true') {
+        toast('핀 숨기기 완료', '숨긴 핀은 더 이상 보이지 않습니다.');
+        sessionStorage.removeItem('showToast-hide');
+    }
+};
 
 
 
