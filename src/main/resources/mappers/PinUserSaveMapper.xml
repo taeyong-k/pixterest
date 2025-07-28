@@ -22,4 +22,10 @@
         limit 1
     </select>
 
+    <select id="selectPinIdsByUserEmail" resultType="java.lang.Integer">
+        select `pin_id` as `pinId`
+        from `pixterest`.`pin_user_saves`
+        where `user_email` = #{userEmail}
+    </select>
+
 </mapper>

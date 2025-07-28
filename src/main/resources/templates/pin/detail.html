@@ -11,7 +11,7 @@
     <script defer src="/assets/scripts/components/header.js" type="text/javascript"></script>
     <script defer src="/assets/scripts/components/toast.js" type="text/javascript"></script>
     <script defer src="/assets/scripts/components/board.js" type="text/javascript"></script>
-    <script type="module" src="/pin/assets/scripts/detail.js"></script>
+    <script type="module" defer src="/pin/assets/scripts/detail.js"></script>
 </head>
 <body>
 <div id="pinDetail">
@@ -100,7 +100,7 @@
 <div id="extraFlyout" tabindex="0" aria-hidden="true" role="menu">
     <div class="extraFlyout">
         <div class="flyout-menu">
-            <button class="flyout-item edit-pin">
+            <button class="flyout-item edit-pin" th:attr="data-pin-id=${pin.id}">
                 <div class="caption">핀 수정</div>
             </button>
         </div>

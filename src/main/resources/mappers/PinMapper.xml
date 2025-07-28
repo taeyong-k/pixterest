@@ -7,7 +7,8 @@
             useGeneratedKeys="true"
             keyColumn="id"
             keyProperty="id">
-        insert into `pixterest`.`pins` (`user_email`, `board_id`, `title`, `content`, `link`, `tag`, `image`, `created_at`,
+        insert into `pixterest`.`pins` (`user_email`, `board_id`, `title`, `content`, `link`, `tag`, `image`,
+                                        `created_at`,
                                         `modified_at`, `is_deleted`)
         values (#{pin.userEmail}, #{pin.boardId}, #{pin.title}, #{pin.content}, #{pin.link}, #{pin.tag}, #{pin.image},
                 #{pin.createdAt}, #{pin.modifiedAt}, #{pin.isDeleted});
@@ -15,8 +16,20 @@
 
     <update id="update">
         update `pixterest`.`pins`
+        set
+        title = #{pinId.title},
+        content = #{pinId.content},
+        link = #{pinId.link},
+        tag = #{pinId.tag},
+        board_id = #{pinId.boardId},
+        modified_at = now()
+        where id = #{pinId.id}
+    </update>
+
+    <update id="updateDelete">
+        update `pixterest`.`pins`
         set is_deleted = #{pinId.isDeleted},
-            modified_at = now()
+        modified_at = now()
         where id = #{pinId.id}
     </update>
 
@@ -68,9 +81,9 @@
                `is_deleted`  as `isDeleted`
         from `pixterest`.`pins`
         where is_deleted = false
-        and (title like concat('%', #{searchVo.keyword}, '%')
-             or content like concat('%', #{searchVo.keyword}, '%')
-             or tag like concat('%', #{searchVo.keyword}, '%'))
+          and (title like concat('%', #{searchVo.keyword}, '%')
+            or content like concat('%', #{searchVo.keyword}, '%')
+            or tag like concat('%', #{searchVo.keyword}, '%'))
         order by created_at desc
     </select>
 

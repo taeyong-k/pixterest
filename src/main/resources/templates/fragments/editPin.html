@@ -18,8 +18,8 @@
                     <div class="editPin-label-layout">
                         <div class="editPin-label-wrapper">
                             <div class="title">제목</div>
-                            <label class="obj-label editPin-label">
-                                <input aria-invalid="false" class="obj-field input" name="input" spellcheck="false"
+                            <label class="obj-label editPin-label title">
+                                <input aria-invalid="false" class="obj-field input" name="title" spellcheck="false"
                                        placeholder="제목 추가" type="text">
                                 <div class="-warning -row">
                                     <div class="warning-icon">
@@ -35,10 +35,10 @@
                     <div class="editPin-label-layout">
                         <div class="editPin-label-wrapper">
                             <div class="title">설명</div>
-                            <label class="obj-label editPin-label">
-                        <textarea aria-invalid="false" class="obj-field textarea"
-                                  name="input" placeholder="자세한 설명을 추가하세요."
-                                  spellcheck="false" rows="4"></textarea>
+                            <label class="obj-label editPin-label content">
+                                <textarea aria-invalid="false" class="obj-field textarea"
+                                        name="content" placeholder="자세한 설명을 추가하세요."
+                                        spellcheck="false" rows="4"></textarea>
                                 <div class="-warning -row">
                                     <div class="warning-icon">
                                         <svg class="icon" role="img" viewBox="0 0 16 16">
@@ -53,8 +53,8 @@
                     <div class="editPin-label-layout">
                         <div class="editPin-label-wrapper">
                             <div class="title">링크</div>
-                            <label class="obj-label editPin-label">
-                                <input aria-invalid="false" class="obj-field input" name="input" spellcheck="false"
+                            <label class="obj-label editPin-label link">
+                                <input aria-invalid="false" class="obj-field input" name="link" spellcheck="false"
                                        placeholder="링크 추가" type="text">
                                 <div class="-warning -row">
                                     <div class="warning-icon">
@@ -113,8 +113,8 @@
                     <div class="editPin-label-layout">
                         <div class="editPin-label-wrapper">
                             <div class="title">태그</div>
-                            <label class="obj-label editPin-label">
-                                <input aria-invalid="false" class="obj-field input" name="input" spellcheck="false"
+                            <label class="obj-label editPin-label tag">
+                                <input aria-invalid="false" class="obj-field input" name="tag" spellcheck="false"
                                        placeholder="태그 추가" type="text">
                             </label>
                         </div>
@@ -124,7 +124,7 @@
                     <button aria-label="삭제" class="button delete" tabindex="0" type="button">
                         <div class="caption">삭제</div>
                     </button>
-                    <button aria-label="저장" class="button save" tabindex="0" type="button">
+                    <button aria-label="저장" class="button write" tabindex="0" type="button">
                         <div class="caption">저장</div>
                     </button>
                 </div>

@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const xhr = new XMLHttpRequest();
             const formData = new FormData();
             formData.append('id', pinId);
+
             xhr.onreadystatechange = () => {
                 if (xhr.readyState !== XMLHttpRequest.DONE) {
                     return;
@@ -40,11 +41,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         toast('핀을 찾을 수 없습니다', '선택하신 핀이 존재하지 않거나 삭제된 상태입니다.');
                         break;
                     case 'failure_duplicate':
-                        toast('이미 저장된 핀입니다', '선택하신 핀이 이미 내 보드에 저장되어 있습니다.');
+                        showToast({
+                            title: '이미 저장된 핀입니다',
+                            caption: '선택하신 핀이 이미 내 보드에 저장되어 있습니다.',
+                            duration: 8100,
+                            buttonText: '이동하기',
+                            onButtonClick: () => {
+                                window.location.href = '/user/myPage';
+                            }
+                        });
                         break;
                     case 'success':
-                        $btn.classList.add('active');
-                        $btn.textContent = "저장됨"
                         sessionStorage.setItem('showToast-save', 'true');
                         window.location.reload();
                         break;
@@ -96,10 +103,6 @@ window.onload = () => {
             }
         });
         sessionStorage.removeItem('showToast-save');
-    }
-    if (sessionStorage.getItem('showToast-hide') === 'true') {
-        toast('핀 숨기기 완료', '숨긴 핀은 더 이상 보이지 않습니다.');
-        sessionStorage.removeItem('showToast-hide');
     }
 };
 

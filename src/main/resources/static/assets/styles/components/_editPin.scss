@@ -169,6 +169,7 @@
 }
 
 #editPin .editPin-label .input {
+  width: 100%;
   max-width: 100%;
   text-align: left;
   color: #000;
@@ -345,15 +346,15 @@
   transform: scale(0.934426);
 }
 
-#editPin .editPin-button-container .button.save {
+#editPin .editPin-button-container .button.write {
   background-color: #e60023;
 }
 
-#editPin .editPin-button-container .button.save:hover {
+#editPin .editPin-button-container .button.write:hover {
   background-color: #cc001f;
 }
 
-#editPin .editPin-button-container .button.save:active {
+#editPin .editPin-button-container .button.write:active {
   background-color: #b2001a;
   transform: scale(0.934426);
 }
@@ -373,7 +374,7 @@
   -webkit-font-smoothing: antialiased;
 }
 
-#editPin .editPin-button-container .button.save .caption {
+#editPin .editPin-button-container .button.write .caption {
   @include flex(row, center, center);
   width: 100%;
   padding: 12px 15px;
@@ -392,7 +393,7 @@
 #boardFlyout-edit {
   position: absolute;
   left: 7%;
-  top: 50%;
+  top: 54%;
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   outline: none;

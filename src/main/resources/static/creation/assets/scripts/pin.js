@@ -186,7 +186,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     $pinContentTextarea.addEventListener('input', () => {   // 입력 중 실시간 검사
-        if ($pinContentTextarea.value.trim() !== '' && !contentRegex.test($pinContentTextarea.value)) {
+        const contentValue = $pinContentTextarea.value;
+        const contentLength = contentValue.length;
+
+        if (contentLength > 800) {
             $pinContentLabel.classList.add('-invalid');
         } else {
             $pinContentLabel.classList.remove('-invalid');

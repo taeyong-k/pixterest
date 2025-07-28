@@ -94,6 +94,33 @@ public class PinService {
 
         dbPin.setDeleted(true);
 
+        return this.pinMapper.updateDelete(dbPin) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+    }
+
+    public Result writePin(UserEntity user, int pinId, String title, String content, String link, String tag, Integer boardId) {
+        if (user == null) {
+            return CommonResult.FAILURE_SESSION_EXPIRED;
+        }
+        if (user.isSuspended() || user.isDeleted()) {
+            return CommonResult.FAILURE_FORBIDDEN;
+        }
+        if (pinId < 1) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+
+        PinEntity dbPin = this.pinMapper.selectById(pinId);
+        if (dbPin == null) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+
+        dbPin.setTitle(title);
+        dbPin.setContent(content);
+        dbPin.setLink(link);
+        dbPin.setTag(tag);
+        dbPin.setBoardId(boardId);
+
         return this.pinMapper.update(dbPin) > 0
                 ? CommonResult.SUCCESS
                 : CommonResult.FAILURE;

@@ -33,4 +33,5 @@ build/
 .vscode/
 
 src/main/resources/application.properties
+src/main/resources/application-dev.properties
 READ ME!! DB query.txt

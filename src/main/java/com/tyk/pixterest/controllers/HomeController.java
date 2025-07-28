@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Controller
 @RequestMapping(value = "/")
 public class HomeController {
@@ -23,7 +26,8 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getHome(SearchVo searchVo,
+    public String getHome(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                          SearchVo searchVo,
                           Model model) {
         PinEntity[] result;
 
@@ -33,8 +37,15 @@ public class HomeController {
             result = this.homeService.getHomePinsAll();
         }
 
+        Set<Integer> savedPinIds = new HashSet<>();
+        if (signedUser != null) {
+             savedPinIds = homeService.getSavedPinIdsByUser(signedUser);
+        }
+
         model.addAttribute("pins", result);
+        model.addAttribute("savedPinIds", savedPinIds);
         model.addAttribute("keyword", searchVo != null ? searchVo.getKeyword() : "");
+
         return "home/index";
     }
 
