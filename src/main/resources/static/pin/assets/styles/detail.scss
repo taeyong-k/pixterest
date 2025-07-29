@@ -98,9 +98,7 @@ body {
 
 #pinDetail .pinDetail-content {
   @include flex(column, center, flex-start);
-  min-width: 500px;
-  max-width: 550px;
-  width: calc((100% - 62px - 40px) / 2);
+  width: clamp(360px, 80vw, 550px);
   height: 100%;
   flex-shrink: 1;
   border-radius: 16px;
@@ -270,11 +268,8 @@ body {
 
 #pinDetail .pinDetail-comment {
   @include flex(column, center, flex-start);
-  min-width: 550px;
-  max-width: 650px;
-  width: calc((100% - 62px - 40px) / 2);
+  width: clamp(360px, 80vw, 650px);
   height: 100%;
-  margin-right: 42px;
   flex-shrink: 1;
   border-radius: 16px;
   border: 1px solid #e5e5e0;

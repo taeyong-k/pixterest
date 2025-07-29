@@ -29,8 +29,7 @@
   height: 100%;
   background: rgba(0, 0, 0, .8);
   cursor: zoom-out;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: hidden;
   position: absolute;
   display: none;
 }
@@ -41,7 +40,7 @@
 
 #board .board-info {
   max-height: calc(100vh - 32px);
-  width: 540px;
+  width: clamp(400px, 70vw, 540px);
   margin: 0 16px;
   border-radius: 16px;
   background-color: #ffffff;

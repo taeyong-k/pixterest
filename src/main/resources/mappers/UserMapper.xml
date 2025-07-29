@@ -66,6 +66,25 @@
         FROM `pixterest`.`users`
         WHERE `password` = #{password}
     </select>
+    <select id="selectByEmailAndPassword" resultType="com.tyk.pixterest.entities.UserEntity">
+        SELECT `email`         AS `email`,
+               `password`      AS `password`,
+               `first_name`    AS `firstName`,
+               `name`          AS `name`,
+               `nickname`      AS `nickname`,
+               `site`          AS `site`,
+               `introduce`     AS `introduce`,
+               `birth`         AS `birth`,
+               `profile_color` AS `profileColor`,
+               `created_at`    AS `createdAt`,
+               `modified_at`   AS `modifiedAt`,
+               `is_admin`      AS `isAdmin`,
+               `is_deleted`    AS `isDeleted`,
+               `is_suspended`  AS `isSuspended`
+        FROM `pixterest`.`users`
+        WHERE `email` = #{email}
+          AND `password` = #{password}
+    </select>
     <select id="selectBoardsByEmail" resultType="com.tyk.pixterest.entities.BoardEntity">
         SELECT b.`id`          AS `id`,
                b.`user_email`  AS `userEmail`,

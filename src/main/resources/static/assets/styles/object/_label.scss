@@ -28,21 +28,18 @@
   // 실제 hover 효과는 해당 요소에만
   &:hover {
     color: color.adjust($caption-text-color, $lightness: -15%);
-    border-color: #ffffff;
-    outline: 1.5px solid #007db8;
+    border: 1.5px solid #007db8;
     z-index: 1; // 시각적으로 겹칠 경우 위로
   }
 
   &:focus-within {
-    border-color: #ffffff;
-    outline: 1.5px solid #007db8;
+    border: 1.5px solid #007db8;
     z-index: 1;
   }
 
   // 유효성 오류 상태
   &.-invalid {
-    border-color: #ffffff;
-    outline: 1.5px solid #b2001a;
+    border: 1.5px solid #b2001a;
     z-index: 9;
 
     .-field:not(:disabled) {

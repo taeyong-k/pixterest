@@ -37,7 +37,7 @@ $boardButton.addEventListener('click', () => {
         $boardNameInput.select();
         return;
     }
-    
+
     const xhr = new XMLHttpRequest();
     const formData = new FormData();
     formData.append('name', name);

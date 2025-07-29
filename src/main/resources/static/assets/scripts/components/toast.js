@@ -35,6 +35,7 @@ function showToast({
             if (typeof onButtonClick === 'function') {
                 onButtonClick();
             }
+            closeBtn.click();
         };
     } else {
         buttonContainer.classList.remove('-visible');
@@ -127,6 +128,7 @@ function showAlertToast({
             if (typeof onButtonClick === 'function') {
                 onButtonClick();
             }
+            closeBtn.click();
         };
     } else {
         buttonContainer.classList.remove('-visible');
@@ -197,17 +199,33 @@ function checkToastParam() {
 
     if (valLogin === 'false') {
         toast('로그인이 필요합니다', '서비스 이용을 위해 로그인이 필요합니다.');
+        cleanUrl();
     } else if (valLogin === 'expired') {
         toast('로그인이 필요합니다', '세션이 만료되었거나 로그인 상태가 아닙니다.\n다시 로그인해주세요.');
+        cleanUrl();
     } else if (valLogin === 'forbidden') {
         toastAlter('접근이 제한되었습니다', '회원님의 계정은 현재 이용이 불가능합니다.\n관리자에게 문의해주세요.');
+        cleanUrl();
     }
 
     if (valPin === 'error') {
         toast('잘못된 접근입니다', '핀 정보가 정상적으로 전달되지 않았습니다.\n다시 시도해주세요.');
+        cleanUrl();
     } else if (valPin === 'false') {
         toast('존재하지 않는 핀입니다', '삭제되었거나 존재하지 않는 핀입니다.\n홈으로 이동되었습니다.');
+        cleanUrl();
     }
+
+    if (valPin === 'hide') {
+        toast('핀 숨기기 완료', '숨긴 핀은 더 이상 보이지 않습니다.');
+        cleanUrl();
+    }
+}
+
+// 페이지 새로고침 시 중복 토스트 방지 (주소지 clean)
+function cleanUrl() {
+    const clean = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, '', clean);
 }
 
 // 페이지 로드 시 실행

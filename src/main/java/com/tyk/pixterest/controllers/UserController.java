@@ -26,8 +26,7 @@ public class UserController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String postRegister(UserEntity user)
-    {
+    public String postRegister(UserEntity user) {
         Result result = this.userService.register(user);
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
@@ -35,8 +34,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getLogin()
-    {
+    public String getLogin() {
         return "user/login";
     }
 
@@ -44,26 +42,20 @@ public class UserController {
     @ResponseBody
     public String postLogin(@RequestParam(value = "email") String email,
                             @RequestParam(value = "password") String password,
-                            HttpServletRequest request)
-    {
+                            HttpServletRequest request) {
         ResultTuple<UserEntity> result = this.userService.Login(email, password);
-        if (result.getResult() == CommonResult.SUCCESS)
-        {
-            HttpSession session = request.getSession();
+        if (result.getResult() == CommonResult.SUCCESS) {
             request.getSession().setAttribute("signedUser", result.getPayload());
-            session.setMaxInactiveInterval(-1);
-
         }
         JSONObject response = new JSONObject();
-        response.put("result",result.getResult().toStringLower());
+        response.put("result", result.getResult().toStringLower());
         return response.toString();
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String postLogout(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                             HttpSession session)
-    {
+                             HttpSession session) {
         if (signedUser == null) {
             return "redirect:/user/login?loginCheck=false";
         }
@@ -77,8 +69,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/recover-password", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getRecoverPassword()
-    {
+    public String getRecoverPassword() {
         return "user/recover";
     }
 
@@ -86,12 +77,10 @@ public class UserController {
     @RequestMapping(value = "/theme", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getTheme(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                           @RequestParam(value = "theme", required = false) String theme)
-    {
+                           @RequestParam(value = "theme", required = false) String theme) {
         JSONObject response = new JSONObject();
 
-        if (signedUser == null)
-        {
+        if (signedUser == null) {
             response.put("theme", "light");  // 로그인 안 되어 있으면 기본값
             return response.toString();
         }
@@ -108,8 +97,7 @@ public class UserController {
     @RequestMapping(value = "/theme", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String postTheme(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                            @RequestParam(value = "theme", required = false) String theme)
-    {
+                            @RequestParam(value = "theme", required = false) String theme) {
         JSONObject response = new JSONObject();
 
         if (signedUser == null) {
@@ -129,8 +117,7 @@ public class UserController {
     @ResponseBody
     public String postPassword(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                                String password,
-                               String newPassword)
-    {
+                               String newPassword) {
 
         if (signedUser == null) {
             return "redirect:/user/login?loginCheck=false";
@@ -138,17 +125,16 @@ public class UserController {
         if (signedUser.isSuspended() || signedUser.isDeleted()) {
             return "redirect:/user/login?loginCheck=forbidden";
         }
-        CommonResult result = this.userService.changePassword(signedUser,password, newPassword);
+        CommonResult result = this.userService.changePassword(signedUser, password, newPassword);
         JSONObject response = new JSONObject();
-        response.put("result",result.toStringLower());
+        response.put("result", result.toStringLower());
         return response.toString();
     }
 
     @RequestMapping(value = "/deactivate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String postDeactivate(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                                 String email)
-    {
+                                 String email) {
         if (signedUser == null) {
             return "redirect:/user/login?loginCheck=false";
         }
@@ -164,8 +150,7 @@ public class UserController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String postDelete(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                             String email)
-    {
+                             String email) {
         if (signedUser == null) {
             return "redirect:/user/login?loginCheck=false";
         }

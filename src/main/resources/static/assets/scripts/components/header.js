@@ -91,18 +91,11 @@ function showFlyout(triggerSelector, flyoutSelector, xOffset = 0, yOffset = 0, i
                         toastAlter('로그아웃', '로그아웃에 실패하셨습니다. 세션에 정보가 없거나 유효하지 않는 유저입니다.')
                         break;
                     case 'success':
-                        showToast({
-                            title: '로그아웃',
-                            caption: '로그아웃에 성공하셨습니다.',
-                            duration: 5100,
-                            showButton: true,
-                            buttonText: '이동하기',
-                            onButtonClick: () => location.href = `${origin}/`
-                        })
-
+                        sessionStorage.setItem('showToast', 'true');
+                        location.href = `${origin}/user/login`;
                         break;
                     default:
-                        toastAlter('로그아웃', '서버가 불안정합니다. 잠시 후 다시 시도해 주세요.')
+                        toastAlter('로그아웃에 실패했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
                 }
             };
             xhr.open('POST','/user/logout');
@@ -296,6 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function showBoardModal() {
         const board = document.getElementById('board');
         if (!board) return;
+        document.body.style.overflow = 'hidden';
         board.classList.add('-visible');
         board.querySelector('.board-overlay').classList.add('-visible');
     }
@@ -303,6 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function hideBoardModal() {
         const board = document.getElementById('board');
         if (!board) return;
+        document.body.style.overflow = '';
         board.classList.remove('-visible');
         board.querySelector('.board-overlay').classList.remove('-visible');
         // 입력값·경고 reset이 필요하면 여기서 초기화
@@ -318,13 +313,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-// 팝업 내 핀만들기 버튼
+    // 팝업 내 핀만들기 버튼
     document.getElementById('pin-button').addEventListener('click', (e) => {
         e.preventDefault(); // 기본 a 태그 이동 막음
         window.location.href = '/creation/pin';
     });
 
-// 팝업 내 보드만들기 버튼
+    // 팝업 내 보드만들기 버튼
     document.getElementById('board-button').addEventListener('click', (e) => {
         e.preventDefault();          // 새 페이지 이동 막기
         hideAllFlyouts();            // 플라이아웃 닫기
@@ -399,5 +394,10 @@ function setupLoginButtons() {
         }
     });
 }
+
+const $profileLoginBtn = document.querySelector('.profile-login-content');
+$profileLoginBtn.addEventListener('click', () => {
+    location.href = `${origin}/user/myPage`;
+});
 
 

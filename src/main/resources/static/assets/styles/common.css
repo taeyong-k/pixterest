@@ -109,7 +109,7 @@ header#header {
 }
 
 #headerContent .search-container {
-  min-width: 407px;
+  min-width: 250px;
   min-height: 0;
   flex: 1 1 auto;
   box-sizing: border-box;
@@ -1943,8 +1943,7 @@ header#header {
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
   cursor: zoom-out;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: hidden;
   position: absolute;
   display: none;
 }
@@ -1955,7 +1954,7 @@ header#header {
 
 #board .board-info {
   max-height: calc(100vh - 32px);
-  width: 540px;
+  width: clamp(400px, 70vw, 540px);
   margin: 0 16px;
   border-radius: 16px;
   background-color: #ffffff;
@@ -3114,18 +3113,15 @@ header#header {
 }
 .obj-label:hover {
   color: hsl(0, 0%, -15%);
-  border-color: #ffffff;
-  outline: 1.5px solid #007db8;
+  border: 1.5px solid #007db8;
   z-index: 1;
 }
 .obj-label:focus-within {
-  border-color: #ffffff;
-  outline: 1.5px solid #007db8;
+  border: 1.5px solid #007db8;
   z-index: 1;
 }
 .obj-label.-invalid {
-  border-color: #ffffff;
-  outline: 1.5px solid #b2001a;
+  border: 1.5px solid #b2001a;
   z-index: 9;
 }
 .obj-label.-invalid .-field:not(:disabled) {

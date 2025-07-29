@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class UserService
-{
+public class UserService {
     private final UserMapper userMapper;
 
     @Autowired
@@ -22,36 +21,29 @@ public class UserService
         this.userMapper = userMapper;
     }
 
-    public static boolean isEmailValid(String input)
-    {
+    public static boolean isEmailValid(String input) {
         return input != null && input.matches("^(?=.{8,50}$)([\\da-z\\-_.]{4,})@([\\da-z][\\da-z\\-]*[\\da-z]\\.)?([\\da-z][\\da-z\\-]*[\\da-z])\\.([a-z]{2,15})(\\.[a-z]{2,3})?$");
     }
 
-    public static boolean isPasswordValid(String input)
-    {
+    public static boolean isPasswordValid(String input) {
         return input != null && input.matches("^([\\da-zA-Z`~!@#$%^&*()\\-_=+\\[{\\]}\\\\|;:'\",<.>/?]{8,50})$");
     }
 
-    public Result register(UserEntity user)
-    {
-        if (user == null)
-        {
+    public Result register(UserEntity user) {
+        if (user == null) {
             return CommonResult.FAILURE;
         }
         if (user.getEmail() == null ||
                 user.getPassword() == null ||
-                user.getBirth() == null)
-        {
+                user.getBirth() == null) {
             return CommonResult.FAILURE;
         }
         if (!isEmailValid(user.getEmail()) ||
-                !isPasswordValid(user.getPassword()))
-        {
+                !isPasswordValid(user.getPassword())) {
             return CommonResult.FAILURE;
         }
         UserEntity dbUser = this.userMapper.selectByEmail(user.getEmail());
-        if (dbUser != null)
-        {
+        if (dbUser != null) {
             return RegisterResult.FAILURE_DUPLICATE_EMAIL;
         }
         String email = user.getEmail();
@@ -73,36 +65,30 @@ public class UserService
                 : CommonResult.FAILURE;
     }
 
-    public ResultTuple<UserEntity> Login(String email, String password)
-    {
-        if (email == null || password == null)
-        {
+    public ResultTuple<UserEntity> Login(String email, String password) {
+        if (email == null || password == null) {
             return ResultTuple.<UserEntity>builder()
                     .result(CommonResult.FAILURE)
                     .build();
         }
-        if (!UserService.isEmailValid(email) || !UserService.isPasswordValid(password))
-        {
+        if (!UserService.isEmailValid(email) || !UserService.isPasswordValid(password)) {
             return ResultTuple.<UserEntity>builder()
                     .result(CommonResult.FAILURE)
                     .build();
         }
         UserEntity dbUser = this.userMapper.selectByEmail(email);
-        if (dbUser == null || dbUser.isDeleted())
-        {
+        if (dbUser == null || dbUser.isDeleted()) {
             return ResultTuple.<UserEntity>builder()
                     .result(CommonResult.FAILURE)
                     .build();
         }
         String hashedPassword = CryptoUtils.hashSha512(password);
-        if (!dbUser.getPassword().equals(hashedPassword))
-        {
+        if (!dbUser.getPassword().equals(hashedPassword)) {
             return ResultTuple.<UserEntity>builder()
                     .result(CommonResult.FAILURE)
                     .build();
         }
-        if (dbUser.isSuspended())
-        {
+        if (dbUser.isSuspended()) {
             return ResultTuple.<UserEntity>builder()
                     .result(LoginResult.FAILURE_SUSPENDED)
                     .build();
@@ -137,32 +123,25 @@ public class UserService
         return CommonResult.SUCCESS;
     }
 
-    public CommonResult changePassword(UserEntity signedUser , String password, String newPassword)
-    {
-        if (signedUser == null || signedUser.isDeleted() || signedUser.isSuspended())
-        {
+    public CommonResult changePassword(UserEntity signedUser, String password, String newPassword) {
+        if (signedUser == null || signedUser.isDeleted() || signedUser.isSuspended()) {
             return CommonResult.FAILURE_SESSION_EXPIRED;
         }
-        if (password == null || newPassword == null)
-        {
+        if (password == null || newPassword == null) {
             return CommonResult.FAILURE;
         }
-        if (!UserService.isPasswordValid(password) || !UserService.isPasswordValid(newPassword))
-        {
+        if (!UserService.isPasswordValid(password) || !UserService.isPasswordValid(newPassword)) {
             return CommonResult.FAILURE;
         }
-        if (password.equals(newPassword))
-        {
+        if (password.equals(newPassword)) {
             return CommonResult.FAILURE_DUPLICATE;
         }
         String hashedPassword = CryptoUtils.hashSha512(password);
-        UserEntity dbUser = this.userMapper.selectByPassword(hashedPassword);
-        if (dbUser == null || dbUser.isDeleted() || dbUser.isSuspended())
-        {
+        UserEntity dbUser = this.userMapper.selectByEmailAndPassword(signedUser.getEmail(), hashedPassword);
+        if (dbUser == null || dbUser.isDeleted() || dbUser.isSuspended()) {
             return CommonResult.FAILURE;
         }
-        if (!dbUser.getPassword().equals(hashedPassword))
-        {
+        if (!dbUser.getPassword().equals(hashedPassword)) {
             return CommonResult.FAILURE;
         }
         dbUser.setPassword(CryptoUtils.hashSha512(newPassword));
@@ -171,10 +150,8 @@ public class UserService
                 : CommonResult.FAILURE;
     }
 
-    public CommonResult deleteUser(UserEntity signedUser, String email)
-    {
-        if (signedUser == null || signedUser.isDeleted() || signedUser.isSuspended())
-        {
+    public CommonResult deleteUser(UserEntity signedUser, String email) {
+        if (signedUser == null || signedUser.isDeleted() || signedUser.isSuspended()) {
             return CommonResult.FAILURE_SESSION_EXPIRED;
         }
         if (!signedUser.isAdmin() && !signedUser.getEmail().equals(email)) {
@@ -185,22 +162,18 @@ public class UserService
                 : CommonResult.FAILURE;
     }
 
-    public CommonResult deactivateUser(UserEntity signedUser, String email)
-    {
-        if (signedUser == null || signedUser.isDeleted() || signedUser.isSuspended())
-        {
+    public CommonResult deactivateUser(UserEntity signedUser, String email) {
+        if (signedUser == null || signedUser.isDeleted() || signedUser.isSuspended()) {
             return CommonResult.FAILURE_SESSION_EXPIRED;
         }
         if (!signedUser.isAdmin() && !signedUser.getEmail().equals(email)) {
             return CommonResult.FAILURE;
         }
-        if (!UserService.isEmailValid(email))
-        {
+        if (!UserService.isEmailValid(email)) {
             return CommonResult.FAILURE;
         }
         UserEntity dbUser = this.userMapper.selectByEmail(email);
-        if (dbUser == null || dbUser.isDeleted() || dbUser.isSuspended())
-        {
+        if (dbUser == null || dbUser.isDeleted() || dbUser.isSuspended()) {
             return CommonResult.FAILURE;
         }
         dbUser.setDeleted(true);
@@ -209,16 +182,13 @@ public class UserService
                 : CommonResult.FAILURE;
     }
 
-    public ResultTuple<String> getTheme(UserEntity signedUser, String theme)
-    {
-        if (signedUser == null)
-        {
+    public ResultTuple<String> getTheme(UserEntity signedUser, String theme) {
+        if (signedUser == null) {
             return ResultTuple.<String>builder()
                     .result(CommonResult.FAILURE)
                     .build();
         }
-        if (theme == null)
-        {
+        if (theme == null) {
             return ResultTuple.<String>builder()
                     .result(CommonResult.FAILURE)
                     .build();
@@ -227,8 +197,7 @@ public class UserService
         return null;
     }
 
-    public CommonResult saveUserTheme(UserEntity signedUser, String theme)
-    {
+    public CommonResult saveUserTheme(UserEntity signedUser, String theme) {
         return null;
     }
 }

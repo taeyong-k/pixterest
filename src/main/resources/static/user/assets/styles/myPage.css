@@ -52,6 +52,289 @@ body.dark .menu > .item:hover {
   cursor: pointer;
 }
 
+#dialog {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 999;
+  display: none;
+}
+#dialog.-visible {
+  display: flex;
+}
+#dialog::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 3000;
+}
+#dialog > .-modal {
+  min-height: 35rem;
+}
+#dialog > .-modal #registerModalForm,
+#dialog > .-modal #loginModalForm {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25rem;
+  max-width: 90%;
+  background-color: #ffffff;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+  border-radius: 2rem;
+  padding: 2rem 1.5rem;
+  font-size: 0.75rem;
+  display: none;
+  z-index: 4000;
+}
+#dialog > .-modal #registerModalForm > *,
+#dialog > .-modal #loginModalForm > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#dialog > .-modal #registerModalForm > .-flex-stretch,
+#dialog > .-modal #loginModalForm > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#dialog > .-modal #registerModalForm.-visible,
+#dialog > .-modal #loginModalForm.-visible {
+  display: flex;
+}
+#dialog > .-modal #registerModalForm > .logo,
+#dialog > .-modal #loginModalForm > .logo {
+  margin: 0.5rem auto 0.375rem;
+  width: 2.813rem;
+  height: 2.813rem;
+  color: #e60023;
+  fill: currentColor;
+  display: block;
+  stroke-width: 0;
+  vertical-align: middle;
+}
+#dialog > .-modal #registerModalForm > .logo > .icon,
+#dialog > .-modal #loginModalForm > .logo > .icon {
+  width: 2rem;
+}
+#dialog > .-modal #registerModalForm > .cancel,
+#dialog > .-modal #loginModalForm > .cancel {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+#dialog > .-modal #registerModalForm > .cancel > .icon,
+#dialog > .-modal #loginModalForm > .cancel > .icon {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+#dialog > .-modal #registerModalForm > .title,
+#dialog > .-modal #loginModalForm > .title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  color: #000000;
+}
+#dialog > .-modal #registerModalForm > .sub-title,
+#dialog > .-modal #loginModalForm > .sub-title {
+  color: #000000;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+}
+#dialog > .-modal #registerModalForm .field-wrapper,
+#dialog > .-modal #loginModalForm .field-wrapper {
+  width: 75%;
+  position: relative;
+}
+#dialog > .-modal #registerModalForm .field-wrapper.column,
+#dialog > .-modal #loginModalForm .field-wrapper.column {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+#dialog > .-modal #registerModalForm .field-wrapper.column > *,
+#dialog > .-modal #loginModalForm .field-wrapper.column > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#dialog > .-modal #registerModalForm .field-wrapper.column > .-flex-stretch,
+#dialog > .-modal #loginModalForm .field-wrapper.column > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .obj-label,
+#dialog > .-modal #loginModalForm .field-wrapper > .obj-label {
+  width: 100%;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .obj-label > .input-field,
+#dialog > .-modal #loginModalForm .field-wrapper > .obj-label > .input-field {
+  width: 100%;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .obj-label:focus-within,
+#dialog > .-modal #loginModalForm .field-wrapper > .obj-label:focus-within {
+  border-color: #ffffff;
+  outline: 1.5px solid #007db8;
+  z-index: 1;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  justify-content: center;
+  display: none;
+  position: absolute;
+  bottom: -1.5rem;
+  left: 0;
+  color: #e74c3c;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning > *,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning > .-flex-stretch,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning.-visible,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning.-visible {
+  display: flex;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning .warning-icon,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning .warning-icon {
+  width: 12px;
+  height: 12px;
+  color: #8a0f0f;
+  fill: currentColor;
+  stroke-width: 0;
+  vertical-align: middle;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  display: block;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning .warning-icon > .icon,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning .warning-icon > .icon {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning .warning-icon > .icon > *,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning .warning-icon > .icon > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning .warning-icon > .icon > .-flex-stretch,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning .warning-icon > .icon > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#dialog > .-modal #registerModalForm .field-wrapper > .-warning .caption,
+#dialog > .-modal #loginModalForm .field-wrapper > .-warning .caption {
+  text-align: left;
+  color: #8a0f0f;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+#dialog > .-modal #registerModalForm > .recoverPassword,
+#dialog > .-modal #loginModalForm > .recoverPassword {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: flex-start;
+}
+#dialog > .-modal #registerModalForm > .recoverPassword > *,
+#dialog > .-modal #loginModalForm > .recoverPassword > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#dialog > .-modal #registerModalForm > .recoverPassword > .-flex-stretch,
+#dialog > .-modal #loginModalForm > .recoverPassword > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#dialog > .-modal #registerModalForm > .recoverPassword > .link .caption,
+#dialog > .-modal #loginModalForm > .recoverPassword > .link .caption {
+  color: #1e4b67;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+#dialog > .-modal #registerModalForm > .recoverPassword > .link .caption:hover,
+#dialog > .-modal #loginModalForm > .recoverPassword > .link .caption:hover {
+  text-decoration: underline;
+}
+#dialog > .-modal #registerModalForm > .button-container,
+#dialog > .-modal #loginModalForm > .button-container {
+  margin-bottom: 1rem;
+}
+#dialog > .-modal #registerModalForm > .button-container > .obj-button,
+#dialog > .-modal #loginModalForm > .button-container > .obj-button {
+  min-height: 2rem;
+  padding: 0.125rem 0.75rem;
+  width: 17.5rem;
+  font-weight: 500;
+}
+#dialog > .-modal #registerModalForm > .button-container > .-color-gray,
+#dialog > .-modal #loginModalForm > .button-container > .-color-gray {
+  color: #000000;
+}
+#dialog > .-modal #registerModalForm > .confirm,
+#dialog > .-modal #loginModalForm > .confirm {
+  margin-bottom: 1rem;
+  overflow: hidden;
+  white-space: wrap;
+}
+#dialog > .-modal #registerModalForm > .confirm > .caption,
+#dialog > .-modal #loginModalForm > .confirm > .caption {
+  color: #57574c;
+  font-weight: 400;
+}
+#dialog > .-modal #registerModalForm > .register > .link > .caption,
+#dialog > .-modal #loginModalForm > .register > .link > .caption {
+  color: #000000;
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+#dialog > .-modal #registerModalForm > .register > .link > .login,
+#dialog > .-modal #loginModalForm > .register > .link > .login {
+  color: #000000;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
 #main-page {
   align-items: center;
   display: flex;
@@ -419,6 +702,7 @@ body.dark .menu > .item:hover {
   flex-direction: row;
   gap: 0.5rem;
   justify-content: flex-start;
+  background-color: #e0e0d9;
   width: 14.875rem;
   height: 13.938rem;
   border-radius: 1rem;
@@ -735,51 +1019,30 @@ body.dark .menu > .item:hover {
 }
 #edit-page > .form-container > #modifyForm > .field-wrapper {
   width: 100%;
-  position: relative;
-  margin-bottom: 1.5rem;
 }
 #edit-page > .form-container > #modifyForm > .field-wrapper.column {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
-#edit-page > .form-container > #modifyForm > .field-wrapper > .row {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-  justify-content: flex-start;
-  width: 100%;
-  flex-grow: 1;
-  flex-shrink: 1;
-  gap: 0.25rem;
-}
-#edit-page > .form-container > #modifyForm > .field-wrapper > .row > * {
-  flex-grow: 0;
-  flex-shrink: 0;
-}
-#edit-page > .form-container > #modifyForm > .field-wrapper > .row > .-flex-stretch {
-  flex-grow: 1;
-  flex-shrink: 1;
-}
-#edit-page > .form-container > #modifyForm > .field-wrapper > .row > .field {
+#edit-page > .form-container > #modifyForm > .field-wrapper > .field {
   flex: 1 1 50%;
   margin: 0;
 }
-#edit-page > .form-container > #modifyForm > .field-wrapper > .row > .field .obj-label .caption {
+#edit-page > .form-container > #modifyForm > .field-wrapper > .field .obj-label .caption {
   font-size: 0.85rem;
   color: #000000;
   font-weight: 500;
 }
-#edit-page > .form-container > #modifyForm > .field-wrapper > .row > .field .obj-label .input-field,
-#edit-page > .form-container > #modifyForm > .field-wrapper > .row > .field .obj-label .input.-field {
+#edit-page > .form-container > #modifyForm > .field-wrapper > .field .obj-label .input-field,
+#edit-page > .form-container > #modifyForm > .field-wrapper > .field .obj-label .input.-field {
   width: 100%;
   height: 2.25rem;
   padding: 0.4rem 0.65rem;
   font-size: 0.95rem;
   box-sizing: border-box;
 }
-#edit-page > .form-container > #modifyForm > .field-wrapper > .row > .field .obj-label:focus-within {
+#edit-page > .form-container > #modifyForm > .field-wrapper > .field .obj-label:focus-within {
   border-color: #ffffff;
   outline: 1.5px solid #007db8;
   z-index: 1;
@@ -798,7 +1061,6 @@ body.dark .menu > .item:hover {
   gap: 0.25rem;
   justify-content: center;
   display: none;
-  position: absolute;
   bottom: -1.5rem;
   left: 0;
   color: #e74c3c;
@@ -936,12 +1198,19 @@ body.dark .menu > .item:hover {
   outline: 1.5px solid #007db8;
   z-index: 1;
 }
-#edit-page > .form-container > #accountForm > .field-wrapper .obj-button {
+#edit-page > .form-container > #accountForm > .field-wrapper > .button-container {
+  transition: transform 85ms ease-out;
+}
+#edit-page > .form-container > #accountForm > .field-wrapper > .button-container .obj-button {
+  background-color: #e0e0d9;
   width: 100%;
   color: #000000;
   font-weight: 500;
   align-self: flex-start;
   margin-top: 0.5rem;
+}
+#edit-page > .form-container > #accountForm > .field-wrapper > .button-container .obj-button:active {
+  transform: scale(0.933333);
 }
 #edit-page > .form-container > #accountForm > .field-wrapper > .-warning {
   align-items: center;
@@ -1059,16 +1328,16 @@ body.dark .menu > .item:hover {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
-  justify-content: center;
+  justify-content: flex-start;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 3rem;
+  height: 5rem;
   background-color: #fff;
   border-top: 1px solid #ddd;
   z-index: 99;
-  padding: 0.75rem 1rem;
+  padding-left: 50.5rem;
 }
 #edit-page > .button-container > * {
   flex-grow: 0;
@@ -1077,6 +1346,16 @@ body.dark .menu > .item:hover {
 #edit-page > .button-container > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
+}
+#edit-page > .button-container > .obj-button {
+  padding: 0.75rem 1rem;
+  transition: transform 85ms ease-out;
+}
+#edit-page > .button-container > .obj-button:disabled {
+  background-color: #e9e9e9;
+}
+#edit-page > .button-container > .obj-button:active {
+  transform: scale(0.934426);
 }
 #edit-page > .button-container > .-color-gray {
   color: #000000;

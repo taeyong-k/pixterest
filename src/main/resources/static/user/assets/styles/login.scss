@@ -59,11 +59,13 @@
         transition: transform 85ms ease-out;
         cursor: pointer;
 
-        &:hover {
+        &:hover
+        {
           background-color: #f0f0eb;
         }
 
-        &:active {
+        &:active
+        {
           transform: scale(0.833333);
           background-color: #deded3;
         }
@@ -117,7 +119,8 @@
       }
     }
 
-    > #registerModalForm {
+    > #registerModalForm
+    {
       position: fixed;
       top: 50%;
       left: 50%;
@@ -143,11 +146,13 @@
         transition: transform 85ms ease-out;
         cursor: pointer;
 
-        &:hover {
+        &:hover
+        {
           background-color: #f0f0eb;
         }
 
-        &:active {
+        &:active
+        {
           transform: scale(0.833333);
           background-color: #deded3;
         }
@@ -162,7 +167,8 @@
         @include modalTitle;
       }
 
-      > .sub-title {
+      > .sub-title
+      {
         color: #000;
         font-size: 1rem;
         font-weight: 400;
@@ -176,7 +182,7 @@
 
       > .button-container {
         @include buttonContainer;
-        padding-top: 10px;
+
       }
 
       > .confirm {
@@ -202,7 +208,8 @@
   }
 }
 
-#header {
+#header
+{
   @include flex(row, center, center);
   width: 100%;
   height: 5rem;
@@ -213,7 +220,7 @@
 
   > .logo {
     @include flex(row, center, center, 0.125rem);
-    margin-right: 8px;
+    margin-right: 0.5rem;
 
     > .icon {
       width: 1.25rem;
@@ -237,16 +244,16 @@
     padding: 0 1rem;
     min-width: 3.75rem;
     border-radius: 1.5rem;
+    cursor: pointer;
 
-
-    > .link {
+    > .link
+    {
       > .caption {
         color: #000000;
         font-size: 1rem;
         font-weight: 700;
       }
     }
-
 
     &:hover {
       background-color: #e0e0d9;
@@ -296,7 +303,8 @@
   }
 }
 
-#main {
+#main
+{
   @include flex(row, center, center, 5rem);
   min-height: 100vh;
   padding: 2rem;
@@ -433,6 +441,97 @@
           font-weight: 700;
         }
       }
+    }
+  }
+}
+
+
+@media (max-width: 1024px) {
+  #main {
+    flex-direction: column;
+    padding: 1rem;
+
+    > .space {
+      > .title {
+        font-size: 3rem;
+        text-align: center;
+      }
+    }
+  }
+
+  #header {
+    height: 4rem;
+    padding: 0.5rem 1rem;
+
+    > .menu {
+      > .item {
+        margin: 0.5rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  #dialog {
+    > .-modal {
+      > #loginModalForm,
+      > #registerModalForm {
+        width: 90vw;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      > #loginModalForm,
+      > #registerModalForm {
+        > .cancel {
+          top: 0.5rem;
+          right: 0.5rem;
+          padding: 6px 8px;
+        }
+      }
+    }
+  }
+
+  #header {
+    > .logo {
+      > .caption {
+        font-size: 1rem;
+      }
+    }
+
+    > .search {
+      min-width: auto;
+      padding: 0 0.5rem;
+    }
+
+    > .button-container {
+      .obj-button {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  #main {
+    > .space {
+      > .title {
+        font-size: 2rem;
+        padding: 0 1rem;
+      }
+    }
+  }
+
+  #header {
+    padding: 0.5rem;
+
+    > .menu {
+      display: none;
     }
   }
 }

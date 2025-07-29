@@ -165,7 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     toast('핀을 찾을 수 없습니다', '선택하신 핀이 존재하지 않거나 삭제된 상태입니다.');
                     break;
                 case 'failure_not_owner':
-                    toast('권한이 없습니다', '해당 핀은 본인이 작성한 핀이 아닙니다.\n수정 또는 삭제할 수 없습니다.');3
+                    toast('권한이 없습니다', '해당 핀은 본인이 작성한 핀이 아닙니다.\n수정 또는 삭제할 수 없습니다.');
+                    3
                     extraFlyout.style.display = 'none';
                     break;
                 case 'success':
@@ -392,48 +393,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ✅ 핀 수정하기 > 삭제 버튼 처리 이벤트
     $editPin.querySelector('.button.delete').addEventListener('click', () => {
-        if (!confirm('정말로 핀을 삭제할까요? 삭제된 핀은 복구가 어렵습니다.')) {
-            return;
-        }
+        showAlertToast({
+            title: '정말로 핀을 삭제할까요?',
+            caption: '삭제된 핀은 복구가 어렵습니다.',
+            duration: 10100,
+            buttonText: '삭제하기',
+            onButtonClick: () => {
+                const pinId = $editPin.getAttribute('data-pin-id');
+                if (!pinId) return;
 
-        const pinId = $editPin.getAttribute('data-pin-id');
-        if (!pinId) return;
+                const xhr = new XMLHttpRequest();
+                const formData = new FormData();
+                formData.append('pinId', pinId);
 
-        const xhr = new XMLHttpRequest();
-        const formData = new FormData();
-        formData.append('pinId', pinId);
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState !== XMLHttpRequest.DONE) {
+                        return;
+                    }
+                    if (xhr.status < 200 || xhr.status >= 300) {
+                        toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
+                        return;
+                    }
 
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState !== XMLHttpRequest.DONE) {
-                return;
+                    const response = JSON.parse(xhr.responseText);
+                    switch (response.result) {
+                        case 'failure_session_expired':
+                            window.location.href = '/user/login?loginCheck=expired'
+                            break;
+                        case 'failure_forbidden':
+                            window.location.href = '/user/login?loginCheck=forbidden'
+                            break;
+                        case 'failure_absent':
+                            toast('핀을 찾을 수 없습니다', '선택하신 핀이 존재하지 않거나 삭제된 상태입니다.');
+                            break;
+                        case 'success':
+                            window.location.href = '/?pin=hide'
+                            break;
+                        default:
+                            toastAlter('핀을 저장하지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+                    }
+                };
+                xhr.open('POST', '/pin/edit-hide');
+                xhr.send(formData);
             }
-            if (xhr.status < 200 || xhr.status >= 300) {
-                toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
-                return;
-            }
-
-            const response = JSON.parse(xhr.responseText);
-            switch (response.result) {
-                case 'failure_session_expired':
-                    window.location.href = '/user/login?loginCheck=expired'
-                    break;
-                case 'failure_forbidden':
-                    window.location.href = '/user/login?loginCheck=forbidden'
-                    break;
-                case 'failure_absent':
-                    toast('핀을 찾을 수 없습니다', '선택하신 핀이 존재하지 않거나 삭제된 상태입니다.');
-                    break;
-                case 'success':
-                    sessionStorage.setItem('showToast-hide', 'true');
-                    window.location.href = '/'
-                    break;
-                default:
-                    toastAlter('핀을 저장하지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
-            }
-        };
-        xhr.open('POST', '/pin/edit-hide');
-        xhr.send(formData);
+        });
     });
+
 
     // ✅ 핀 수정하기 > 작성 버튼 처리 이벤트
     $editPin.querySelector('.button.write').addEventListener('click', () => {
@@ -729,7 +734,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 수정할 댓글 ID 가져오기 (수정 버튼에서 data-id를 저장하거나 댓글 div 등에서 ID를 참조)
                 const commentDiv = modifyForm.previousElementSibling.previousElementSibling;
                 const commentId = commentDiv.dataset.id;
-                // const commentId = commentDiv.querySelector('.modify.action')?.dataset.id;
                 if (!commentId) {
                     toastAlter('오류', '댓글 ID를 찾을 수 없습니다.');
                     return;
@@ -841,41 +845,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const deleteComment = (commentId) => {
-        if (!confirm('정말로 댓글을 삭제할까요? 삭제된 댓글은 복구가 어렵습니다.')) {
-            return;
-        }
-        const xhr = new XMLHttpRequest();
-        const formData = new FormData();
-        formData.append('id', commentId);
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState !== XMLHttpRequest.DONE) {
-                return;
+        showAlertToast({
+            title: '정말로 댓글을 삭제할까요?',
+            caption: '삭제된 댓글은 복구가 어렵습니다.',
+            duration: 10100,
+            buttonText: '삭제하기',
+            onButtonClick: () => {
+                const xhr = new XMLHttpRequest();
+                const formData = new FormData();
+                formData.append('id', commentId);
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState !== XMLHttpRequest.DONE) {
+                        return;
+                    }
+                    if (xhr.status < 200 || xhr.status >= 300) {
+                        toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
+                        return;
+                    }
+                    const response = JSON.parse(xhr.responseText);
+                    switch (response.result) {
+                        case 'failure_session_expired':
+                            window.location.href = '/user/login?loginCheck=expired';
+                            break;
+                        case 'failure_forbidden':
+                            window.location.href = '/user/login?loginCheck=forbidden';
+                            break;
+                        case 'failure_absent':
+                            toast('댓글을 찾을 수 없습니다', '선택하신 댓글이 존재하지 않거나 삭제된 상태입니다.');
+                            break;
+                        case 'success':
+                            toast('삭제 완료!', '댓글이 성공적으로 삭제되었습니다.');
+                            loadComments();
+                            break;
+                        default:
+                            toastAlter('댓글을 삭제하지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+                    }
+                };
+                xhr.open('DELETE', '/pin/comment');
+                xhr.send(formData);
             }
-            if (xhr.status < 200 || xhr.status >= 300) {
-                toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
-                return;
-            }
-            const response = JSON.parse(xhr.responseText);
-            switch (response.result) {
-                case 'failure_session_expired':
-                    window.location.href = '/user/login?loginCheck=expired';
-                    break;
-                case 'failure_forbidden':
-                    window.location.href = '/user/login?loginCheck=forbidden';
-                    break;
-                case 'failure_absent':
-                    toast('댓글을 찾을 수 없습니다', '선택하신 댓글이 존재하지 않거나 삭제된 상태입니다.');
-                    break;
-                case 'success':
-                    toast('삭제 완료!', '댓글이 성공적으로 삭제되었습니다.');
-                    loadComments();
-                    break;
-                default:
-                    toastAlter('댓글을 삭제하지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
-            }
-        };
-        xhr.open('DELETE', '/pin/comment');
-        xhr.send(formData);
+        });
     }
 
     $commentContainer.addEventListener('click', (e) => {
@@ -955,10 +964,6 @@ window.onload = () => {
             }
         });
         sessionStorage.removeItem('showToast');
-    }
-    if (sessionStorage.getItem('showToast-hide') === 'true') {
-        toast('핀 숨기기 완료', '숨긴 핀은 더 이상 보이지 않습니다.');
-        sessionStorage.removeItem('showToast-hide');
     }
     if (sessionStorage.getItem('showToast-write') === 'true') {
         toast('수정 완료', '핀 정보가 정상적으로 수정되었습니다.');

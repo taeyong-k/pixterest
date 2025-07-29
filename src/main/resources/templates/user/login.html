@@ -14,8 +14,6 @@
     <script defer src="/user/assets/scripts/function/register.js"></script>
 </head>
 <body>
-<th:block th:replace="~{fragments/toast :: toast}"></th:block>
-<th:block th:replace="~{fragments/toast :: toastAlert}"></th:block>
 <div id="dialog" class="">
     <div class="-modal">
         <form novalidate id="registerModalForm" class="">
@@ -32,7 +30,7 @@
             <div class="field-wrapper column">
                 <span class="caption">이메일</span>
                 <label class="obj-label">
-                    <input autofocus required autocomplete="email" class="input-field" maxlength="50" minlength="8"
+                    <input autofocus required autocomplete="email" class="input-field"
                            name="email" spellcheck="false" placeholder="이메일" type="text">
                 </label>
                 <div class="-warning" role="alert" aria-live="polite">
@@ -48,7 +46,7 @@
             <div class="field-wrapper column">
                 <span class="caption">비밀번호</span>
                 <label class="obj-label">
-                    <input required autocomplete="off" class="input-field" maxlength="50" minlength="8"
+                    <input required autocomplete="off" class="input-field"
                            name="password" spellcheck="false" placeholder="비밀번호" type="password">
                 </label>
                 <div class="-warning" role="alert" aria-live="polite">
@@ -105,7 +103,7 @@
             <div class="field-wrapper column">
                 <span class="caption">이메일</span>
                 <label class="obj-label">
-                    <input autofocus required autocomplete="email" class="input-field" maxlength="50" minlength="8"
+                    <input autofocus required autocomplete="email" class="input-field"
                            name="email" spellcheck="false" placeholder="이메일" type="text">
                 </label>
                 <div class="-warning" role="alert" aria-live="polite">
@@ -121,7 +119,7 @@
             <div class="field-wrapper column">
                 <span class="caption">비밀번호</span>
                 <label class="obj-label">
-                    <input required autocomplete="off" class="input-field" maxlength="50" minlength="8"
+                    <input required autocomplete="off" class="input-field"
                            name="password" spellcheck="false" placeholder="비밀번호" type="password">
                 </label>
                 <div class="-warning" role="alert" aria-live="polite">
@@ -133,11 +131,11 @@
                     <span class="caption">비밀번호를 입력해 주세요.</span>
                 </div>
             </div>
-            <div class="recoverPassword">
-                <a href="https://kr.pinterest.com/password/reset/" class="link">
-                    <span class="caption">비밀번호를 잊으셨나요?</span>
-                </a>
-            </div>
+            <!--            <div class="recoverPassword">-->
+            <!--                <a href="/user/recover-password" class="link">-->
+            <!--                    <span class="caption">비밀번호를 잊으셨나요?</span>-->
+            <!--                </a>-->
+            <!--            </div>-->
             <div class="button-container">
                 <button class="obj-button -color-red" type="submit">로그인</button>
             </div>
@@ -171,26 +169,23 @@
         <span class="caption">Pixterest</span>
     </div>
     <div class="search">
-        <a href="/" class="link">
+        <a class="link">
             <span class="caption">탐색</span>
         </a>
     </div>
     <span class="stretch"></span>
     <ul class="menu">
         <li class="item">
-            <a href="https://newsroom.pinterest.com/company/?utm_source=redirect_aboutsite&utm_medium=organic-pinterest"
-               class="link">소개</a>
+            <a href="https://newsroom.pinterest.com/company/?utm_source=redirect_aboutsite&utm_medium=organic-pinterest" target="_blank" class="link">소개</a>
         </li>
         <li class="item">
-            <a href="https://business.pinterest.com/ko/?utm_campaign=pinterest_homepage_blogicon_all_evergreen&utm_medium=organic-pinterest&utm_source=organicpins_pinsite_homepageicon"
-               class="link">비즈니스</a>
+            <a href="https://business.pinterest.com/ko/?utm_campaign=pinterest_homepage_blogicon_all_evergreen&utm_medium=organic-pinterest&utm_source=organicpins_pinsite_homepageicon" target="_blank" class="link">비즈니스</a>
         </li>
         <li class="item">
-            <a href="https://create.pinterest.com/ko/" class="link">만들기</a>
+            <a href="https://create.pinterest.com/ko/" target="_blank" class="link">만들기</a>
         </li>
         <li class="item">
-            <a href="https://newsroom.pinterest.com/?utm_campaign=pinterest_homepage_blogicon_all_evergreen&utm_medium=organic-pinterest&utm_source=organicpins_pinsite_homepageicon"
-               class="link">뉴스</a>
+            <a href="https://newsroom.pinterest.com/?utm_campaign=pinterest_homepage_blogicon_all_evergreen&utm_medium=organic-pinterest&utm_source=organicpins_pinsite_homepageicon" target="_blank" class="link">뉴스</a>
         </li>
     </ul>
     <div class="button-container">
@@ -217,8 +212,7 @@
         <div class="field-wrapper column">
             <span class="caption">이메일</span>
             <label class="obj-label">
-                <input autofocus required autocomplete="email" class="input-field" maxlength="50" minlength="8"
-                       name="email" spellcheck="false" placeholder="이메일" type="text">
+                <input autofocus required autocomplete="email" class="input-field" name="email" spellcheck="false" placeholder="이메일" type="text">
             </label>
             <div class="-warning" role="alert" aria-live="polite">
                 <div class="warning-icon">
@@ -232,7 +226,7 @@
         <div class="field-wrapper column">
             <span class="caption">비밀번호</span>
             <label class="obj-label">
-                <input required autocomplete="off" class="input -field" maxlength="50" minlength="8" name="password"
+                <input required autocomplete="off" class="input -field" name="password"
                        spellcheck="false" placeholder="비밀번호" type="password">
             </label>
             <div class="-warning" role="alert" aria-live="polite">
@@ -244,11 +238,11 @@
                 <span class="caption">올바르지 않은 비밀번호를 입력했습니다. 다시 싣하거나 비밀번호 재설정하세요.</span>
             </div>
         </div>
-        <div class="recoverPassword">
-            <a href="https://kr.pinterest.com/password/reset/" class="link">
-                <span class="caption">비밀번호를 잊으셨나요?</span>
-            </a>
-        </div>
+        <!--        <div class="recoverPassword">-->
+        <!--            <a href="/user/recover-password" class="link">-->
+        <!--                <span class="caption">비밀번호를 잊으셨나요?</span>-->
+        <!--            </a>-->
+        <!--        </div>-->
         <div class="button-container">
             <button class="obj-button -color-red" type="submit">로그인</button>
         </div>
@@ -272,13 +266,10 @@
         </div>
         <h1 class="title">Pixterest에 오신 것을<br> 환영합니다</h1>
         <h2 class="sub-title">시도해 볼 만한 새로운 아이디어 찾기</h2>
-
-
         <div class="field-wrapper column">
             <span class="caption">이메일</span>
             <label class="obj-label">
-                <input autofocus required autocomplete="email" class="input-field" maxlength="50" minlength="8"
-                       name="email" spellcheck="false" placeholder="이메일" type="text">
+                <input autofocus required autocomplete="email" class="input-field" name="email" spellcheck="false" placeholder="이메일" type="text">
             </label>
             <div class="-warning" role="alert" aria-live="polite">
                 <div class="warning-icon">
@@ -292,7 +283,7 @@
         <div class="field-wrapper column">
             <span class="caption">비밀번호</span>
             <label class="obj-label">
-                <input required autocomplete="off" class="input -field" maxlength="50" minlength="8" name="password"
+                <input required autocomplete="off" class="input -field" name="password"
                        spellcheck="false" placeholder="비밀번호" type="password">
             </label>
             <div class="-warning" role="alert" aria-live="polite">
@@ -333,5 +324,7 @@
         </div>
     </form>
 </div>
+<th:block th:replace="~{/fragments/toast :: toast}"></th:block>
+<th:block th:replace="~{/fragments/toast :: toastAlert}"></th:block>
 </body>
 </html>

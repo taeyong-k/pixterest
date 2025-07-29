@@ -1,19 +1,29 @@
 window.addEventListener('load', () => {
     const $intro = document.getElementById('intro');
 
-    // 디버깅 모드일 경우 intro 제거
+    // debugging 모드면 제거
     if (new URL(location.href).searchParams.get('debugging') === 'true') {
         $intro.remove();
-    } else {
-        // 250ms 후 애니메이션 트리거용 클래스 조작
-        setTimeout(() => {
-            $intro.classList.add('-phase');
-        }, 250);
-
-        // 2000ms 후 intro 제거 애니메이션 및 클래스 정리
-        setTimeout(() => {
-            $intro.classList.remove('-visible');
-            $intro.classList.remove('-phase');
-        }, 2000);
+        return;
     }
+
+    // 이미 인트로 본 적 있으면 제거
+    if (sessionStorage.getItem('introShown') === 'true') {
+        $intro.remove();
+        return;
+    }
+
+    // 인트로 본 적 없으므로 1회 표시
+    sessionStorage.setItem('introShown', 'true');
+
+    // 인트로 애니메이션 시작
+    setTimeout(() => {
+        $intro.classList.add('-phase');
+    }, 250);
+
+    // 인트로 종료 처리
+    setTimeout(() => {
+        $intro.classList.remove('-visible');
+        $intro.classList.remove('-phase');
+    }, 2000);
 });

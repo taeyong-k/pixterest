@@ -2,6 +2,13 @@ const $loading = document.getElementById('loading');
 
 const $registerForm = document.getElementById('registerForm');
 
+$registerButton.addEventListener('click', () =>
+{
+    $dialog.classList.add('-visible');
+    $registerModalForm.classList.add('-visible');
+    $loginModalForm.classList.remove('-visible');
+});
+
 [$registerForm, $registerModalForm].forEach(($form) =>
 {
     if (!$form) return;
@@ -24,6 +31,24 @@ const $registerForm = document.getElementById('registerForm');
     $birthInput.addEventListener('blur', () =>
         validateBirth($birthInput, $birthLabel)
     );
+
+    $emailInput.addEventListener('input', () =>
+    {
+        $emailLabel.classList.remove('-invalid');
+        clearWarning($emailLabel)
+    });
+
+    $passwordInput.addEventListener('input', () =>
+    {
+        $passwordLabel.classList.remove('-invalid');
+        clearWarning($passwordLabel)
+    });
+
+    $birthInput.addEventListener('blur', () =>
+    {
+        $birthLabel.classList.remove('-invalid');
+        clearWarning($birthLabel)
+    });
 
 
     $form.onsubmit = (e) => {
@@ -62,25 +87,25 @@ const $registerForm = document.getElementById('registerForm');
             $loading.classList.remove('-visible');
 
             if (xhr.status < 200 || xhr.status >= 300) {
-                toastAlter('경고', '요청이 잘못되었습니다. 잠시 후 다시 시도해 주세요.');
+                toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
                 return;
             }
 
             const response = JSON.parse(xhr.responseText);
             switch (response['result']) {
                 case 'failure':
-                    toastAlter('경고', '잘못된 가입 요청입니다. \n 다시 한번 확인해 주세요.');
+                    toast('회원가입', '잘못된 가입 요청입니다. \n다시 한번 확인해 주세요.');
                     return;
                 case 'failure_duplicate_email':
-                    toastAlter('경고', '중복된 이메일입니다. \n 다른 이메일을 사용해 주세요.');
+                    toast('회원가입', '중복된 이메일입니다. \n다른 이메일을 사용해 주세요.');
                     break;
                 case 'success':
                     setProfile($emailInput.value, profileColor);
-                    sessionStorage.setItem('showToast', 'true');
-                    window.location.reload();
+                    sessionStorage.setItem('showToastSignup', 'true');
+                    location.reload();
                     return;
                 default:
-                    toastAlter('로그인에 성공하지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+                    toastAlter('회원가입에 실패하였습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
                     return;
             }
         };
@@ -114,7 +139,9 @@ function randomHexColor() {
         .toUpperCase()}`;
 }
 
-function setProfile(email, profileColor) {
+// 이미지 색깔 저장
+function setProfile(email, profileColor)
+{
     const profile = document.getElementById('profile');
     if (!profile) return; // 프로필 요소 없으면 종료
 
@@ -124,9 +151,24 @@ function setProfile(email, profileColor) {
     profileCircle.style.backgroundColor = profileColor;       // 배경색 설정
 }
 
-window.onload = () => {
-    if (sessionStorage.getItem('showToast') === 'true') {
-        toast('가입 완료', '환영합니다! 로그인해서 시작해보세요.')
-        sessionStorage.removeItem('showToast');
+window.addEventListener('load', () => {
+    if (sessionStorage.getItem('showToastSignup') === 'true') {
+        toast('가입 완료', '환영합니다! 로그인해서 시작해보세요.');
+        sessionStorage.removeItem('showToastSignup');
     }
-}
+});
+
+// 가입 폼에서 로그인 폼으로 전환할 때
+$registerModalForm.querySelector('.register > .link').addEventListener('click', e =>
+{
+    e.preventDefault();
+
+    // 가입폼 숨기고 로그인폼 보이기
+    $registerModalForm.classList.remove('-visible');
+    $loginModalForm.classList.add('-visible');
+
+    // 여기서 폼 초기화 (입력값 및 경고문 초기화)
+    $registerModalForm.reset();
+    $registerModalForm.querySelectorAll('.-warning').forEach(w => w.classList.remove('-visible'));
+    $registerModalForm.querySelectorAll('.obj-label').forEach(l => l.classList.remove('-invalid'));
+});

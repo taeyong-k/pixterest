@@ -20,6 +20,9 @@ public interface UserMapper {
 
     UserEntity selectByPassword(@Param(value = "password") String password);
 
+    UserEntity selectByEmailAndPassword(@Param(value = "email") String email,
+                                        @Param(value = "password") String password);
+
     List<BoardEntity> selectBoardsByEmail(@Param(value = "email") String email);
 
     List<PinEntity> selectPinsByEmail(@Param(value = "email") String email);

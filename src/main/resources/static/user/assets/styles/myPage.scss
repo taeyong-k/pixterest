@@ -68,6 +68,260 @@ body.dark
   }
 }
 
+#dialog
+{
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 999;
+  display: none;
+
+  &.-visible
+  {
+    display: flex;
+  }
+
+
+  &::before
+  {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 3000;
+  }
+
+  > .-modal
+  {
+    min-height: 35rem;
+
+    #registerModalForm,
+    #loginModalForm
+    {
+      @include flex(column, center, center);
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 25rem;
+      max-width: 90%;
+      background-color: #ffffff;
+      box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+      border-radius: 2rem;
+      padding: 2rem 1.5rem;
+      font-size: 0.75rem;
+      display: none;
+      z-index: 4000;
+
+      &.-visible
+      {
+        display: flex;
+      }
+
+      > .logo
+      {
+        margin: 0.5rem auto 0.375rem;
+        width: 2.813rem;
+        height: 2.813rem;
+        color: #e60023;
+        fill: currentColor;
+        display: block;
+        stroke-width: 0;
+        vertical-align: middle;
+        > .icon
+        {
+          width: 2rem;
+        }
+      }
+
+      > .cancel
+      {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        display: flex;
+        align-items: center;
+        margin-top: 1rem;
+        margin-right: 1rem;
+        margin-left: 1rem;
+
+        > .icon
+        {
+          width: 1rem;
+          height: 1rem;
+          cursor: pointer;
+        }
+      }
+
+      > .title
+      {
+        font-size: 1.8rem;
+        font-weight: bold;
+        text-align: center;
+        color: #000000;
+      }
+
+      > .sub-title
+      {
+        color: #000000;
+        font-size: 1rem;
+        font-weight: 400;
+        margin-bottom: 2rem;
+      }
+
+      .field-wrapper
+      {
+        width: 75%;
+        position: relative;
+
+        &.column
+        {
+          @include flex(column, flex-start, flex-start, 0.5rem);
+        }
+
+        > .obj-label {
+          width: 100%;
+
+          > .input-field {
+            width: 100%;
+          }
+
+          &:focus-within {
+            border-color: #ffffff;
+            outline: 1.5px solid #007db8;
+            z-index: 1;
+          }
+        }
+
+        > .-warning
+        {
+
+          @include flex(row, center, center, 0.25rem);
+          display: none;
+          position: absolute;
+          bottom: -1.5rem; // 라벨 하단에서 살짝 띄우기
+          left: 0;
+          color: #e74c3c;
+          font-size: 0.8rem;
+          white-space: nowrap; // 줄 바꿈 방지 (필요 시 제거)
+
+          &.-visible {
+            display: flex;
+          }
+
+          .warning-icon
+          {
+            width: 12px;
+            height: 12px;
+            color: #8a0f0f;
+            fill: currentColor;
+            stroke-width: 0;
+            vertical-align: middle;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 0;
+            line-height: 1.5;
+            display: block;
+
+            > .icon
+            {
+              @include flex(row, center, center, 0);
+            }
+          }
+
+          .caption
+          {
+            text-align: left;
+            color: #8a0f0f;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0;
+            line-height: 1.5;
+            word-wrap: break-word;
+            -webkit-font-smoothing: antialiased;
+          }
+        }
+      }
+
+      > .recoverPassword
+      {
+        @include flex(row, flex-start, flex-start);
+        > .link
+        {
+          .caption
+          {
+            color: #1e4b67;
+            font-size: 0.875rem;
+            font-weight: 500;
+
+            &:hover
+            {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+
+      > .button-container
+      {
+        margin-bottom: 1rem;
+
+        > .obj-button
+        {
+          min-height: 2rem;
+          padding: 0.125rem 0.75rem;
+          width: 17.5rem;
+          font-weight: 500;
+        }
+        > .-color-gray
+        {
+          color: #000000;
+        }
+      }
+
+      > .confirm
+      {
+        margin-bottom: 1rem;
+        overflow: hidden;
+        white-space: wrap;
+
+        > .caption
+        {
+          color: #57574c;
+          font-weight: 400;
+        }
+      }
+
+      > .register
+      {
+        > .link
+        {
+          > .caption
+          {
+            color: #000000;
+            font-size: 0.75rem;
+            font-weight: 400;
+          }
+
+          > .login
+          {
+            color: #000000;
+            font-size: 0.75rem;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+
+
+
+  }
+}
+
 #main-page
 {
   @include flex(column, center, center);
@@ -344,9 +598,11 @@ body.dark
             @include flex(column, flex-start, flex-start);
             margin-bottom: 1rem;
 
+
             > .image
             {
               @include flex(row, flex-start, flex-start, 0.5rem);
+              background-color: #e0e0d9;
               width: 14.875rem;
               height: 13.938rem;
               border-radius: 1rem;
@@ -630,8 +886,6 @@ body.dark
       > .field-wrapper
       {
         width: 100%;
-        position: relative;
-        margin-bottom: 1.5rem;
 
         &.column {
           display: flex;
@@ -639,39 +893,31 @@ body.dark
           gap: 0.75rem; // ✅ row와 버튼 사이 약간만 간격
         }
 
-        > .row {
-          @include flex(row, flex-start, flex-start);
-          width: 100%;
-          flex-grow: 1;
-          flex-shrink: 1;
-          gap: 0.25rem; // ✅ row 안의 두 필드 사이 미세 간격
+        > .field {
+          flex: 1 1 50%; // ✅ 각 필드 50% 차지
+          margin: 0;     // ✅ 불필요 margin 제거
 
-          > .field {
-            flex: 1 1 50%; // ✅ 각 필드 50% 차지
-            margin: 0;     // ✅ 불필요 margin 제거
+          .obj-label {
 
-            .obj-label {
+            .caption {
+              font-size: 0.85rem; // ✅ 살짝만 축소
+              color: #000000;
+              font-weight: 500;
+            }
 
-              .caption {
-                font-size: 0.85rem; // ✅ 살짝만 축소
-                color: #000000;
-                font-weight: 500;
-              }
+            .input-field,
+            .input.-field {
+              width: 100%;
+              height: 2.25rem;
+              padding: 0.4rem 0.65rem;
+              font-size: 0.95rem;
+              box-sizing: border-box;
+            }
 
-              .input-field,
-              .input.-field {
-                width: 100%;
-                height: 2.25rem;           // ✅ 기존 2.75rem → 조금 더 낮게
-                padding: 0.4rem 0.65rem;   // ✅ padding도 줄임
-                font-size: 0.95rem;        // ✅ 글자 크기 약간 축소
-                box-sizing: border-box;
-              }
-
-              &:focus-within {
-                border-color: #ffffff;
-                outline: 1.5px solid #007db8;
-                z-index: 1;
-              }
+            &:focus-within {
+              border-color: #ffffff;
+              outline: 1.5px solid #007db8;
+              z-index: 1;
             }
           }
         }
@@ -687,7 +933,6 @@ body.dark
         > .-warning {
           @include flex(row, center, center, 0.25rem);
           display: none;
-          position: absolute;
           bottom: -1.5rem;
           left: 0;
           color: #e74c3c;
@@ -819,12 +1064,22 @@ body.dark
           }
         }
 
-        .obj-button {
-          width: 100%;
-          color: #000000;
-          font-weight: 500;
-          align-self: flex-start;
-          margin-top: 0.5rem;
+        > .button-container
+        {
+          transition: transform 85ms ease-out;
+          .obj-button {
+            background-color: #e0e0d9;
+            width: 100%;
+            color: #000000;
+            font-weight: 500;
+            align-self: flex-start;
+            margin-top: 0.5rem;
+
+            &:active
+            {
+              transform: scale(0.933333);
+            }
+          }
         }
 
         > .-warning {
@@ -918,17 +1173,33 @@ body.dark
     }
   }
 
-  > .button-container {
-    @include flex(row, center, center, 0.5rem);
+  > .button-container
+  {
+    @include flex(row, center, flex-start, 0.5rem);
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 3rem;
+    height: 5rem;
     background-color: #fff;
     border-top: 1px solid #ddd;
     z-index: 99;
-    padding: 0.75rem 1rem;
+    padding-left: 50.5rem;
+
+    > .obj-button
+    {
+      padding: 0.75rem 1rem;
+      transition: transform 85ms ease-out;
+      &:disabled
+      {
+        background-color: #e9e9e9;
+      }
+      &:active
+      {
+        transform: scale(0.934426);
+      }
+
+    }
 
     > .-color-gray
     {

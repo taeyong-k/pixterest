@@ -11,6 +11,13 @@ if (isRegister === 'true') {
     $registerForm.classList.add('-visible');
 }
 
+$loginButton.addEventListener('click', () =>
+{
+    $dialog.classList.add('-visible');
+    $loginModalForm.classList.add('-visible');
+    $registerModalForm.classList.remove('-visible');
+});
+
 [$loginForm, $loginModalForm].forEach(($form) =>
 {
     if (!$form) return;
@@ -29,6 +36,19 @@ if (isRegister === 'true') {
         validatePassword($passwordInput, $passwordLabel)
     );
 
+    $emailInput.addEventListener('input', () =>
+    {
+        $emailLabel.classList.remove('-invalid');
+        validateEmail($emailInput, $emailLabel)
+        clearWarning($emailLabel)
+    });
+
+    $passwordInput.addEventListener('input', () =>
+    {
+        $passwordLabel.classList.remove('-invalid');
+        validatePassword($passwordInput, $passwordLabel)
+        clearWarning($passwordLabel)
+    });
 
     $form.onsubmit = (e) =>
     {
@@ -70,13 +90,13 @@ if (isRegister === 'true') {
             switch (response['result'])
             {
                 case 'failure_suspended':
-                    toastAlter('계정 정지', '정지된 계정의 로그인 요청입니다\n 자세한 사항은 관리자에게 문의 주세요.')
+                    toast('계정 정지', '정지된 계정의 로그인 요청입니다\n 자세한 사항은 관리자에게 문의 주세요.')
                     return;
                 case 'success':
                     location.href = `${origin}/`
                     return;
                 default:
-                    toastAlter('로그인에 실패하였습니다.', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+                    toast('로그인에 실패하였습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
                     return;
             }
         };
@@ -86,16 +106,46 @@ if (isRegister === 'true') {
     };
 });
 
-const $gotoRegister = $loginForm.querySelector(':scope > .register > .link > .caption')
+$header.querySelector(':scope > .search').addEventListener('click', () => location.href = `${origin}/`)
 
-$gotoRegister.addEventListener('click', () =>
-{
+const $gotoRegister = $loginForm.querySelector(':scope > .register > .link > .caption');
+$gotoRegister.addEventListener('click', () => {
     $loginForm.classList.remove('-visible');
-    $registerForm.classList.add('-visible')
-})
+    $registerForm.classList.add('-visible');
+});
 
 const $gotoRegisterModal = $loginModalForm.querySelector(':scope > .register > .link > .caption');
 $gotoRegisterModal.addEventListener('click', () => {
     $loginModalForm.classList.remove('-visible');
     $registerModalForm.classList.add('-visible');
+});
+
+window.addEventListener('load', () => {
+    if (sessionStorage.getItem('showToast') === 'true') {
+        toast('로그아웃 성공', '안전하게 로그아웃되었습니다.');
+        sessionStorage.removeItem('showToast');
+    }
+    if (sessionStorage.getItem('showToastDeactivated') === 'true') {
+        toast('계정이 비활성화되었습니다.', '원하실 때 언제든 다시 로그인하실 수 있습니다.');
+        sessionStorage.removeItem('showToastDeactivated');
+    }
+    if (sessionStorage.getItem('showToastDeleted') === 'true') {
+        toast('계정이 삭제되었습니다.', '그동안 서비스를 이용해주셔서 감사합니다.');
+        sessionStorage.removeItem('showToastDeleted');
+    }
+});
+
+// 로그인 폼에서 가입 폼으로 전환할 때
+$loginModalForm.querySelector('.register > .link').addEventListener('click', e =>
+{
+    e.preventDefault();
+
+    // 로그인폼 숨기고 가입폼 보이기
+    $loginModalForm.classList.remove('-visible');
+    $registerModalForm.classList.add('-visible');
+
+    // 폼 초기화
+    $loginModalForm.reset();
+    $loginModalForm.querySelectorAll('.-warning').forEach(w => w.classList.remove('-visible'));
+    $loginModalForm.querySelectorAll('.obj-label').forEach(l => l.classList.remove('-invalid'));
 });

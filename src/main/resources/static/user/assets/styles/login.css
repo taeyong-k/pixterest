@@ -442,7 +442,6 @@
 }
 #dialog > .-modal > #registerModalForm > .button-container {
   margin-bottom: 1rem;
-  padding-top: 10px;
 }
 #dialog > .-modal > #registerModalForm > .button-container > .obj-button {
   min-height: 2rem;
@@ -501,7 +500,7 @@
   flex-direction: row;
   gap: 0.125rem;
   justify-content: center;
-  margin-right: 8px;
+  margin-right: 0.5rem;
 }
 #header > .logo > * {
   flex-grow: 0;
@@ -534,6 +533,7 @@
   padding: 0 1rem;
   min-width: 3.75rem;
   border-radius: 1.5rem;
+  cursor: pointer;
 }
 #header > .search > * {
   flex-grow: 0;
@@ -1020,6 +1020,65 @@
   color: #000000;
   cursor: pointer;
   font-weight: 700;
+}
+
+@media (max-width: 1024px) {
+  #main {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  #main > .space > .title {
+    font-size: 3rem;
+    text-align: center;
+  }
+  #header {
+    height: 4rem;
+    padding: 0.5rem 1rem;
+  }
+  #header > .menu > .item {
+    margin: 0.5rem;
+  }
+}
+@media (max-width: 768px) {
+  #dialog > .-modal > #loginModalForm,
+  #dialog > .-modal > #registerModalForm {
+    width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  #dialog > .-modal > #loginModalForm > .cancel,
+  #dialog > .-modal > #registerModalForm > .cancel {
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 6px 8px;
+  }
+  #header > .logo > .caption {
+    font-size: 1rem;
+  }
+  #header > .search {
+    min-width: auto;
+    padding: 0 0.5rem;
+  }
+  #header > .button-container .obj-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+}
+@media (max-width: 480px) {
+  #main > .space > .title {
+    font-size: 2rem;
+    padding: 0 1rem;
+  }
+  #header {
+    padding: 0.5rem;
+  }
+  #header > .menu {
+    display: none;
+  }
 }
 
 /*# sourceMappingURL=login.css.map */
