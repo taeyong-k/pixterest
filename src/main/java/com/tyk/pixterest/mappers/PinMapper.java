@@ -18,6 +18,8 @@ public interface PinMapper {
     PinEntity selectByUserEmailAndId(@Param("userEmail") String userEmail,
                                      @Param("id") int id);
 
+    PinEntity selectFirstNonDeletedPinByBoardId(@Param("boardId") int boardId);
+
     PinEntity[] search(@Param(value = "searchVo") SearchVo searchVo);
 
     PinEntity[] selectAll();

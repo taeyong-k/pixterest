@@ -67,6 +67,25 @@
         order by created_at desc
     </select>
 
+    <select id="selectFirstNonDeletedPinByBoardId" resultType="com.tyk.pixterest.entities.PinEntity">
+        select `id`          as `id`,
+               `user_email`  as `userEmail`,
+               `board_id`    as `boardId`,
+               `title`       as `title`,
+               `content`     as `content`,
+               `link`        as `link`,
+               `tag`         as `tag`,
+               `image`       as `image`,
+               `created_at`  as `createdAt`,
+               `modified_at` as `modifiedAt`,
+               `is_deleted`  as `isDeleted`
+        from `pixterest`.`pins`
+        where board_id = #{boardId}
+          and is_deleted = false
+        order by created_at desc
+        limit 1
+    </select>
+
     <select id="search" resultType="com.tyk.pixterest.entities.PinEntity">
         select `id`          as `id`,
                `user_email`  as `userEmail`,
@@ -104,6 +123,5 @@
           and `id` = #{id}
         limit 1
     </select>
-
 
 </mapper>

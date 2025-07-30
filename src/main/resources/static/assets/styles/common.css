@@ -2257,6 +2257,8 @@ header#header {
   width: 100%;
   flex: 1 1 auto;
   padding: 24px;
+  position: sticky;
+  z-index: 1002;
 }
 #editPin .editPin-header > * {
   flex-grow: 0;
@@ -2265,6 +2267,10 @@ header#header {
 #editPin .editPin-header > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
+}
+
+#editPin .editPin-header.-scrolled {
+  box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.12);
 }
 
 #editPin .editPin-header .editPin-title {
@@ -2372,6 +2378,7 @@ header#header {
   height: 100%;
   flex: 1 1 auto;
   padding: 0 24px;
+  overflow: auto;
   display: block;
 }
 
@@ -2597,8 +2604,10 @@ header#header {
   gap: 8px;
   justify-content: flex-end;
   width: 100%;
+  background-color: #ffffff;
   padding: 24px;
-  position: relative;
+  position: sticky;
+  z-index: 1002;
 }
 #editPin .editPin-button-container > * {
   flex-grow: 0;
@@ -2607,6 +2616,10 @@ header#header {
 #editPin .editPin-button-container > .-flex-stretch {
   flex-grow: 1;
   flex-shrink: 1;
+}
+
+#editPin .editPin-button-container.-scrolled {
+  box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.12);
 }
 
 #editPin .editPin-button-container .button {
@@ -2703,8 +2716,8 @@ header#header {
 
 #boardFlyout-edit {
   position: absolute;
-  left: 7%;
-  top: 54%;
+  top: 0;
+  left: 0;
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   outline: none;
@@ -2718,20 +2731,20 @@ header#header {
 
 #boardFlyout-edit .boardFlyout {
   max-width: 420px;
-  max-height: 90vh;
+  max-height: 30vh;
   min-height: 40px;
   min-width: 180px;
   background-color: #ffffff;
   border-radius: 16px;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: block;
 }
 
 #boardFlyout-edit .boardFlyout-container {
   width: 400px;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: hidden;
   display: block;
 }
 

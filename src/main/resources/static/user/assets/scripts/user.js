@@ -9,8 +9,11 @@ const $registerButton = $header.querySelector('button[name="register"]');
 const $cancelButtons = $dialog.querySelectorAll('.cancel');
 const $registerModalForm = document.getElementById('registerModalForm');
 const $loginModalForm = document.getElementById('loginModalForm');
+const $boardModalForm = document.getElementById('boardModalForm');
 
 const $modals = $dialog.querySelectorAll('.-modal');
+const modalStack = []; // 이전 모달 저장용
+
 const $userForms = $dialog.querySelectorAll('form'); // 모든 form 선택
 
 let isDraggingFromOutside = false;
@@ -19,11 +22,9 @@ function closeModal() {
     $dialog.classList.remove('-visible');
     $modals.forEach(modal => modal.classList.remove('-visible'));
 
-    // ✨ 모든 form 입력 초기화
-    $userForms.forEach(form => form.reset());
-
     // ✨ 경고 메시지(-warning)도 초기화
     $userForms.forEach(form => {
+        form.reset()
         form.querySelectorAll('.-warning').forEach(warning => {
             warning.classList.remove('-visible');
         });
@@ -53,13 +54,20 @@ $cancelButtons.forEach(($btn) =>
     {
         closeModal();
         $dialog.classList.remove('-visible');
-        $registerModalForm.classList.remove('-visible');
-        $loginModalForm.classList.remove('-visible');
-        $boardModalForm.classList.remove('-visible');
+        if (!$registerModalForm)
+        {
+            $registerModalForm.classList.remove('-visible');
+        }
+        if (!$loginModalForm)
+        {
+            $loginModalForm.classList.remove('-visible');
+        }
+        if ($boardModalForm)
+        {
+            $boardModalForm.classList.remove('-visible');
+        }
     })
 );
-
-
 
 function findParentByClass(element, className)
 {
@@ -119,6 +127,40 @@ function validatePassword($passwordInput, $passwordLabel) {
     }
     return true;
 }
+
+function setupValidation({$input, $label, maxLength, regexValidator, invalidMessage, lengthMessage})
+{
+    // blur 이벤트
+    $input.addEventListener('blur', () => {
+        const value = $input.value.trim();
+        if (value === '') {
+            clearWarning($label);
+            $label.classList.remove('-invalid');
+            return;
+        }
+
+        if (!regexValidator(value)) {
+            showWarning($label, invalidMessage);
+            $label.classList.add('-invalid');
+        } else {
+            clearWarning($label);
+            $label.classList.remove('-invalid');
+        }
+    });
+
+    // input 이벤트
+    $input.addEventListener('input', () => {
+        const value = $input.value.trim();
+        if (value.length > maxLength) {
+            showWarning($label, lengthMessage);
+            $label.classList.add('-invalid');
+        } else {
+            clearWarning($label);
+            $label.classList.remove('-invalid');
+        }
+    });
+}
+
 
 function validateBirth($birthInput, $birthLabel) {
     clearWarning($birthLabel);

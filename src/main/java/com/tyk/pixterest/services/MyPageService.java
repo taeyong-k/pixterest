@@ -2,12 +2,14 @@ package com.tyk.pixterest.services;
 
 import com.tyk.pixterest.entities.BoardEntity;
 import com.tyk.pixterest.entities.PinEntity;
-import com.tyk.pixterest.entities.PinUserSaveEntity;
 import com.tyk.pixterest.entities.UserEntity;
+import com.tyk.pixterest.mappers.MyPageMapper;
 import com.tyk.pixterest.mappers.UserMapper;
+import com.tyk.pixterest.results.CommonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +17,12 @@ import java.util.List;
 public class MyPageService {
 
     private final UserMapper userMapper;
+    private final MyPageMapper myPageMapper;
 
     @Autowired
-    public MyPageService(UserMapper userMapper) {
+    public MyPageService(UserMapper userMapper, MyPageMapper myPageMapper) {
         this.userMapper = userMapper;
+        this.myPageMapper = myPageMapper;
     }
 
     public static boolean isEmailValid(String input)
@@ -46,7 +50,7 @@ public class MyPageService {
             return null;
         }
 
-        return this.userMapper.selectBoardsByEmail(email);
+        return this.myPageMapper.selectBoardtykEmail(email);
     }
 
     public List<PinEntity> getPintykUser(String email)
@@ -68,7 +72,7 @@ public class MyPageService {
         {
             return null;
         }
-        return this.userMapper.selectPinsByEmail(email);
+        return this.myPageMapper.selectPintykEmail(email);
     }
 
     public List<PinEntity> getSavedPintykUser(String email)
@@ -91,7 +95,44 @@ public class MyPageService {
             return new ArrayList<>();
         }
 
-        return this.userMapper.selectSavedPinsByEmail(email);
+        return this.myPageMapper.selectSavedPintykEmail(email);
     }
 
+    public BoardEntity getBoardByBoardId(UserEntity signedUser,int boardId)
+    {
+        return myPageMapper.selectBoardByBoardId(boardId);
+    }
+
+    public List<PinEntity> getPintykBoardId(int boardId) {
+        return myPageMapper.selectPintykBoardId(boardId);
+    }
+
+    public CommonResult saveBoard(UserEntity signedUser, BoardEntity board)
+    {
+        BoardEntity dbBoard = this.myPageMapper.selectBoardByBoardId(board.getId());
+        if (dbBoard == null)
+        {
+            return CommonResult.FAILURE;
+        }
+        dbBoard.setName(board.getName());
+        dbBoard.setCoverImage(board.getCoverImage());
+        dbBoard.setModifiedAt(LocalDateTime.now());
+        return this.myPageMapper.boardUpdate(dbBoard) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+    }
+
+    public CommonResult deletePinAtBoard(UserEntity signedUser, int pinId)
+    {
+        PinEntity dbPin = this.myPageMapper.selectPinByPinId(pinId);
+        if (dbPin == null)
+        {
+            return CommonResult.FAILURE;
+        }
+        dbPin.setBoardId(null);
+        dbPin.setModifiedAt(LocalDateTime.now());
+        return this.myPageMapper.pinUpdate(dbPin) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+    }
 }

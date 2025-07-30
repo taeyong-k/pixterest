@@ -28,7 +28,12 @@ $boardNameInput.addEventListener('input', () => {
     }
 });
 
+const board = document.getElementById('board');
+const input = board.querySelector('.obj-field.input');
+
 $boardButton.addEventListener('click', () => {
+    document.body.style.overflow = '';
+
     const name = $boardNameInput.value.trim();
 
     if (name && !NameRegex.test(name)) {
@@ -64,14 +69,15 @@ $boardButton.addEventListener('click', () => {
                 toast('이미 사용 중인 이름입니다', '다른 보드 이름을 입력해 주세요.');
                 break;
             case 'success':
-                $board.style.display = "none";
+                board.classList.remove('-visible');
+                input.value = '';
                 showToast({
                     title: '보드 생성이 완료되었습니다',
                     caption: '내 보드에서 확인해 보세요.',
                     duration: 8100,
                     buttonText: '이동하기',
                     onButtonClick: () => {
-                        window.location.href = '/user/myPage';       // ★핀 모여있는 페이지로 변경하기!!★
+                        window.location.href = '/user/myPage';
                     }
                 });
                 break;

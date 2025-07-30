@@ -20,35 +20,34 @@ $registerButton.addEventListener('click', () =>
     const $passwordLabel = $form.querySelector('.obj-label input[name="password"]')?.parentElement;
     const $birthLabel = $form.querySelector('.obj-label input[name="birth"]')?.parentElement;
 
-    $emailInput.addEventListener('blur', () =>
-        validateEmail($emailInput, $emailLabel)
-    );
-
-    $passwordInput.addEventListener('blur', () =>
-        validatePassword($passwordInput, $passwordLabel)
-    );
-
-    $birthInput.addEventListener('blur', () =>
-        validateBirth($birthInput, $birthLabel)
-    );
-
-    $emailInput.addEventListener('input', () =>
-    {
-        $emailLabel.classList.remove('-invalid');
-        clearWarning($emailLabel)
+    setupValidation({
+        $input: $emailInput,
+        $label: $emailLabel,
+        maxLength: 30,
+        regexValidator: validateEmail,
+        invalidMessage: '이메일 형식이 올바르지 않습니다.',
+        lengthMessage: '이메일은 최대 30자까지 입력할 수 있어요.'
     });
 
-    $passwordInput.addEventListener('input', () =>
-    {
-        $passwordLabel.classList.remove('-invalid');
-        clearWarning($passwordLabel)
+    setupValidation({
+        $input: $passwordInput,
+        $label: $passwordLabel,
+        maxLength: 20,
+        regexValidator: validatePassword,
+        invalidMessage: '비밀번호는 6~20자이며 특수문자를 포함할 수 있습니다.',
+        lengthMessage: '비밀번호는 최대 20자까지 입력할 수 있어요.'
     });
 
-    $birthInput.addEventListener('blur', () =>
-    {
-        $birthLabel.classList.remove('-invalid');
-        clearWarning($birthLabel)
+
+    setupValidation({
+        $input: $birthInput,
+        $label: $birthLabel,
+        maxLength: 10, // yyyy-mm-dd 형식
+        regexValidator: validateBirth,
+        invalidMessage: '올바르지 않은 생년월일을 입력했습니다. 다시 시도해주세요.',
+        lengthMessage: '생년월일은 yyyy-mm-dd 형식으로 입력해야 해요.'
     });
+
 
 
     $form.onsubmit = (e) => {
@@ -94,10 +93,10 @@ $registerButton.addEventListener('click', () =>
             const response = JSON.parse(xhr.responseText);
             switch (response['result']) {
                 case 'failure':
-                    toast('회원가입', '잘못된 가입 요청입니다. \n다시 한번 확인해 주세요.');
+                    toast('회원가입', '잘못된 가입 요청입니다. \n 다시 한번 확인해 주세요.');
                     return;
                 case 'failure_duplicate_email':
-                    toast('회원가입', '중복된 이메일입니다. \n다른 이메일을 사용해 주세요.');
+                    toast('회원가입', '중복된 이메일입니다. \n 다른 이메일을 사용해 주세요.');
                     break;
                 case 'success':
                     setProfile($emailInput.value, profileColor);
@@ -105,7 +104,7 @@ $registerButton.addEventListener('click', () =>
                     location.reload();
                     return;
                 default:
-                    toastAlter('회원가입에 실패하였습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+                    toastAlter('회원가입에 실패하였습니다.', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
                     return;
             }
         };

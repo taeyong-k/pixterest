@@ -28,27 +28,25 @@ $loginButton.addEventListener('click', () =>
     const $passwordLabel = $form.querySelector('.obj-label input[name="password"]')?.parentElement;
 
 
-    $emailInput.addEventListener('blur', () =>
-        validateEmail($emailInput, $emailLabel)
-    );
-
-    $passwordInput.addEventListener('blur', () =>
-        validatePassword($passwordInput, $passwordLabel)
-    );
-
-    $emailInput.addEventListener('input', () =>
-    {
-        $emailLabel.classList.remove('-invalid');
-        validateEmail($emailInput, $emailLabel)
-        clearWarning($emailLabel)
+    setupValidation({
+        $input: $emailInput,
+        $label: $emailLabel,
+        maxLength: 30,
+        regexValidator: validateEmail,
+        invalidMessage: '이메일 형식이 올바르지 않습니다.',
+        lengthMessage: '이메일은 최대 30자까지 입력할 수 있어요.'
     });
 
-    $passwordInput.addEventListener('input', () =>
-    {
-        $passwordLabel.classList.remove('-invalid');
-        validatePassword($passwordInput, $passwordLabel)
-        clearWarning($passwordLabel)
+    setupValidation({
+        $input: $passwordInput,
+        $label: $passwordLabel,
+        maxLength: 20,
+        regexValidator: validatePassword,
+        invalidMessage: '비밀번호는 6~20자이며 특수문자를 포함할 수 있습니다.',
+        lengthMessage: '비밀번호는 최대 20자까지 입력할 수 있어요.'
     });
+
+
 
     $form.onsubmit = (e) =>
     {
@@ -83,7 +81,7 @@ $loginButton.addEventListener('click', () =>
             $loading.classList.remove('-visible')
             if (xhr.status < 200 || xhr.status >= 300)
             {
-                toastAlter('요청 실패', '잠시 후 다시 시도해 주세요.')
+                toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
                 return;
             }
             const response = JSON.parse(xhr.responseText);
@@ -96,7 +94,7 @@ $loginButton.addEventListener('click', () =>
                     location.href = `${origin}/`
                     return;
                 default:
-                    toast('로그인에 실패하였습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+                    toastAlter('로그인에 실패하였습니다.', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
                     return;
             }
         };

@@ -2,7 +2,7 @@
 
 
 @mixin Form {
-  @include flex(column, center, center);
+  @include flex(column, center, center, 0.625rem);
   width: 100%;
   max-width: 25rem;
   background: #ffffff;

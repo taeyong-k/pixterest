@@ -92,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ✅ extraFlyout 팝업
     const $boardFlyoutEditButton = document.querySelector('.editPin-label-board-button');
-    const $boardFlyoutEdit = document.querySelector('#boardFlyout-edit');
 
     const extraFlyout = document.getElementById('extraFlyout');
     const $extraButton = document.querySelector('.pinDetail-content .extra-button');
@@ -131,6 +130,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // ✅ extraFlyout 팝업 > 핀 수정하기
     const $editPinButton = document.querySelector('.flyout-item.edit-pin');
     const $editPin = document.getElementById('editPin');
+    const $editPinMain = $editPin.querySelector('.editPin-main');
+
+    const $editPinBoardLabel = $editPin.querySelector('.editPin-label.board');
+    const $boardFlyoutEdit = document.querySelector('#boardFlyout-edit');
+
+    // ✅ 보드 팝업 위치 계산
+    if ($boardFlyoutEditButton && $boardFlyoutEdit) {
+        $boardFlyoutEditButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            const parentRect = $editPinMain.getBoundingClientRect();
+            const labelRect = $editPinBoardLabel.getBoundingClientRect();
+
+            const top = labelRect.bottom - parentRect.top - 8;
+            const left = labelRect.left - parentRect.left + (labelRect.width / 2) - ($boardFlyoutEdit.offsetWidth / 2) - 206;
+
+            $boardFlyoutEdit.style.top = `${top}px`;
+            $boardFlyoutEdit.style.left = `${left}px`;
+            $boardFlyoutEdit.setAttribute('aria-hidden', 'false');
+
+            $boardFlyoutEdit.classList.toggle('-visible');
+        });
+
+        document.addEventListener('click', (e) => {
+            const isClickInsideButton = $boardFlyoutEditButton.contains(e.target);
+            const isClickInsideFlyout = $boardFlyoutEdit.contains(e.target);
+
+            if (!isClickInsideButton && !isClickInsideFlyout) {
+                $boardFlyoutEdit.classList.remove('-visible');
+            }
+        });
+    }
 
     $editPinButton.addEventListener('click', (e) => {
         const pinId = e.currentTarget.getAttribute('data-pin-id');
@@ -186,26 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.body.style.overflow = 'hidden';
                     extraFlyout.style.display = 'none';
 
-                    // ✅ 보드 팝업
-                    if ($boardFlyoutEditButton && $boardFlyoutEdit) {
-                        $boardFlyoutEditButton.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            $boardFlyoutEdit.classList.toggle('-visible');
-                        });
-
-                        // 팝업 바깥 클릭 시 닫기
-                        document.addEventListener('click', (e) => {
-                            const isClickInsideButton = $boardFlyoutEditButton.contains(e.target);
-                            const isClickInsideFlyout = $boardFlyoutEdit.contains(e.target);
-
-                            if (!isClickInsideButton && !isClickInsideFlyout) {
-                                $boardFlyoutEdit.classList.remove('-visible');
-                            }
-                        });
-                    }
-
                     getBoardsXHR(pinId, response.boardId);
                     bindValidationEvents();
+                    handleScroll();
                     break;
                 default:
                     toastAlter('핀을 불러오지 못했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
@@ -214,6 +228,32 @@ document.addEventListener('DOMContentLoaded', () => {
         xhr.open('GET', `/pin/edit-info?pinId=${pinId}`);
         xhr.send();
     });
+
+    // 핀 수정 > 스크롤 감지
+    const $labelContainer = $editPin.querySelector('.editPin-label-container');
+    const $header = $editPin.querySelector('.editPin-header');
+    const $buttonContainer = $editPin.querySelector('.editPin-button-container');
+
+    function handleScroll() {
+        if ($labelContainer.scrollTop > 0) {
+            $header.classList.add('-scrolled');
+        } else {
+            $header.classList.remove('-scrolled');
+        }
+
+        const tolerance = 1;    // 1px 오차 허용
+        const atBottom = Math.abs($labelContainer.scrollTop + $labelContainer.clientHeight - $labelContainer.scrollHeight) <= tolerance;
+
+        if (!atBottom) {
+            $buttonContainer.classList.add('-scrolled');
+        } else {
+            $buttonContainer.classList.remove('-scrolled');
+        }
+    }
+
+    if ($labelContainer) {
+        $labelContainer.addEventListener('scroll', handleScroll);
+    }
 
     // ✅ 보드 DB 데이터 땡겨오기
     function getBoardsXHR(pinId, selectedBoardId) {
@@ -394,10 +434,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // ✅ 핀 수정하기 > 삭제 버튼 처리 이벤트
     $editPin.querySelector('.button.delete').addEventListener('click', () => {
         showAlertToast({
-            title: '정말로 핀을 삭제할까요?',
-            caption: '삭제된 핀은 복구가 어렵습니다.',
+            title: '정말로 핀을 숨기실까요?',
+            caption: '숨긴 핀은 내 보드와 피드에서 보이지 않게 됩니다.',
             duration: 10100,
-            buttonText: '삭제하기',
+            buttonText: '숨기기',
             onButtonClick: () => {
                 const pinId = $editPin.getAttribute('data-pin-id');
                 if (!pinId) return;

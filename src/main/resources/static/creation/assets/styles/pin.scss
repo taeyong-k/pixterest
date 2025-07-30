@@ -582,20 +582,20 @@ body {
 
 #boardFlyout .boardFlyout {
   max-width: 420px;
-  max-height: 90vh;
+  max-height: 26vh;
   min-height: 40px;
   min-width: 180px;
   background-color: #ffffff;
   border-radius: 16px;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: block;
 }
 
 #boardFlyout .boardFlyout-container {
   width: 400px;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: hidden;
   display: block;
 }
 

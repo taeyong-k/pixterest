@@ -1,8 +1,10 @@
 package com.tyk.pixterest.services;
 
+import com.tyk.pixterest.entities.BoardEntity;
 import com.tyk.pixterest.entities.PinEntity;
 import com.tyk.pixterest.entities.PinUserSaveEntity;
 import com.tyk.pixterest.entities.UserEntity;
+import com.tyk.pixterest.mappers.BoardMapper;
 import com.tyk.pixterest.mappers.DetailMapper;
 import com.tyk.pixterest.mappers.PinMapper;
 import com.tyk.pixterest.mappers.PinUserSaveMapper;
@@ -18,12 +20,14 @@ public class PinService {
     private final PinMapper pinMapper;
     private final PinUserSaveMapper pinUserSaveMapper;
     private final DetailMapper detailMapper;
+    private final BoardMapper boardMapper;
 
     @Autowired
-    public PinService(PinMapper pinMapper, PinUserSaveMapper pinUserSaveMapper, DetailMapper detailMapper) {
+    public PinService(PinMapper pinMapper, PinUserSaveMapper pinUserSaveMapper, DetailMapper detailMapper, BoardMapper boardMapper) {
         this.pinMapper = pinMapper;
         this.pinUserSaveMapper = pinUserSaveMapper;
         this.detailMapper = detailMapper;
+        this.boardMapper = boardMapper;
     }
 
     public PinEntity getPinById(Long pinId) {
@@ -93,6 +97,22 @@ public class PinService {
         }
 
         dbPin.setDeleted(true);
+
+        if (this.pinMapper.updateDelete(dbPin) < 1) {
+            return CommonResult.FAILURE;
+        }
+
+        // 보드 대표 이미지 갱신
+        if (dbPin.getBoardId() != null) {
+            BoardEntity board = boardMapper.selectById(dbPin.getBoardId());
+            if (board != null) {
+                if (board.getCoverImage() != null && board.getCoverImage().equals(dbPin.getImage())) {
+                    PinEntity anotherPin = this.pinMapper.selectFirstNonDeletedPinByBoardId(dbPin.getBoardId());
+                    String newCoverImage = (anotherPin != null) ? anotherPin.getImage() : null;
+                    this.boardMapper.updateCoverImage(dbPin.getBoardId(), newCoverImage);
+                }
+            }
+        }
 
         return this.pinMapper.updateDelete(dbPin) > 0
                 ? CommonResult.SUCCESS

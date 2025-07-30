@@ -67,26 +67,22 @@ function showFlyout(triggerSelector, flyoutSelector, xOffset = 0, yOffset = 0, i
 
     // 로그아웃 버튼 클릭시 로그아웃
     const logoutButton = document.querySelector('#profile-my-button');
-    if (logoutButton)
-    {
+    if (logoutButton) {
         logoutButton.addEventListener('click', () => {
             const xhr = new XMLHttpRequest();
             const formData = new FormData();
 
 
             xhr.onreadystatechange = () => {
-                if (xhr.readyState !== XMLHttpRequest.DONE)
-                {
+                if (xhr.readyState !== XMLHttpRequest.DONE) {
                     return;
                 }
-                if (xhr.status < 200 || xhr.status >= 300)
-                {
+                if (xhr.status < 200 || xhr.status >= 300) {
                     toastAlter('경고', '요청이 잘못되었습니다. 잠시 후 다시 시도해 주세요.')
                     return;
                 }
                 const response = JSON.parse(xhr.responseText)
-                switch (response.result)
-                {
+                switch (response.result) {
                     case 'failure':
                         toastAlter('로그아웃', '로그아웃에 실패하셨습니다. 세션에 정보가 없거나 유효하지 않는 유저입니다.')
                         break;
@@ -98,7 +94,7 @@ function showFlyout(triggerSelector, flyoutSelector, xOffset = 0, yOffset = 0, i
                         toastAlter('로그아웃에 실패했습니다', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
                 }
             };
-            xhr.open('POST','/user/logout');
+            xhr.open('POST', '/user/logout');
             xhr.send(formData);
 
         })
@@ -133,7 +129,7 @@ function applyProfileData(data) {
 
     if (!data || !data.userInfo) return;
 
-    const { name, email, profileColor } = data.userInfo;
+    const {name, email, profileColor} = data.userInfo;
     const emailPrefix = (email || '').split('@')[0].toUpperCase();
 
     // headerContent 프로필 업데이트
@@ -396,8 +392,11 @@ function setupLoginButtons() {
 }
 
 const $profileLoginBtn = document.querySelector('.profile-login-content');
-$profileLoginBtn.addEventListener('click', () => {
-    location.href = `${origin}/user/myPage`;
-});
+
+if ($profileLoginBtn) {
+    $profileLoginBtn.addEventListener('click', () => {
+        location.href = `${origin}/user/myPage`;
+    });
+}
 
 

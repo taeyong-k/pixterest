@@ -34,7 +34,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 0.625rem;
   justify-content: center;
   width: 100%;
   max-width: 25rem;
@@ -257,7 +257,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 0.625rem;
   justify-content: center;
   width: 100%;
   max-width: 25rem;
@@ -657,7 +657,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 0.625rem;
   justify-content: center;
   width: 100%;
   max-width: 25rem;
@@ -840,7 +840,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 0.625rem;
   justify-content: center;
   width: 100%;
   max-width: 25rem;
