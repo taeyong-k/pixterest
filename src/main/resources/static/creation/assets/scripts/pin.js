@@ -1,11 +1,46 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ✅ 팝업 기능
-    const $boardFlyoutButton = document.querySelector('.pin-label-board-button');
-    const $boardFlyout = document.querySelector('#boardFlyout');
+    // ✅ 보드 팝업 + 위치 계산
+    const $wrapper = document.querySelector('.pin-label-wrapper'); // 버튼 -> 부모
+    const $boardFlyoutButton = document.querySelector('.pin-label-board-button'); // 버튼
+    const $boardFlyout = document.querySelector('#boardFlyout'); // 팝업
 
+    function updateBoardFlyoutPosition() {
+        // 팝업 숨겨져 있으면 일단 보이게 해서 정확한 크기 측정
+        const wasHidden = !$boardFlyout.classList.contains('-visible');
+
+        if (wasHidden) {
+            $boardFlyout.style.visibility = 'hidden';
+            $boardFlyout.style.display = 'block';
+        }
+
+        const wrapperRect = $wrapper.getBoundingClientRect();
+        const buttonRect = $boardFlyoutButton.getBoundingClientRect();
+        const popupWidth = $boardFlyout.offsetWidth;
+
+        const top = buttonRect.bottom - wrapperRect.top + 6;
+        const left = buttonRect.left - wrapperRect.left + (buttonRect.width / 2) - (popupWidth / 2);
+
+        $boardFlyout.style.top = `${top}px`;
+        $boardFlyout.style.left = `${left}px`;
+
+        if (wasHidden) {
+            $boardFlyout.style.display = '';
+            $boardFlyout.style.visibility = '';
+        }
+    }
+
+    // 팝업 열기
     $boardFlyoutButton.addEventListener('click', (e) => {
-        e.stopPropagation(); // 다른 클릭 이벤트에 영향 주지 않도록 방지
+        e.stopPropagation();
+        updateBoardFlyoutPosition();
         $boardFlyout.classList.toggle('-visible');
+    });
+
+    // 창 크기 바뀌면 팝업 다시 위치 조정
+    window.addEventListener('resize', () => {
+        if ($boardFlyout.style.display === 'block') {
+            updateBoardFlyoutPosition();
+        }
     });
 
     // 팝업 바깥 클릭 시 닫기

@@ -294,6 +294,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const board = document.getElementById('board');
         if (!board) return;
         document.body.style.overflow = '';
+        board.querySelector('.obj-field.input').value = '';
+        board.querySelector('.board-label').classList.remove('-invalid');
         board.classList.remove('-visible');
         board.querySelector('.board-overlay').classList.remove('-visible');
         // 입력값·경고 reset이 필요하면 여기서 초기화

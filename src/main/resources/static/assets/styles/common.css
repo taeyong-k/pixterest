@@ -2222,7 +2222,7 @@ header#header {
   background-color: #ffffff;
   color: #000;
   position: relative;
-  overflow: auto;
+  overflow: hidden;
   display: flex;
 }
 
@@ -2380,6 +2380,7 @@ header#header {
   padding: 0 24px;
   overflow: auto;
   display: block;
+  position: relative;
 }
 
 #editPin .editPin-label-layout {
@@ -2721,6 +2722,7 @@ header#header {
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   outline: none;
+  overflow: hidden;
   display: none;
   z-index: 3000;
 }
@@ -2730,9 +2732,8 @@ header#header {
 }
 
 #boardFlyout-edit .boardFlyout {
-  max-width: 420px;
-  max-height: 30vh;
-  min-height: 40px;
+  max-width: 380px;
+  max-height: 125px;
   min-width: 180px;
   background-color: #ffffff;
   border-radius: 16px;

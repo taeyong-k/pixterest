@@ -286,7 +286,7 @@ body {
 }
 
 #creation-pin .pin-upload-preview {
-  max-width: clamp(340px, 60vw, 584px);
+  max-width: clamp(340px, 60vw, 346px);
   border-radius: 32px;
   overflow: hidden;
   position: relative;
@@ -404,7 +404,7 @@ body {
 
 #creation-pin .pin-label-wrapper {
   width: 100%;
-  max-width: clamp(340px, 60vw, 584px);
+  max-width: clamp(340px, 60vw, 534px);
   height: 100%;
   box-sizing: border-box;
   margin: 24px auto;
@@ -693,11 +693,12 @@ body {
 
 #boardFlyout {
   position: absolute;
-  left: 16%;
-  top: 81%;
+  top: 0;
+  left: 0;
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   outline: none;
+  overflow: hidden;
   display: none;
   z-index: 3000;
 }
@@ -707,10 +708,9 @@ body {
 }
 
 #boardFlyout .boardFlyout {
-  max-width: 420px;
+  width: clamp(230px, 45vw, 420px);
   max-height: 26vh;
   min-height: 40px;
-  min-width: 180px;
   background-color: #ffffff;
   border-radius: 16px;
   overflow-x: hidden;

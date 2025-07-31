@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // ✅ extraFlyout 팝업
+    // ✅ extraFlyout(추가작업) 팝업
     const $boardFlyoutEditButton = document.querySelector('.editPin-label-board-button');
 
     const extraFlyout = document.getElementById('extraFlyout');
@@ -130,39 +130,54 @@ document.addEventListener('DOMContentLoaded', () => {
     // ✅ extraFlyout 팝업 > 핀 수정하기
     const $editPinButton = document.querySelector('.flyout-item.edit-pin');
     const $editPin = document.getElementById('editPin');
-    const $editPinMain = $editPin.querySelector('.editPin-main');
 
-    const $editPinBoardLabel = $editPin.querySelector('.editPin-label.board');
-    const $boardFlyoutEdit = document.querySelector('#boardFlyout-edit');
+    const $editPinLabel = $editPin.querySelector('.editPin-label-container');   // 라벨 > 부모
+    const $editPinBoardLabel = $editPin.querySelector('.editPin-label.board');  // 보드 선택 라벨
+    const $boardFlyoutEdit = document.querySelector('#boardFlyout-edit');       // 보드 팝업
 
-    // ✅ 보드 팝업 위치 계산
-    if ($boardFlyoutEditButton && $boardFlyoutEdit) {
-        $boardFlyoutEditButton.addEventListener('click', (e) => {
-            e.stopPropagation();
+    // ✅ 보드 팝업 위치 계산 (스크롤 오프셋 기준)
+    function updateBoardFlyoutEditPosition() {
+        const wasHidden = !$boardFlyoutEdit.classList.contains('-visible');
 
-            const parentRect = $editPinMain.getBoundingClientRect();
-            const labelRect = $editPinBoardLabel.getBoundingClientRect();
+        if (wasHidden) {
+            $boardFlyoutEdit.style.visibility = 'hidden';
+            $boardFlyoutEdit.style.display = 'block';
+        }
 
-            const top = labelRect.bottom - parentRect.top - 8;
-            const left = labelRect.left - parentRect.left + (labelRect.width / 2) - ($boardFlyoutEdit.offsetWidth / 2) - 206;
+        const scrollTop = $editPinLabel.scrollTop;
+        const scrollLeft = $editPinLabel.scrollLeft;
 
-            $boardFlyoutEdit.style.top = `${top}px`;
-            $boardFlyoutEdit.style.left = `${left}px`;
-            $boardFlyoutEdit.setAttribute('aria-hidden', 'false');
+        const labelRect = $editPinBoardLabel.getBoundingClientRect();
+        const containerRect = $editPinLabel.getBoundingClientRect();
 
-            $boardFlyoutEdit.classList.toggle('-visible');
-        });
+        const popupWidth = $boardFlyoutEdit.offsetWidth;
 
-        document.addEventListener('click', (e) => {
-            const isClickInsideButton = $boardFlyoutEditButton.contains(e.target);
-            const isClickInsideFlyout = $boardFlyoutEdit.contains(e.target);
+        // 라벨의 컨테이너 내 좌표 = 뷰포트 좌표 - 컨테이너 뷰포트 좌표 + 스크롤 위치
+        const top = labelRect.bottom - containerRect.top + scrollTop - 8;
+        const left = labelRect.left - containerRect.left + scrollLeft + (labelRect.width / 2) - (popupWidth / 2);
 
-            if (!isClickInsideButton && !isClickInsideFlyout) {
-                $boardFlyoutEdit.classList.remove('-visible');
-            }
-        });
+        $boardFlyoutEdit.style.top = `${top}px`;
+        $boardFlyoutEdit.style.left = `${left}px`;
+
+        if (wasHidden) {
+            $boardFlyoutEdit.style.visibility = '';
+            $boardFlyoutEdit.style.display = '';
+        }
     }
 
+    $boardFlyoutEditButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateBoardFlyoutEditPosition();
+        $boardFlyoutEdit.classList.toggle('-visible');
+    });
+
+    window.addEventListener('resize', () => {
+        if ($boardFlyoutEdit.classList.contains('-visible')) {
+            updateBoardFlyoutEditPosition();
+        }
+    });
+
+    // ✅ 추가작업 > 핀 수정 버튼 클릭 이벤트
     $editPinButton.addEventListener('click', (e) => {
         const pinId = e.currentTarget.getAttribute('data-pin-id');
 
@@ -229,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
         xhr.send();
     });
 
-    // 핀 수정 > 스크롤 감지
+    // ✅ 핀 수정 > 스크롤 감지
     const $labelContainer = $editPin.querySelector('.editPin-label-container');
     const $header = $editPin.querySelector('.editPin-header');
     const $buttonContainer = $editPin.querySelector('.editPin-button-container');
@@ -324,6 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     $boardFlyoutButtonImg.style.display = "block";
                 }
+                $boardFlyoutEditButton.setAttribute('data-board-id', b.id);
             }
 
             item.innerHTML = `
@@ -344,7 +360,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let selectedBoardId = null;
-
     // ✅ 팝업 요소 저장 setting
     function attachBoardClickEvents() {
         const $boardInfo = document.querySelectorAll('.board-info');
@@ -377,14 +392,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ✅ 핀 수정 > 모달 닫기
     document.querySelector('.editPin-overlay').addEventListener('click', () => {
         $editPin.classList.remove('-visible');
         document.body.style.overflow = '';
+        $boardFlyoutEdit.classList.remove('-visible');
+        $boardFlyoutEditButton.querySelector('.name').innerText = '보드 선택';
+        $boardFlyoutEditButton.querySelector('.name').style.fontWeight = '400';
+        $boardFlyoutEditButton.querySelector('img.thumbnailImg').src = '';
+        $boardFlyoutEditButton.querySelector('img.thumbnailImg').style.display = "none";
+        $editPinTitleLabel.classList.remove('-invalid');
+        $editPinContentLabel.classList.remove('-invalid');
+        $editPinLinkLabel.classList.remove('-invalid');
     });
 
     $editPin.querySelector('.editPin-button').addEventListener('click', () => {
         $editPin.classList.remove('-visible');
         document.body.style.overflow = '';
+        $boardFlyoutEdit.classList.remove('-visible');
+        $boardFlyoutEditButton.querySelector('.name').innerText = '보드 선택';
+        $boardFlyoutEditButton.querySelector('.name').style.fontWeight = '400';
+        $boardFlyoutEditButton.querySelector('img.thumbnailImg').src = '';
+        $boardFlyoutEditButton.querySelector('img.thumbnailImg').style.display = "none";
+        $editPinTitleLabel.classList.remove('-invalid');
+        $editPinContentLabel.classList.remove('-invalid');
+        $editPinLinkLabel.classList.remove('-invalid');
     });
 
 
@@ -555,7 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
         xhr.send(formData);
     });
 
-    // 핀 저장 버튼 클릭 이벤트
+    // ✅ 핀 상세페이지 > '저장' 버튼 클릭 이벤트
     const $saveButton = document.querySelector('.pinDetail-content .save-button');
     $saveButton.addEventListener('click', () => {
         const pinId = $saveButton.dataset.pinId;
@@ -606,7 +638,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // add comment
+    // ✅ add comment
     const $commentForm = document.getElementById('commentForm');
     const $commentContainer = document.getElementById('commentContainer');
     const pinId = new URL(location.href).searchParams.get('id');
