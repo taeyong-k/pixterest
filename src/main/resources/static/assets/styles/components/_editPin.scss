@@ -1,0 +1,551 @@
+@charset "UTF-8";
+
+@import "../_def";
+
+#editPin * {
+  box-sizing: border-box;
+}
+
+#editPin {
+  @include flex(row, center, center);
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 4000;
+  overflow: hidden;
+  display: none;
+}
+
+#editPin.-visible {
+  display: flex;
+}
+
+#editPin .editPin-overlay {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: rgba(0, 0, 0, .8);
+  cursor: zoom-out;
+  overflow: hidden;
+  position: absolute;
+  display: block;
+}
+
+#editPin .editPin-info {
+  width: 470px;
+  height: 100%;
+  margin-left: auto;
+  background-color: #ffffff;
+  color: #000;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+}
+
+#editPin .editPin-info-content {
+  @include flex(column, flex-start, flex-start);
+  min-width: 0;
+  width: 100%;
+  flex: 1 1 auto;
+  box-sizing: border-box;
+  position: relative;
+}
+
+#editPin .editPin-header {
+  @include flex(row, flex-start, flex-start);
+  min-width: 0;
+  width: 100%;
+  flex: 1 1 auto;
+  padding: 24px;
+  position: sticky;
+  z-index: 1002;
+}
+
+#editPin .editPin-header.-scrolled {
+  box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, .12);
+}
+
+#editPin .editPin-header .editPin-title {
+  flex: 1 1 auto;
+  display: block;
+}
+
+#editPin .editPin-header .editPin-title .title {
+  text-align: left;
+  margin: 0;
+  color: #000;
+  font-family: inherit;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.3;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+#editPin .editPin-header .editPin-button {
+  @include flex(row, center, center);
+  height: 36px;
+  width: 36px;
+  border: 0;
+  border-radius: 12px;
+  background-color: #fff;
+  cursor: pointer;
+  z-index: 1001;
+  transition: transform 85ms ease-out;
+}
+
+#editPin .editPin-header .editPin-button .cancel {
+  @include flex(row, center, center);
+  text-align: center;
+  color: #000;
+  font-family: inherit;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 6px;
+  text-decoration: none;
+  display: block;
+}
+
+#editPin .editPin-header .editPin-button:hover {
+  background-color: #e0e0d9;
+}
+
+#editPin .editPin-header .editPin-button:active {
+  background-color: #deded3;
+  transform: scale(0.833333);
+}
+
+#editPin .editPin-main {
+  @include flex(column, flex-start, flex-start);
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+  position: relative;
+}
+
+#editPin .editPin-label-container {
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+  padding: 0 24px;
+  overflow: auto;
+  display: block;
+  position: relative;
+}
+
+#editPin .editPin-label-layout {
+  width: 100%;
+  padding-bottom: 24px;
+  display: block;
+}
+
+#editPin .editPin-label-wrapper {
+  margin: 0;
+  padding: 0;
+  z-index: 1001;
+}
+
+#editPin .editPin-label-wrapper .title {
+  margin-bottom: 6px;
+  text-align: left;
+  color: #000;
+  -webkit-font-smoothing: antialiased;
+  word-wrap: break-word;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-decoration: none;
+  display: block;
+}
+
+#editPin .editPin-label {
+  cursor: text;
+  padding: 9px 12px;
+  z-index: 1001;
+}
+
+#editPin .editPin-label .input {
+  width: 100%;
+  max-width: 100%;
+  text-align: left;
+  color: #000;
+  -webkit-box-orient: vertical;
+  -webkit-font-smoothing: antialiased;
+  word-wrap: break-word;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-decoration: none;
+  background: none;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+#editPin .editPin-label .textarea {
+  max-width: 100%;
+  width: 100%;
+  text-align: left;
+  color: #000;
+  -webkit-box-orient: vertical;
+  -webkit-font-smoothing: antialiased;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  text-overflow: ellipsis;
+  resize: none;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-decoration: none;
+  background: none;
+  border: none;
+  outline: none;
+  overflow: hidden auto;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+#editPin .editPin-label.-invalid .-warning.-row {
+  @include flex(row, flex-start, flex-start, 5px);
+  margin: 0;
+  padding: 0;
+}
+
+#editPin .editPin-label .-warning.-row .warning-icon {
+  text-align: left;
+  padding-left: 6px;
+  padding-top: 3px;
+  display: block;
+}
+
+#editPin .editPin-label .-warning.-row .warning-icon .icon {
+  width: 12px;
+  height: 12px;
+  color: #8a0f0f;
+  fill: currentColor;
+  stroke-width: 0;
+  vertical-align: middle;
+  display: block;
+}
+
+#editPin .editPin-label .-warning.-row .caption {
+  text-align: left;
+  color: #8a0f0f;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+#editPin .editPin-label-layout .editPin-label.board {
+  @include flex(row, center, space-between);
+  cursor: pointer;
+}
+
+#editPin .editPin-label-board-button {
+  @include flex(row, center, flex-start);
+  flex: 1 1 auto;
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  appearance: none;
+  background: none;
+  border: none;
+}
+
+#editPin .editPin-label-board-button .thumbnailImg {
+  width: 36px;
+  height: 36px;
+  margin: 4px 12px 4px 0;
+  background-color: #e0e0d9;
+  border-radius: 8px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  position: relative;
+  display: none;
+}
+
+#editPin .editPin-label-board-button .name {
+  display: block;
+  color: #57574c;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 2.0;
+  word-wrap: break-word;
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+#editPin .editPin-label .pin-label-icon {
+  padding: 8px 0;
+  margin-left: -8px;
+  display: block;
+}
+
+#editPin .editPin-label .pin-label-icon .icon {
+  width: 12px;
+  height: 12px;
+  color: #000000;
+  fill: currentColor;
+  stroke-width: 0;
+  vertical-align: middle;
+  display: block;
+}
+
+#editPin .editPin-button-container {
+  @include flex(row, flex-start, flex-end, 8px);
+  width: 100%;
+  background-color: #ffffff;
+  padding: 24px;
+  position: sticky;
+  z-index: 1002;
+}
+
+#editPin .editPin-button-container.-scrolled {
+  box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, .12);
+}
+
+#editPin .editPin-button-container .button {
+  min-height: 44px;
+  box-sizing: border-box;
+  border-radius: 15px;
+  border-color: transparent;
+  text-wrap: balance;
+  cursor: pointer;
+  display: inline-block;
+  pointer-events: auto;
+  transition: transform 85ms ease-out;
+}
+
+#editPin .editPin-button-container .button.delete {
+  background-color: #e5e5e0;
+}
+
+#editPin .editPin-button-container .button.delete:hover {
+  background-color: #d9d9d4;
+}
+
+#editPin .editPin-button-container .button.delete:active {
+  background-color: #cfcfc8;
+  transform: scale(0.934426);
+}
+
+#editPin .editPin-button-container .button.write {
+  background-color: #e60023;
+}
+
+#editPin .editPin-button-container .button.write:hover {
+  background-color: #cc001f;
+}
+
+#editPin .editPin-button-container .button.write:active {
+  background-color: #b2001a;
+  transform: scale(0.934426);
+}
+
+#editPin .editPin-button-container .button.delete .caption {
+  @include flex(row, center, center);
+  width: 100%;
+  padding: 12px 15px;
+  text-align: center;
+  color: #000;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+#editPin .editPin-button-container .button.write .caption {
+  @include flex(row, center, center);
+  width: 100%;
+  padding: 12px 15px;
+  text-align: center;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+// [보드 - 팝업] @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#boardFlyout-edit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  outline: none;
+  overflow: hidden;
+  display: none;
+  z-index: 3000;
+}
+
+#boardFlyout-edit.-visible {
+  display: block;
+}
+
+#boardFlyout-edit .boardFlyout {
+  max-width: 380px;
+  max-height: 125px;
+  min-width: 180px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: block;
+}
+
+#boardFlyout-edit .boardFlyout-container {
+  width: 400px;
+  height: 100%;
+  overflow: hidden;
+  display: block;
+}
+
+#boardFlyout-edit .boardFlyout-title {
+  padding: 4px 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+#boardFlyout-edit .boardFlyout-title .title {
+  text-align: left;
+  color: #000000;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+#boardFlyout-edit .boardFlyout-content .empty-message {
+  padding-bottom: 12px;
+  text-align: center;
+  color: #e0e0d9;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+#boardFlyout-edit .boardFlyout-content .item {
+  width: 100%;
+  border-radius: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  transition: transform 85ms ease-out;
+}
+
+#boardFlyout-edit .boardFlyout-content .item .board-info {
+  @include flex(row, center, flex-start);
+  height: 52px;
+  margin: 4px 12px;
+  border-radius: 8px;
+  padding: 0;
+  background-color: #ffffff;
+}
+
+#boardFlyout-edit .boardFlyout-content .item .board-info:hover {
+  background-color: #e0e0d9;
+}
+
+#boardFlyout-edit .boardFlyout-content .item .board-info .board-thumbnail {
+  width: 36px;
+  height: 36px;
+  margin-right: 12px;
+  margin-left: 8px;
+  margin-bottom: 4px;
+  margin-top: 4px;
+  border-radius: 8px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  position: relative;
+  display: block;
+}
+
+#boardFlyout-edit .boardFlyout-content .item .board-info .board-thumbnail .thumbnail {
+  width: 100%;
+  height: 100%;
+  background-color: #e0e0d9;
+  display: block;
+}
+
+#boardFlyout-edit .boardFlyout-content .item .board-info .board-thumbnail .thumbnail .thumbnailImg {
+  width: 36px;
+  height: 36px;
+  margin: 4px 12px 4px 0;
+  border-radius: 8px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  position: relative;
+  display: block;
+}
+
+#boardFlyout-edit .boardFlyout-content .item .board-info .board-thumbnail .thumbnail .thumbnailImg.default-img {
+  margin: 0 auto;
+  display: block;
+}
+
+#boardFlyout-edit .boardFlyout-content .item .board-name {
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  margin-left: 4px;
+  overflow: hidden;
+  padding: 4px 0;
+  display: block;
+}
+
+#boardFlyout-edit .boardFlyout-content .item .board-name .name {
+  max-width: 100%;
+  text-align: left;
+  color: #000000;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.5;
+  word-break: break-all;
+  -webkit-font-smoothing: antialiased;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+}

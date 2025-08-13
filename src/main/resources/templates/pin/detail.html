@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>핀(상세보기) - PT</title>
+    <link rel="stylesheet" type="text/css" href="/assets/styles/common.min.css">
+    <link rel="stylesheet" type="text/css" href="/pin/assets/styles/detail.min.css">
+    <script defer src="/assets/scripts/components/header.js" type="text/javascript"></script>
+    <script defer src="/assets/scripts/components/toast.js" type="text/javascript"></script>
+    <script defer src="/assets/scripts/components/board.js" type="text/javascript"></script>
+    <script type="module" defer src="/pin/assets/scripts/detail.js"></script>
+</head>
+<body>
+<div id="pinDetail">
+    <th:block th:replace="~{fragments/header :: header}"></th:block>
+    <div class="pinDetail-layout">
+        <div class="pinDetail-wrapper">
+            <div class="pinDetail-container">
+                <div class="pinDetail-content-row">
+                    <div class="pinDetail-backButton-wrapper">
+                        <div class="pinDetail-backButton">
+                            <button aria-label="뒤로가기" class="backButton" tabindex="0" type="button">
+                                <svg aria-hidden="true" class="icon" role="img" viewBox="0 0 24 24">
+                                    <path d="m4.41 13 6.3 6.3-1.42 1.4L.6 12l8.7-8.7 1.42 1.4L4.4 11H24v2z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pinDetail-content">
+                        <div class="pinDetail-overlay">
+                            <button class="extra-button" th:attr="data-pin-id=${pin.id}">
+                                <svg class="icon" role="img" viewBox="0 0 16 16">
+                                    <path d="M2 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4m6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4"></path>
+                                </svg>
+                            </button>
+                            <button class="save-button" th:classappend="${isSaved} ? ' active' : ''" th:attr="data-pin-id=${pin.id}">
+                                <span th:text="${isSaved} ? '저장됨' : '저장'"></span>
+                            </button>
+                        </div>
+                        <div class="pinDetail-main">
+                            <div class="pinDetail-main-img">
+                                <img alt loading="auto" th:src="@{'/images/' + ${pin.image}}">
+                            </div>
+                            <div class="pinDetail-main-content">
+                                <div class="pinDetail-main-title-box">
+                                    <h1 class="title" th:text="${pin.title}"></h1>
+                                </div>
+                                <div class="pinDetail-main-content-box">
+                                    <span class="content" th:text="${pin.content}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pinDetail-comment">
+                        <h2 class="title">댓글(<span id="commentCount">0</span>)</h2>
+                        <div class="commentContainer" id="commentContainer">
+                            <div class="comment">
+                                <div class="head">
+                                    <a aria-label="내 프로필" class="profile" href="#" tabindex="0">
+                                        <div class="profile-img-wrapper">
+                                            <img class="img" alt="내 프로필" fetchpriority="auto" loading="auto"
+                                                 src="#">
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="body">
+                                    <div class="body-box-head">
+                                        <span class="username"></span>
+                                        <span class="comment-text"></span>
+                                    </div>
+                                    <div class="body-box-body">
+                                        <span class="timestamp"></span>
+                                        <a class="modify action" data-id="${comment.id}"></a>
+                                        <a class="delete action" data-id="${comment.id}"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form class="commentForm" novalidate id="commentForm">
+                            <label class="obj-label">
+                                <textarea aria-invalid="false" class="obj-field textarea"
+                                          name="input" placeholder="댓글 추가" spellcheck="false"
+                                          rows="1"></textarea>
+                                <button class="submit-button">
+                                    <svg class="icon" role="img" viewBox="0 0 16 16">
+                                        <path d="M 4.07 1.37 a 2.1 2.1 0 0 0 -2.8 2.59 L 3.94 12 l -2.69 8.04 a 2.1 2.1 0 0 0 2.81 2.6 l 18.1 -7.7 A 3 3 0 0 0 24 12.18 v -0.36 a 3 3 0 0 0 -1.83 -2.76 Z m -0.89 1.86 a 0.1 0.1 0 0 1 0.1 -0.02 l 18.11 7.7 a 1 1 0 0 1 0.61 0.91 v 0.36 a 1 1 0 0 1 -0.6 0.92 L 3.28 20.8 a 0.1 0.1 0 0 1 -0.13 -0.12 L 5.72 13 H 14 v -2 H 5.72 L 3.16 3.33 a 0.1 0.1 0 0 1 0.02 -0.1"></path>
+                                    </svg>
+                                </button>
+                            </label>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="extraFlyout" tabindex="0" aria-hidden="true" role="menu">
+    <div class="extraFlyout">
+        <div class="flyout-menu">
+            <button class="flyout-item edit-pin" th:attr="data-pin-id=${pin.id}">
+                <div class="caption">핀 수정</div>
+            </button>
+        </div>
+    </div>
+</div>
+<th:block th:replace="~{fragments/toast :: toast}"></th:block>
+<th:block th:replace="~{fragments/toast :: toastAlert}"></th:block>
+<th:block th:replace="~{fragments/board :: board}"></th:block>
+<th:block th:replace="~{fragments/editPin :: editPin}"></th:block>
+</body>
+</html>

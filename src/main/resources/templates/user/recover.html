@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8">
+    <title>Pixterest 계정 찾기</title>
+    <link rel="stylesheet" href="/assets/styles/common.min.css">
+    <link rel="stylesheet" href="/user/assets/styles/recover.min.css">
+</head>
+<body>
+    <div id="header">
+        <div class="logo">Pixterest</div>
+        <div class="search">
+            <span class="caption">탐색</span>
+        </div>
+        <div class="nav-search">
+            <svg aria-hidden="true" aria-label="" class="Uvi gUZ U9O kVc" height="16" role="img" viewBox="0 0 24 24" width="16"><path d="M17.33 18.74a10 10 0 1 1 1.41-1.41l4.47 4.47-1.41 1.41zM11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16"></path></svg>
+            <label class="search-label">
+                <input class="obj-field" type="text" placeholder="쉽게 만들 수 있는 저녁 메뉴, 패션 등을 검색해 보세요.">
+            </label>
+        </div>
+        <div class="button-container">
+            <button class="obj-button -color-gray" name="login" type="button">
+                <span class="caption">로그인</span>
+            </button>
+            <button class="obj-button -color-red" name="register" type="button">
+                <span class="caption">가입하기</span>
+            </button>
+        </div>
+    </div>
+    <div id="dialog" class="">
+        <div class="-modal">
+            <form novalidate id="registerModalForm" class="">
+                <div class="logo">
+                    <svg aria-hidden="true" aria-label class="icon" role="img" viewBox="0 0 24 24">
+                        <path d="M7.54 23.15q-.2-2.05.26-3.93L9 14.04a7 7 0 0 1-.35-2.07c0-1.68.81-2.88 2.09-2.88.88 0 1.53.62 1.53 1.8q0 .57-.23 1.28l-.52 1.72q-.15.5-.15.92c0 1.2.91 1.87 2.08 1.87 2.09 0 3.57-2.16 3.57-4.96 0-3.12-2.04-5.12-5.05-5.12-3.36 0-5.49 2.19-5.49 5.24 0 1.22.38 2.36 1.11 3.14-.24.41-.5.48-.88.48-1.2 0-2.34-1.69-2.34-4 0-4 3.2-7.17 7.68-7.17 4.7 0 7.66 3.29 7.66 7.33s-2.88 7.15-5.98 7.15a3.8 3.8 0 0 1-3.06-1.48l-.62 2.5a11 11 0 0 1-1.62 3.67A11.98 11.98 0 0 0 24 12a11.99 11.99 0 1 0-24 0 12 12 0 0 0 7.54 11.15"></path>
+                    </svg>
+                </div>
+                <div class="cancel">
+                    <img alt="" class="icon" src="/user/assets/images/cancel.png">
+                </div>
+                <h1 class="title">Pixterest에 오신 것을<br> 환영합니다</h1>
+                <h2 class="sub-title">시도해 볼 만한 새로운 아이디어 찾기</h2>
+                <label class="obj-label no-border">
+                    <span class="caption">이메일</span>
+                    <input autofocus required autocomplete="email" class="input -field" maxlength="50" minlength="8" name="email" spellcheck="false" placeholder="이메일" type="text">
+                    <span class="-warning">이메일을 입력해 주세요.</span>
+                </label>
+                <label class="obj-label no-border">
+                    <span class="caption">비밀번호</span>
+                    <input required autocomplete="off" class="input -field" maxlength="50" minlength="8" name="password" spellcheck="false" placeholder="비밀번호" type="password">
+                    <span class="-warning">비밀번호를 입력해 주세요.</span>
+                </label>
+                <label class="obj-label no-border">
+                    <span class="caption">생년월일</span>
+                    <input required autocomplete="off" class="input -field" name="birth" type="date">
+                    <span class="-warning">생년월일을 선택해 주세요</span>
+                </label>
+                <div class="button-container">
+                    <button class="obj-button -color-red" type="submit">가입하기</button>
+                </div>
+                <div class="confirm">
+                <span class="caption">계속하면 Pixterest의 서비스 약관에 동의하고 개인정보
+                    <br>보호정책을 읽었음을 인정한 것으로 간주합니다. 컬렉션 <br>알림.</span>
+                </div>
+                <div class="register">
+                    <a href="#" class="link">
+                        <span class="caption">이미 회원이신가요?</span>
+                        <span class="login">로그인</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+        <div class="-modal">
+            <form novalidate id="loginModalForm">
+                <div class="logo">
+                    <svg aria-hidden="true" aria-label class="icon" role="img" viewBox="0 0 24 24">
+                        <path d="M7.54 23.15q-.2-2.05.26-3.93L9 14.04a7 7 0 0 1-.35-2.07c0-1.68.81-2.88 2.09-2.88.88 0 1.53.62 1.53 1.8q0 .57-.23 1.28l-.52 1.72q-.15.5-.15.92c0 1.2.91 1.87 2.08 1.87 2.09 0 3.57-2.16 3.57-4.96 0-3.12-2.04-5.12-5.05-5.12-3.36 0-5.49 2.19-5.49 5.24 0 1.22.38 2.36 1.11 3.14-.24.41-.5.48-.88.48-1.2 0-2.34-1.69-2.34-4 0-4 3.2-7.17 7.68-7.17 4.7 0 7.66 3.29 7.66 7.33s-2.88 7.15-5.98 7.15a3.8 3.8 0 0 1-3.06-1.48l-.62 2.5a11 11 0 0 1-1.62 3.67A11.98 11.98 0 0 0 24 12a11.99 11.99 0 1 0-24 0 12 12 0 0 0 7.54 11.15"></path>
+                    </svg>
+                </div>
+                <div class="cancel">
+                    <img alt="취소 버튼" class="icon" src="/user/assets/images/cancel.png">
+                </div>
+                <h1 class="title">Pixterest에 오신 것을<br> 환영합니다</h1>
+                <label class="obj-label no-border">
+                    <span class="caption">이메일</span>
+                    <input autofocus required autocomplete="email" class="input -field" maxlength="50" minlength="8" name="email" spellcheck="false" placeholder="이메일" type="text">
+                    <span class="-warning">이메일을 입력해 주세요.</span>
+                </label>
+                <label class="obj-label no-border">
+                    <span class="caption">비밀번호</span>
+                    <input required autocomplete="off" class="input -field" maxlength="50" minlength="8" name="password" spellcheck="false" placeholder="비밀번호" type="password">
+                    <span class="-warning">비밀번호를 입력해 주세요.</span>
+                    <div class="recoverPassword">
+                        <a href="#" class="link">
+                            <span class="caption">비밀번호를 잊으셨나요?</span>
+                        </a>
+                    </div>
+                </label>
+                <div class="button-container">
+                    <button class="obj-button -color-red" type="submit">로그인</button>
+                </div>
+                <div class="confirm">
+                <span class="caption">계속하면 Pixterest의 서비스 약관에 동의하고 개인정보
+                    <br>보호정책을 읽었음을 인정한 것으로 간주합니다. 컬렉션 <br>알림.</span>
+                </div>
+                <div class="register">
+                    <a class="link">
+                    <span class="caption">
+                        아직 Pixterest를 사용하고 있지 않으신가요? 가입하기
+                    </span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="main">
+        <h2 class="title">회원님의 Pixterest 계정 찾아보기</h2>
+        <span class="caption">이메일, 이름 또는 사용자 이름이 무엇인가요?</span>
+        <div class="search-box">
+            <label class="obj-label search">
+                <svg aria-hidden="true" aria-label="" class="Uvi gUZ U9O kVc" height="16" role="img" viewBox="0 0 24 24" width="16"><path d="M17.33 18.74a10 10 0 1 1 1.41-1.41l4.47 4.47-1.41 1.41zM11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16"></path></svg>
+                <input autofocus autocomplete="off" class="obj-field -field" type="text" placeholder="검색">
+            </label>
+            <div class="button-container">
+                <button class="obj-button -color-gray" type="submit">검색</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

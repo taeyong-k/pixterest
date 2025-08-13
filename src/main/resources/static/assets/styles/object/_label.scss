@@ -1,0 +1,78 @@
+@charset "UTF-8";
+
+@use "sass:color";
+@import "../_def";
+
+.obj-label {
+  $caption-text-color: #000000;
+
+  @include flex(column, stretch, flex-start, 0.125rem);
+  width: 100%;
+  border: 0.0625rem solid #757569;
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+
+  font-size: 1rem;
+  position: relative; // hover 충돌 방지
+
+  // no-border class: wrapper 용
+  &.no-border {
+    border: none;
+    padding: 0;
+
+    &:hover {
+      outline: none;
+    }
+  }
+
+  // 실제 hover 효과는 해당 요소에만
+  &:hover {
+    color: color.adjust($caption-text-color, $lightness: -15%);
+    border: 1.5px solid #007db8;
+    z-index: 1; // 시각적으로 겹칠 경우 위로
+  }
+
+  &:focus-within {
+    border: 1.5px solid #007db8;
+    z-index: 1;
+  }
+
+  // 유효성 오류 상태
+  &.-invalid {
+    border: 1.5px solid #b2001a;
+    z-index: 9;
+
+    .-field:not(:disabled) {
+      border-color: #e74c3c !important;
+    }
+
+    > .-caption {
+      color: #e74c3c !important;
+    }
+
+    > .-warning {
+      display: block;
+    }
+  }
+
+  // 제목
+  > .-caption {
+    color: $caption-text-color;
+    font-size: 0.875rem;
+    font-weight: 400;
+    margin-bottom: 0.25rem;
+    transition: color 175ms ease;
+  }
+
+  // 내부 row 정렬 (이름+성 같이 쓸 때)
+  > .-row {
+    @include flex(row, stretch, flex-start);
+  }
+
+  // 경고 문구
+  > .-warning {
+    color: #e74c3c;
+    display: none;
+    font-size: 0.8rem;
+  }
+}

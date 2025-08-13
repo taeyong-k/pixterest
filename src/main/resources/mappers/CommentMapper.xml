@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tyk.pixterest.mappers.CommentMapper">
+    <insert id="insert"
+            useGeneratedKeys="true"
+            keyColumn="id"
+            keyProperty="id">
+        insert into `pixterest`.`comments` (`pin_id`, `user_email`, `nickname`, comment_id, content, created_at, modified_at, is_deleted)
+        values (#{comment.pinId}, #{comment.userEmail}, #{comment.nickname}, #{comment.commentId}, #{comment.content}, #{comment.createdAt},
+                #{comment.modifiedAt}, #{comment.isDeleted})
+    </insert>
+
+    <update id="updateContent">
+        update `pixterest`.`comments`
+        set `content` = #{comment.content}
+        where `id` = #{comment.id}
+        limit 1
+    </update>
+
+    <update id="updateDeleted">
+        update `pixterest`.`comments`
+        set `is_deleted` = #{comment.isDeleted}
+        where `id` = #{comment.id}
+        limit 1
+    </update>
+
+    <select id="selectById" resultType="com.tyk.pixterest.entities.CommentEntity">
+        select `id`         as `id`,
+               `pin_id`     as `pinId`,
+               `user_email` as `userEmail`,
+               `nickname`   as `nickname`,
+               `comment_id` as `commentId`,
+               `content`    as `content`,
+               `created_at` as `createdAt`,
+               `modified_at` as `modifiedAt`,
+               `is_deleted` as `isDeleted`
+        from `pixterest`.`comments`
+        where `id` = #{id}
+        limit 1
+    </select>
+
+    <select id="selectAllByPinId" resultType="com.tyk.pixterest.vos.CommentVo">
+        select c.`id`         as `id`,
+               c.`pin_id`     as `pinId`,
+               c.`user_email` as `userEmail`,
+               c.`nickname`   as `nickname`,
+               c.`comment_id` as `commentId`,
+               c.`content`    as `content`,
+               c.`created_at` as `createdAt`,
+               c.`modified_at` as `modifiedAt`,
+               c.`is_deleted` as `isDeleted`
+        from `pixterest`.`comments` c
+                 join `pixterest`.`users` u on c.user_email = u.email
+        where c.`pin_id` = #{pinId}
+        order by c.`created_at` asc
+    </select>
+
+
+</mapper>

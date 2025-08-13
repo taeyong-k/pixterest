@@ -1,0 +1,145 @@
+@import "../../../assets/styles/_def";
+
+
+@mixin Form {
+  @include flex(column, center, center, 0.625rem);
+  width: 100%;
+  max-width: 25rem;
+  background: #ffffff;
+  display: none;
+  font-size: 0.75rem;
+  padding: 1.25rem 0.625rem 1.5rem;
+  border-radius: 1rem;
+  box-shadow:
+          0 0 0 0.0625rem #0000001A,
+          0 0.25rem 0.75rem #00000026;
+
+  &.-visible {
+    display: flex;
+  }
+}
+
+@mixin modalLogo {
+  margin: 0.5rem auto 0.375rem;
+  width: 2.813rem;
+  height: 2.813rem;
+  color: #e60023;
+  fill: currentColor;
+  display: block;
+  stroke-width: 0;
+  vertical-align: middle;
+
+  > .icon {
+    width: 2rem;
+  }
+}
+
+@mixin modalTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  color: #111111;
+}
+
+@mixin fieldWrapper {
+  width: 75%;
+  margin-bottom: 0.25rem;
+
+  &.column {
+    @include flex(column, flex-start, flex-start, 0.5rem);
+  }
+
+  > .caption
+  {
+    color: #000000;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  > .obj-label {
+    width: 100%;
+
+    > .input-field {
+      width: 100%;
+    }
+
+    &:focus-within:not(.-invalid) {
+      border-color: #ffffff;
+      outline: 1.5px solid #007db8;
+      z-index: 1;
+    }
+  }
+
+  > .-warning {
+    @include flex(row, center, center, 0.25rem);
+    display: none;
+    bottom: -1.5rem; // 라벨 하단에서 살짝 띄우기
+    left: 0;
+    padding-left: 0.75rem;
+    font-size: 0.8rem;
+    white-space: nowrap; // 줄 바꿈 방지
+
+    &.-visible {
+      display: flex;
+    }
+
+    .warning-icon {
+      width: 12px;
+      height: 12px;
+      color: #8a0f0f;
+      fill: currentColor;
+      stroke-width: 0;
+      vertical-align: middle;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 1.5;
+      display: block;
+
+      > .icon {
+        @include flex(row, center, center, 0);
+      }
+    }
+
+    .caption {
+      text-align: left;
+      color: #8a0f0f;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 1.5;
+      word-wrap: break-word;
+      -webkit-font-smoothing: antialiased;
+    }
+  }
+}
+
+
+@mixin buttonContainer {
+  margin-bottom: 1rem;
+
+  > .obj-button {
+    min-height: 2rem;
+    padding: 0.125rem 0.75rem;
+    width: 17.5rem;
+    font-weight: 500;
+    transition: transform 85ms ease-out;
+    &:active
+    {
+      transform: scale(0.934426);
+    }
+  }
+}
+
+@mixin confirmText {
+  margin-bottom: 1rem;
+  overflow: hidden;
+  white-space: wrap;
+
+  > .caption {
+    color: #57574c;
+    font-weight: 400;
+  }
+}

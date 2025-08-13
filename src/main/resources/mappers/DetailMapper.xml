@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tyk.pixterest.mappers.DetailMapper">
+    <select id="selectById" resultType="com.tyk.pixterest.entities.PinEntity">
+        select `id`          as `id`,
+               `user_email`  as `userEmail`,
+               `board_id`    as `boardId`,
+               `title`       as `title`,
+               `content`     as `content`,
+               `link`        as `link`,
+               `tag`         as `tag`,
+               `image`       as `image`,
+               `created_at`  as `createdAt`,
+               `modified_at` as `modifiedAt`,
+               `is_deleted`  as `isDeleted`
+        from `pixterest`.`pins`
+        where `id` = #{id}
+        limit 1
+    </select>
+
+</mapper>

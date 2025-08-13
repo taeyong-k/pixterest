@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tyk.pixterest.mappers.UserMapper">
+    <insert id="insert">
+        INSERT INTO `pixterest`.`users` (`email`, `password`, `first_name`, `name`, `nickname`, `site`, `introduce`,
+                                         `birth`, `profile_color`, `created_at`, `modified_at`, `is_admin`, `is_deleted`)
+        VALUES (#{user.email}, #{user.password}, #{user.firstName}, #{user.name}, #{user.nickname}, #{user.site},
+                #{user.introduce},
+                #{user.birth}, #{user.profileColor},#{user.createdAt}, #{user.modifiedAt}, #{user.isAdmin},
+                #{user.isDeleted})
+    </insert>
+    <update id="update">
+        UPDATE `pixterest`.`users`
+        SET `password`     = #{user.password},
+            `first_name`   = #{user.firstName},
+            `name`         = #{user.name},
+            `nickname`     = #{user.nickname},
+            `site`         = #{user.site},
+            `introduce`    = #{user.introduce},
+            `birth`        = #{user.birth},
+            `profile_color`= #{user.profileColor},
+            `created_at`   = #{user.createdAt},
+            `modified_at`  = #{user.modifiedAt},
+            `is_admin`     = #{user.isAdmin},
+            `is_deleted`   = #{user.isDeleted},
+            `is_suspended` = #{user.isSuspended}
+        WHERE `email` = #{user.email}
+    </update>
+    <delete id="delete">
+        DELETE FROM `pixterest`.`users`
+        WHERE `email` = #{email}
+    </delete>
+    <select id="selectByEmail" resultType="com.tyk.pixterest.entities.UserEntity">
+        SELECT `email`         AS `email`,
+               `password`      AS `password`,
+               `first_name`    AS `firstName`,
+               `name`          AS `name`,
+               `nickname`      AS `nickname`,
+               `site`          AS `site`,
+               `introduce`     AS `introduce`,
+               `birth`         AS `birth`,
+               `profile_color` AS `profileColor`,
+               `created_at`    AS `createdAt`,
+               `modified_at`   AS `modifiedAt`,
+               `is_admin`      AS `isAdmin`,
+               `is_deleted`    AS `isDeleted`,
+               `is_suspended`  AS `isSuspended`
+        FROM `pixterest`.`users`
+        WHERE `email` = #{email}
+    </select>
+    <select id="selectByPassword" resultType="com.tyk.pixterest.entities.UserEntity">
+        SELECT `email`         AS `email`,
+               `password`      AS `password`,
+               `first_name`    AS `firstName`,
+               `name`          AS `name`,
+               `nickname`      AS `nickname`,
+               `site`          AS `site`,
+               `introduce`     AS `introduce`,
+               `birth`         AS `birth`,
+               `profile_color` AS `profileColor`,
+               `created_at`    AS `createdAt`,
+               `modified_at`   AS `modifiedAt`,
+               `is_admin`      AS `isAdmin`,
+               `is_deleted`    AS `isDeleted`,
+               `is_suspended`  AS `isSuspended`
+        FROM `pixterest`.`users`
+        WHERE `password` = #{password}
+    </select>
+    <select id="selectByEmailAndPassword" resultType="com.tyk.pixterest.entities.UserEntity">
+        SELECT `email`         AS `email`,
+               `password`      AS `password`,
+               `first_name`    AS `firstName`,
+               `name`          AS `name`,
+               `nickname`      AS `nickname`,
+               `site`          AS `site`,
+               `introduce`     AS `introduce`,
+               `birth`         AS `birth`,
+               `profile_color` AS `profileColor`,
+               `created_at`    AS `createdAt`,
+               `modified_at`   AS `modifiedAt`,
+               `is_admin`      AS `isAdmin`,
+               `is_deleted`    AS `isDeleted`,
+               `is_suspended`  AS `isSuspended`
+        FROM `pixterest`.`users`
+        WHERE `email` = #{email}
+          AND `password` = #{password}
+    </select>
+    <select id="selectBoardsByEmail" resultType="com.tyk.pixterest.entities.BoardEntity">
+        SELECT b.`id`          AS `id`,
+               b.`user_email`  AS `userEmail`,
+               b.`name`        AS `name`,
+               p.`image`       AS `coverImage`, -- 첫 번째 핀 이미지 또는 기본 이미지
+               b.`created_at`  AS `createdAt`,
+               b.`modified_at` AS `modifiedAt`,
+               b.`is_deleted`  AS `isDeleted`
+        FROM pixterest.boards b
+                 LEFT JOIN pixterest.pins p
+                           ON p.board_id = b.id
+                               AND p.id = (SELECT MIN(p2.id)
+                                           FROM pixterest.pins p2
+                                           WHERE p2.board_id = b.id)
+        WHERE b.`user_email` = #{email}
+          AND b.`is_deleted` = false;
+    </select>
+    <select id="selectPinsByEmail" resultType="com.tyk.pixterest.entities.PinEntity">
+        SELECT `id`          AS `id`,
+               `user_email`  AS `userEmail`,
+               `board_id`    AS `boardId`,
+               `title`       AS `title`,
+               `content`     AS `content`,
+               `link`        AS `link`,
+               `tag`         AS `tag`,
+               `image`       AS `image`,
+               `created_at`  AS `createdAt`,
+               `modified_at` AS `modifiedAt`,
+               `is_deleted`  AS `isDeleted`
+        FROM `pixterest`.`pins`
+        WHERE `user_email` = #{email}
+          AND board_id IS NULL
+          AND is_deleted = false
+    </select>
+    <select id="selectSavedPinsByEmail" resultType="com.tyk.pixterest.entities.PinEntity">
+        SELECT p.`id`          AS `id`,
+               p.`user_email`  AS `userEmail`,
+               p.`board_id`    AS `boardId`,
+               p.`title`       AS `title`,
+               p.`content`     AS `content`,
+               p.`link`        AS `link`,
+               p.`tag`         AS `tag`,
+               p.`image`       AS `image`,
+               p.`created_at`  AS `createdAt`,
+               p.`modified_at` AS `modifiedAt`,
+               p.`is_deleted`  AS `isDeleted`
+        FROM `pixterest`.`pins` p
+                 INNER JOIN `pixterest`.`pin_user_saves` s
+                            ON p.id = s.pin_id
+        WHERE s.user_email = #{email}
+          AND p.is_deleted = false
+    </select>
+</mapper>

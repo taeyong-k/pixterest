@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tyk.pixterest.mappers.PinMapper">
+    <insert id="insert"
+            useGeneratedKeys="true"
+            keyColumn="id"
+            keyProperty="id">
+        insert into `pixterest`.`pins` (`user_email`, `board_id`, `title`, `content`, `link`, `tag`, `image`,
+                                        `created_at`,
+                                        `modified_at`, `is_deleted`)
+        values (#{pin.userEmail}, #{pin.boardId}, #{pin.title}, #{pin.content}, #{pin.link}, #{pin.tag}, #{pin.image},
+                #{pin.createdAt}, #{pin.modifiedAt}, #{pin.isDeleted});
+    </insert>
+
+    <update id="update">
+        update `pixterest`.`pins`
+        set
+        title = #{pinId.title},
+        content = #{pinId.content},
+        link = #{pinId.link},
+        tag = #{pinId.tag},
+        board_id = #{pinId.boardId},
+        modified_at = now()
+        where id = #{pinId.id}
+    </update>
+
+    <update id="updateDelete">
+        update `pixterest`.`pins`
+        set is_deleted = #{pinId.isDeleted},
+        modified_at = now()
+        where id = #{pinId.id}
+    </update>
+
+    <select id="selectById" resultType="com.tyk.pixterest.entities.PinEntity">
+        select `id`          as `id`,
+               `user_email`  as `userEmail`,
+               `board_id`    as `boardId`,
+               `title`       as `title`,
+               `content`     as `content`,
+               `link`        as `link`,
+               `tag`         as `tag`,
+               `image`       as `image`,
+               `created_at`  as `createdAt`,
+               `modified_at` as `modifiedAt`,
+               `is_deleted`  as `isDeleted`
+        from `pixterest`.`pins`
+        where `id` = #{id}
+        limit 1
+    </select>
+
+    <select id="selectAll" resultType="com.tyk.pixterest.entities.PinEntity">
+        select `id`          as `id`,
+               `user_email`  as `userEmail`,
+               `board_id`    as `boardId`,
+               `title`       as `title`,
+               `content`     as `content`,
+               `link`        as `link`,
+               `tag`         as `tag`,
+               `image`       as `image`,
+               `created_at`  as `createdAt`,
+               `modified_at` as `modifiedAt`,
+               `is_deleted`  as `isDeleted`
+        from `pixterest`.`pins`
+        where is_deleted = false
+        order by created_at desc
+    </select>
+
+    <select id="selectFirstNonDeletedPinByBoardId" resultType="com.tyk.pixterest.entities.PinEntity">
+        select `id`          as `id`,
+               `user_email`  as `userEmail`,
+               `board_id`    as `boardId`,
+               `title`       as `title`,
+               `content`     as `content`,
+               `link`        as `link`,
+               `tag`         as `tag`,
+               `image`       as `image`,
+               `created_at`  as `createdAt`,
+               `modified_at` as `modifiedAt`,
+               `is_deleted`  as `isDeleted`
+        from `pixterest`.`pins`
+        where board_id = #{boardId}
+          and is_deleted = false
+        order by created_at desc
+        limit 1
+    </select>
+
+    <select id="search" resultType="com.tyk.pixterest.entities.PinEntity">
+        select `id`          as `id`,
+               `user_email`  as `userEmail`,
+               `board_id`    as `boardId`,
+               `title`       as `title`,
+               `content`     as `content`,
+               `link`        as `link`,
+               `tag`         as `tag`,
+               `image`       as `image`,
+               `created_at`  as `createdAt`,
+               `modified_at` as `modifiedAt`,
+               `is_deleted`  as `isDeleted`
+        from `pixterest`.`pins`
+        where is_deleted = false
+          and (title like concat('%', #{searchVo.keyword}, '%')
+            or content like concat('%', #{searchVo.keyword}, '%')
+            or tag like concat('%', #{searchVo.keyword}, '%'))
+        order by created_at desc
+    </select>
+
+    <select id="selectByUserEmailAndId" resultType="com.tyk.pixterest.entities.PinEntity">
+        select `id`          as `id`,
+               `user_email`  as `userEmail`,
+               `board_id`    as `boardId`,
+               `title`       as `title`,
+               `content`     as `content`,
+               `link`        as `link`,
+               `tag`         as `tag`,
+               `image`       as `image`,
+               `created_at`  as `createdAt`,
+               `modified_at` as `modifiedAt`,
+               `is_deleted`  as `isDeleted`
+        from `pixterest`.`pins`
+        where `user_email` = #{userEmail}
+          and `id` = #{id}
+        limit 1
+    </select>
+
+</mapper>

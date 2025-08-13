@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+@use "sass:color";
+@import "../_def";
+
+$field-border-color: #e0e2e4;
+$field-text-color: #434345;
+
+.obj-field {
+  height: 2rem;
+  background-color: #ffffff;
+  border: 0.0625rem solid $field-border-color;
+  border-radius: 0.25rem;
+  color: $field-text-color;
+  padding: 0 0.5rem;
+  transition-duration: 175ms;
+  transition-property: border-color, color;
+  transition-timing-function: ease;
+
+  &:hover {
+    border-color: color.adjust($field-border-color, $lightness: -10%);
+    color: color.adjust($field-text-color, $lightness: -15%);
+  }
+
+  &:focus {
+    border-color: #1abc9c;
+    color: color.adjust($field-text-color, $lightness: -30%);
+  }
+
+  &:disabled {
+    background-color: #f2f4f6 !important;
+    border-color: $field-border-color !important;
+    color: #a2a4a6 !important;
+    cursor: default !important;
+  }
+}
+
+textarea.obj-field {
+  height: initial;
+  resize: none;
+
+  &.-resizable-vertical {
+    resize: vertical;
+  }
+}

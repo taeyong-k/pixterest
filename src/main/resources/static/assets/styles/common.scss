@@ -1,0 +1,132 @@
+@import "_def";
+@import "components/header";
+@import "components/toast";
+@import "./components/board";
+@import "components/editPin";
+@import "components/loading";
+@import "components/intro";
+@import "object/button";
+@import "object/label";
+@import "object/field";
+
+* {
+  box-sizing: border-box;
+}
+
+a[href] {
+  color: inherit;
+  text-decoration: none;
+}
+
+body {
+  min-height: 100%;
+  background-color: #fafcfe;
+  color: #212325;
+  cursor: default;
+  font-family: 'Pin-Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, 'ヒラギノ角ゴ Pro W3', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', Arial, sans-serif !important;
+  font-size: 0.875rem;
+  font-weight: 300;
+  margin: initial;
+  user-select: none;
+  overflow-y: scroll;
+  position: relative;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font: inherit;
+  margin-block: initial;
+  margin-inline: initial;
+}
+
+html {
+  height: 100%;
+}
+
+button, input, select, textarea {
+  background-color: initial;
+  border: initial;
+  color: inherit;
+  font: inherit;
+  margin: initial;
+  margin-block: initial;
+  margin-inline: initial;
+  letter-spacing: initial;
+  outline: initial;
+  padding: initial;
+  padding-block: initial;
+  padding-inline: initial;
+  text-indent: initial;
+  text-shadow: initial;
+  text-transform: initial;
+  word-spacing: initial;
+}
+
+ol, ul {
+  list-style: none;
+  margin-block: initial;
+  padding-inline: initial;
+}
+
+.dialog {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(0.5rem);
+  background-color: #212325a0;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  transition-duration: 175ms;
+  transition-property: opacity;
+  transition-timing-function: ease;
+  z-index: 8;
+
+  &.-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  > .-modal {
+    @include flex(column, stretch, flex-start, 1rem);
+    top: 50%;
+    left: 50%;
+    min-width: 20rem;
+    background-color: #fafcfe;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 1.25rem #21232525;
+    opacity: 0;
+    overflow: hidden;
+    padding: 1.625rem 1.75rem;
+    pointer-events: none;
+    position: fixed;
+    transform: scale(95%) translate(-50%, -50%);
+    transform-origin: top left;
+    transition-duration: 175ms;
+    transition-property: opacity, transform;
+    transition-timing-function: ease;
+
+    &.-visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(100%) translate(-50%, -50%);
+    }
+
+    > .-title {
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    > .-content {
+      text-align: justify;
+    }
+
+    > .-button-container {
+      @include flex(row, stretch, center, 0.5rem);
+    }
+  }
+}
+
+body:has(.dialog.-visible) {
+  overflow: hidden !important;
+}

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>핀 만들기 - PT</title>
+    <link rel="stylesheet" type="text/css" href="/assets/styles/common.min.css">
+    <link rel="stylesheet" type="text/css" href="/creation/assets/styles/pin.min.css">
+    <script defer src="/assets/scripts/components/header.js" type="text/javascript"></script>
+    <script defer src="/assets/scripts/components/toast.js" type="text/javascript"></script>
+    <script defer src="/assets/scripts/components/board.js" type="text/javascript"></script>
+    <script defer src="/creation/assets/scripts/pin.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="creation-pin">
+    <th:block th:replace="~{fragments/header :: header}"></th:block>
+    <div class="creation-pin-layout">
+        <div class="creation-pin-wrapper">
+            <div class="creation-pin-container">
+                <div class="pin-title-container">
+                    <div class="pin-title">
+                        <h1 class="title">핀 만들기</h1>
+                    </div>
+                    <form class="pin-post" id="pin-post-btn">
+                        <button aria-label="핀 게시" class="pin-post-btn" tabindex="0" type="submit">게시</button>
+                    </form>
+                </div>
+                <div class="pin-content-container-layout">
+                    <div class="pin-content-container-wrapper">
+                        <div class="pin-content-container">
+                            <form id="pinForm" action="/creation/pin" method="post" enctype="multipart/form-data">
+                                <div class="pin-upload-wrapper">
+                                    <div class="pin-upload">
+                                        <div class="pin-upload-container">
+                                            <div class="pin-upload-icon">
+                                                <svg aria-label="파일 추가" class="icon" role="img" viewBox="0 0 24 24">
+                                                    <path d="M15.3 12.7 13 10.42V17h-2v-6.59l-2.3 2.3-1.4-1.42L12 6.6l4.7 4.7zM24 12a12 12 0 1 1-24 0 12 12 0 0 1 24 0M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="pin-upload-caption">
+                                                <span class="caption">파일을 선택하거나 여기로 끌어다 놓으세요.</span>
+                                            </div>
+                                            <div class="pin-upload-explanation">
+                                                <span class="explan">Pinterest는 20 MB 미만의 고화질 .jpg 파일 또는 200 MB 미만의 .mp4 파일 사용을 권장합니다.</span>
+                                            </div>
+                                            <input accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp,video/mp4,video/x-m4v,video/quicktime"
+                                                   aria-label="파일 업로드" multiple="" class="file-upload" id="file-upload"
+                                                   name="imageFile" tabindex="0" type="file">
+                                        </div>
+                                        <div class="-border"></div>
+                                        <button class="url-save" type="button">
+                                            <span class="caption">URL에서 저장</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="pin-upload-preview"> <!--이미지 업로드-->
+                                <img class="preview-img" alt="preview image" />
+                                <button aria-label="이미지 삭제" class="preview-clear-btn" tabindex="0">&times;</button>
+                            </div>
+                            <div class="pin-label-layout">
+                                <div class="pin-label-wrapper">
+                                    <div class="pin-label-container">
+                                        <div class="pin-label-title">
+                                            <label class="obj-label pin-label">
+                                                <div class="title -inner">제목</div>
+                                                <input aria-invalid="false" class="obj-field input" name="input"
+                                                       placeholder="제목 추가" spellcheck="false" type="text">
+                                                <div class="-warning -row">
+                                                    <div class="warning-icon">
+                                                        <svg class="icon" role="img" viewBox="0 0 16 16">
+                                                            <path d="M9.71 2.86a2 2 0 0 0-3.42 0L.82 11.97A2 2 0 0 0 2.53 15h10.94a2 2 0 0 0 1.71-3.03zM6.03 6.97 8 8.94l1.97-1.97 1.06 1.06L9.06 10l1.97 1.97-1.06 1.06L8 11.06l-1.97 1.97-1.06-1.06L6.94 10 4.97 8.03z"></path>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="caption">제목이 너무 깁니다. 초반 100자까지만 표시됩니다.</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="pin-label-content">
+                                            <div class="pin-label-wrapper">
+                                                <div class="title">설명</div>
+                                                <label class="obj-label pin-label">
+                                                    <textarea aria-invalid="false" class="obj-field textarea"
+                                                              name="input" placeholder="자세한 설명을 추가하세요."
+                                                              spellcheck="false" rows="5"></textarea>
+                                                    <div class="-warning -row">
+                                                        <div class="warning-icon">
+                                                            <svg class="icon" role="img" viewBox="0 0 16 16">
+                                                                <path d="M9.71 2.86a2 2 0 0 0-3.42 0L.82 11.97A2 2 0 0 0 2.53 15h10.94a2 2 0 0 0 1.71-3.03zM6.03 6.97 8 8.94l1.97-1.97 1.06 1.06L9.06 10l1.97 1.97-1.06 1.06L8 11.06l-1.97 1.97-1.06-1.06L6.94 10 4.97 8.03z"></path>
+                                                            </svg>
+                                                        </div>
+                                                        <span class="caption">설명이 너무 깁니다. 처음 800자까지만 표시됩니다.</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="pin-label-link">
+                                            <div class="pin-label-wrapper">
+                                                <div class="title">링크</div>
+                                                <label class="obj-label pin-label">
+                                                    <input aria-invalid="false" class="obj-field input" name="input"
+                                                           placeholder="링크 추가" spellcheck="false" type="text">
+                                                    <div class="-warning -row">
+                                                        <div class="warning-icon">
+                                                            <svg class="icon" role="img" viewBox="0 0 16 16">
+                                                                <path d="M9.71 2.86a2 2 0 0 0-3.42 0L.82 11.97A2 2 0 0 0 2.53 15h10.94a2 2 0 0 0 1.71-3.03zM6.03 6.97 8 8.94l1.97-1.97 1.06 1.06L9.06 10l1.97 1.97-1.06 1.06L8 11.06l-1.97 1.97-1.06-1.06L6.94 10 4.97 8.03z"></path>
+                                                            </svg>
+                                                        </div>
+                                                        <span class="caption">죄송합니다. 올바르지 않은 URL입니다—다시 시도하세요.</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="pin-label-board">
+                                            <div class="pin-label-wrapper">
+                                                <div class="title">보드</div>
+                                                <label class="obj-label pin-label">
+                                                    <button class="pin-label-board-button" role="menuitem" tabindex="0"
+                                                            type="button">
+                                                        <img alt class="thumbnailImg" loading="auto" src="">
+                                                        <div class="name" title="test">보드 선택</div>
+                                                    </button>
+                                                    <div class="pin-label-icon">
+                                                        <svg aria-label="드롭다운 열기" class="icon" role="img"
+                                                             viewBox="0 0 24 24">
+                                                            <path d="M23.7 8.7 12 20.42.3 8.71l1.4-1.42L12 17.6 22.3 7.3z"></path>
+                                                        </svg>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                            <div id="boardFlyout" class="" tabindex="0" aria-hidden="true" role="menu">
+                                                <div class="boardFlyout">
+                                                    <div class="boardFlyout-container">
+                                                        <div class="boardFlyout-title">
+                                                            <span class="title">모든 보드</span>
+                                                        </div>
+                                                        <div class="boardFlyout-content">
+                                                            <div class="item"> <!--예시-->
+                                                                <div class="board-info" data-board-id="1"
+                                                                     data-board-url="https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/DKQBBSNYHFB57EHECOEC4GVGBQ.png">
+                                                                    <div class="board-thumbnail">
+                                                                        <div class="thumbnail">
+                                                                            <img alt class="thumbnailImg" loading="auto"
+                                                                                 src="https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/DKQBBSNYHFB57EHECOEC4GVGBQ.png">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="board-name">
+                                                                        <div class="name" title="test">test</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="pin-label-tag">
+                                            <div class="pin-label-wrapper">
+                                                <div class="title">태그 주제</div>
+                                                <label class="obj-label pin-label">
+                                                    <input aria-invalid="false" class="obj-field input" name="input"
+                                                           placeholder="태그 추가" spellcheck="false" type="text">
+                                                </label>
+                                                <div class="-ex">
+                                                    <span class="caption">걱정하지 마세요. 사람들에게 태그는 보여지지 않습니다.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pin-label-footer">
+                                        <span class="caption">불법 촬영 콘텐츠 등을 게시하는 경우 Pinterest는 한국 전기통신사업법 제22-5(1)조에 따라 해당 콘텐츠의 액세스를 삭제하거나 차단할 수 있으며, 사용자는 관련 법률 및 규정에 따라 처벌을 받을 수 있습니다.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="~{fragments/toast :: toast}"></th:block>
+<th:block th:replace="~{fragments/toast :: toastAlert}"></th:block>
+<th:block th:replace="~{fragments/board :: board}"></th:block>
+</body>
+</html>

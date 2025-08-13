@@ -1,0 +1,336 @@
+#header {
+  width: 99%;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+}
+#header .logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  color: #e60023;
+}
+#header > .search {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: flex-start;
+  height: 3rem;
+  padding: 0 1rem;
+  min-width: 3.75rem;
+  border-radius: 1.5rem;
+}
+#header > .search > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#header > .search > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#header > .search > .caption {
+  color: #000000;
+  font-size: 1rem;
+  font-weight: 700;
+}
+#header > .search:hover {
+  background-color: #e0e0d9;
+}
+#header .nav-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #efefef;
+  border-radius: 24px;
+  padding: 10px 16px;
+  margin-right: 20px;
+}
+#header .nav-search > .search-label > .obj-field {
+  width: 100%;
+}
+#header .nav-search input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  outline: none;
+}
+#header .button-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  justify-content: center;
+}
+#header .button-container > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#header .button-container > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#dialog {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 999;
+  display: none;
+}
+#dialog.-visible {
+  display: flex;
+}
+#dialog::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+}
+#dialog > .-modal {
+  min-height: 35rem;
+}
+#dialog > .-modal #registerModalForm,
+#dialog > .-modal #loginModalForm {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25rem;
+  max-width: 90%;
+  background-color: #ffffff;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+  border-radius: 2rem;
+  padding: 2rem 1.5rem;
+  font-size: 0.75rem;
+  display: none;
+  z-index: 1000;
+}
+#dialog > .-modal #registerModalForm > *,
+#dialog > .-modal #loginModalForm > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#dialog > .-modal #registerModalForm > .-flex-stretch,
+#dialog > .-modal #loginModalForm > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#dialog > .-modal #registerModalForm.-visible,
+#dialog > .-modal #loginModalForm.-visible {
+  display: flex;
+}
+#dialog > .-modal #registerModalForm > .logo,
+#dialog > .-modal #loginModalForm > .logo {
+  margin: 0.5rem auto 0.375rem;
+  width: 2.813rem;
+  height: 2.813rem;
+  color: #e60023;
+  fill: currentColor;
+  display: block;
+  stroke-width: 0;
+  vertical-align: middle;
+}
+#dialog > .-modal #registerModalForm > .logo > .icon,
+#dialog > .-modal #loginModalForm > .logo > .icon {
+  width: 2rem;
+}
+#dialog > .-modal #registerModalForm > .cancel,
+#dialog > .-modal #loginModalForm > .cancel {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+#dialog > .-modal #registerModalForm > .cancel > .icon,
+#dialog > .-modal #loginModalForm > .cancel > .icon {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+#dialog > .-modal #registerModalForm > .title,
+#dialog > .-modal #loginModalForm > .title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  color: #000000;
+}
+#dialog > .-modal #registerModalForm > .sub-title,
+#dialog > .-modal #loginModalForm > .sub-title {
+  color: #000000;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+}
+#dialog > .-modal #registerModalForm > .obj-label,
+#dialog > .-modal #loginModalForm > .obj-label {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+#dialog > .-modal #registerModalForm > .obj-label > .caption,
+#dialog > .-modal #loginModalForm > .obj-label > .caption {
+  font-size: 0.875rem;
+  color: #000000;
+  font-weight: 400;
+  margin-bottom: 0.25rem;
+}
+#dialog > .-modal #registerModalForm > .obj-label > .input,
+#dialog > .-modal #loginModalForm > .obj-label > .input {
+  width: 100%;
+  border: 0.0625rem solid #757569;
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+#dialog > .-modal #registerModalForm > .obj-label > .input:hover,
+#dialog > .-modal #loginModalForm > .obj-label > .input:hover {
+  border: 0.0625rem solid #616157;
+}
+#dialog > .-modal #registerModalForm > .obj-label > .input:focus,
+#dialog > .-modal #loginModalForm > .obj-label > .input:focus {
+  border: 0.063rem solid #ffffff;
+  outline: 0.125rem solid #007db8;
+}
+#dialog > .-modal #registerModalForm > .obj-label > .recoverPassword,
+#dialog > .-modal #loginModalForm > .obj-label > .recoverPassword {
+  margin-top: 0.125rem;
+}
+#dialog > .-modal #registerModalForm > .obj-label > .recoverPassword > .link .caption,
+#dialog > .-modal #loginModalForm > .obj-label > .recoverPassword > .link .caption {
+  color: #1e4b67;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+#dialog > .-modal #registerModalForm > .obj-label > .recoverPassword > .link .caption:hover,
+#dialog > .-modal #loginModalForm > .obj-label > .recoverPassword > .link .caption:hover {
+  text-decoration: underline;
+}
+#dialog > .-modal #registerModalForm > .button-container,
+#dialog > .-modal #loginModalForm > .button-container {
+  margin-bottom: 1rem;
+}
+#dialog > .-modal #registerModalForm > .button-container > .obj-button,
+#dialog > .-modal #loginModalForm > .button-container > .obj-button {
+  min-height: 2rem;
+  padding: 0.125rem 0.75rem;
+  width: 17.5rem;
+}
+#dialog > .-modal #registerModalForm > .confirm,
+#dialog > .-modal #loginModalForm > .confirm {
+  margin-bottom: 1rem;
+  overflow: hidden;
+  white-space: wrap;
+}
+#dialog > .-modal #registerModalForm > .confirm > .caption,
+#dialog > .-modal #loginModalForm > .confirm > .caption {
+  color: #57574c;
+  font-weight: 400;
+}
+#dialog > .-modal #registerModalForm > .register > .link > .caption,
+#dialog > .-modal #loginModalForm > .register > .link > .caption {
+  color: #000000;
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+#dialog > .-modal #registerModalForm > .register > .link > .login,
+#dialog > .-modal #loginModalForm > .register > .link > .login {
+  color: #000000;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+#main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 80px;
+}
+#main > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#main > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#main > .title {
+  color: #000000;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+#main > .caption {
+  color: #000000;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+#main .search-box {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: center;
+  width: 31.25rem;
+}
+#main .search-box > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#main .search-box > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#main .search-box > .obj-label.search {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: flex-start;
+}
+#main .search-box > .obj-label.search > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#main .search-box > .obj-label.search > .-flex-stretch {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#main .search-box input {
+  flex: 1;
+  border: none;
+  padding-left: 2.5rem;
+  font-size: 16px;
+  outline: none;
+}
+#main .search-box button {
+  background: #efefef;
+  border: none;
+  padding: 0 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=recover.css.map */
