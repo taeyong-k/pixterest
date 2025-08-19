@@ -6,6 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>myPage</title>
+    <link rel="icon" href="/assets/images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="/assets/styles/common.min.css">
     <link rel="stylesheet" type="text/css" href="/user/assets/styles/myPage.min.css">
     <script defer src="/assets/scripts/components/toast.js"></script>
@@ -312,6 +313,14 @@
                         </label>
                     </div>
                 </div>
+                <div class="-warning" role="alert" aria-live="polite">
+                    <div class="warning-icon">
+                        <svg class="icon" role="img" viewBox="0 0 16 16">
+                            <path d="M9.71 2.86a2 2 0 0 0-3.42 0L.82 11.97A2 2 0 0 0 2.53 15h10.94a2 2 0 0 0 1.71-3.03zM6.03 6.97 8 8.94l1.97-1.97 1.06 1.06L9.06 10l1.97 1.97-1.06 1.06L8 11.06l-1.97 1.97-1.06-1.06L6.94 10 4.97 8.03z"></path>
+                        </svg>
+                    </div>
+                    <span class="caption">올바른 비밀번호를 입력해 주세요.</span>
+                </div>
                 <div class="button-container">
                     <button  class="obj-button -color-gray" name="change" type="button">변경</button>
                 </div>
@@ -353,7 +362,7 @@
         </form>
     </div>
     <div class="button-container">
-        <button  class="obj-button -color-gray" name="reset" type="button">재설정</button>
+        <button  class="obj-button -color-gray" name="reset" type="button">초기화</button>
         <button  class="obj-button -color-red" name="save" type="submit"> 저장</button>
     </div>
 </div>

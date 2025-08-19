@@ -30,6 +30,7 @@ if (isRegister === 'true')
     $registerForm.classList.add('-visible');
 }
 
+// 모달창 닫기
 function closeModal()
 {
     $dialog.classList.remove('-visible');
@@ -82,6 +83,7 @@ $cancelButtons.forEach(($btn) =>
     })
 );
 
+// 부모 요소 찾기
 function findParentByClass(element, className) {
     if (!element) { // element가 null/undefined면 바로 종료
         return null;
@@ -98,6 +100,7 @@ function findParentByClass(element, className) {
     return null;
 }
 
+// 경고창 띄우기
 function showWarning($label, message) {
     const $fieldWrapper = findParentByClass($label, 'field-wrapper');
     const $warning = $fieldWrapper.querySelector('.-warning');
@@ -108,6 +111,7 @@ function showWarning($label, message) {
     $warning.classList.add('-visible');
 }
 
+// 경고창 지우기
 function clearWarning($label) {
     const $fieldWrapper = findParentByClass($label, 'field-wrapper');
     if (!$fieldWrapper) return; // 부모 래퍼 없으면 그냥 종료
@@ -119,7 +123,6 @@ function clearWarning($label) {
         $warning.classList.remove('-visible');
     }
 }
-
 
 // 1. 개별 검사 함수 분리
 function validateInput($input, $label, regexValidator, invalidMessage) {
@@ -163,7 +166,6 @@ function setupValidation({$input, $label, maxLength, regexValidator, invalidMess
         }
     });
 }
-
 
 // 로그인 및 회원가입 창 변환 함수
 function switchForm($fromForm, $toForm) {

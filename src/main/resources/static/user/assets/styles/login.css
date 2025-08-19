@@ -139,6 +139,10 @@
 #dialog > .-modal > #loginModalForm > .field-wrapper > .obj-label {
   width: 100%;
 }
+#dialog > .-modal > #loginModalForm > .field-wrapper > .obj-label:has(input[name=birth]):hover,
+#dialog > .-modal > #loginModalForm > .field-wrapper > .obj-label > input[name=birth]:hover {
+  cursor: pointer;
+}
 #dialog > .-modal > #loginModalForm > .field-wrapper > .obj-label > .input-field {
   width: 100%;
 }
@@ -223,6 +227,7 @@
 }
 #dialog > .-modal > #loginModalForm > .button-container {
   margin-bottom: 1rem;
+  padding-top: 10px;
 }
 #dialog > .-modal > #loginModalForm > .button-container > .obj-button {
   min-height: 2rem;
@@ -369,6 +374,10 @@
 #dialog > .-modal > #registerModalForm > .field-wrapper > .obj-label {
   width: 100%;
 }
+#dialog > .-modal > #registerModalForm > .field-wrapper > .obj-label:has(input[name=birth]):hover,
+#dialog > .-modal > #registerModalForm > .field-wrapper > .obj-label > input[name=birth]:hover {
+  cursor: pointer;
+}
 #dialog > .-modal > #registerModalForm > .field-wrapper > .obj-label > .input-field {
   width: 100%;
 }
@@ -442,6 +451,7 @@
 }
 #dialog > .-modal > #registerModalForm > .button-container {
   margin-bottom: 1rem;
+  padding-top: 10px;
 }
 #dialog > .-modal > #registerModalForm > .button-container > .obj-button {
   min-height: 2rem;
@@ -727,6 +737,10 @@
 #main #loginForm > .field-wrapper > .obj-label {
   width: 100%;
 }
+#main #loginForm > .field-wrapper > .obj-label:has(input[name=birth]):hover,
+#main #loginForm > .field-wrapper > .obj-label > input[name=birth]:hover {
+  cursor: pointer;
+}
 #main #loginForm > .field-wrapper > .obj-label > .input-field {
   width: 100%;
 }
@@ -811,6 +825,7 @@
 }
 #main #loginForm > .button-container {
   margin-bottom: 1rem;
+  padding-top: 10px;
 }
 #main #loginForm > .button-container > .obj-button {
   min-height: 2rem;
@@ -917,6 +932,10 @@
 #main #registerForm > .field-wrapper > .obj-label {
   width: 100%;
 }
+#main #registerForm > .field-wrapper > .obj-label:has(input[name=birth]):hover,
+#main #registerForm > .field-wrapper > .obj-label > input[name=birth]:hover {
+  cursor: pointer;
+}
 #main #registerForm > .field-wrapper > .obj-label > .input-field {
   width: 100%;
 }
@@ -990,6 +1009,7 @@
 }
 #main #registerForm > .button-container {
   margin-bottom: 1rem;
+  padding-top: 10px;
   padding-top: 10px;
 }
 #main #registerForm > .button-container > .obj-button {

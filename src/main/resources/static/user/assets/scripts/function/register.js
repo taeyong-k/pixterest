@@ -1,5 +1,22 @@
 const $loading = document.getElementById('loading');
 
+// 1. birth input 찾기
+const birthInputs = document.querySelectorAll('input[name="birth"]');
+
+birthInputs.forEach((birthInput) => {
+    const birthLabel = findParentByClass(birthInput, 'obj-label');
+
+    if (birthLabel) {
+        birthLabel.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (birthInput.showPicker) {
+                birthInput.showPicker();
+            } else {
+                birthInput.focus();
+            }
+        });
+    }
+});
 
 $registerButton.addEventListener('click', () =>
 {
@@ -23,47 +40,30 @@ $registerButton.addEventListener('click', () =>
         $input: $emailInput,
         $label: $emailLabel,
         maxLength: 30,
-        regexValidator: (value) =>
-        {
-            if (value.length < 6) {
-                showWarning($emailLabel, '이메일이 너무 짧네요! 6자 이상 입력하세요.');
-                return false;
-            }
-            return emailRegex.test(value)
-        },
-        invalidMessage: '이메일 형식이 올바르지 않습니다.',
-        lengthMessage: '이메일은 최대 30자까지 입력할 수 있어요.'
+        regexValidator: emailRegex,
+        invalidMessage: '음... 올바른 이메일 주소가 아닙니다.',
+        MinMessage: '이메일이 너무 짧네요! 6자 이상 입력하세요.',
+        MaxMessage: '이메일은 최대 30자까지 입력할 수 있어요.'
     });
 
     setupValidation({
         $input: $passwordInput,
         $label: $passwordLabel,
         maxLength: 20,
-        regexValidator: (value) =>
-        {
-            if (value.length < 6) {
-                showWarning($passwordLabel, '비밀번호가 너무 짧네요! 6자 이상 입력하세요.');
-                return false;
-            }
-            return passwordRegex.test(value)
-        },
+        regexValidator: passwordRegex,
         invalidMessage: '비밀번호는 6~20자이며 특수문자를 포함할 수 있습니다.',
-        lengthMessage: '비밀번호는 최대 20자까지 입력할 수 있어요.'
+        MinMessage: '비밀번호가 너무 짧네요! 6자 이상 입력하세요.',
+        MaxMessage: '비밀번호는 최대 20자까지 입력할 수 있어요.'
     });
 
     setupValidation({
         $input: $birthInput,
         $label: $birthLabel,
         maxLength: 10, // yyyy-mm-dd 형식
-        regexValidator: (value) =>
-        {
-            return birthRegex.test(value)
-        },
+        regexValidator: birthRegex,
         invalidMessage: '올바르지 않은 생년월일을 입력했습니다. 다시 시도해주세요.',
-        lengthMessage: '생년월일은 yyyy-mm-dd 형식으로 입력해야 해요.'
+        MaxMessage: '생년월일은 yyyy-mm-dd 형식으로 입력해야 해요.'
     });
-
-
 
     $form.onsubmit = (e) => {
         e.preventDefault();
@@ -72,7 +72,7 @@ $registerButton.addEventListener('click', () =>
 
         validateInput($emailInput, $emailLabel, emailRegex, '음... 올바른 이메일 주소가 아닙니다.')
 
-        validateInput($passwordInput, $passwordLabel, passwordRegex, '올바르지 않은 비밀번호를 입력했습니다. 다시 시도하거나 비밀번호 재설정하세요.')
+        validateInput($passwordInput, $passwordLabel, passwordRegex, '올바르지 않은 비밀번호를 입력했습니다. \n다시 시도하거나 비밀번호 재설정하세요.')
 
         validateInput($birthInput, $birthLabel, birthRegex, '올바른 생년월일이 아닙니다.')
 
@@ -99,18 +99,38 @@ $registerButton.addEventListener('click', () =>
             }
 
             const response = JSON.parse(xhr.responseText);
+
             switch (response['result']) {
-                case 'failure':
-                    toast('회원가입', '잘못된 가입 요청입니다. \n 다시 한번 확인해 주세요.');
+                case 'failure_null_user':
+                    toast('회원가입이 제대로 되지 않았습니다.', '회원 정보가 전송되지 않았습니다.\n다시 시도해 주세요.');
                     return;
+
+                case 'failure_missing_fields':
+                    toast('제대로 입력하지 않았습니다.', '필수 입력값이 누락되었습니다.\n모든 항목을 입력해 주세요.');
+                    return;
+
+                case 'failure_invalid_email':
+                    toast('유효하지 않은 이메일입니다.', '이메일 형식이 올바르지 않습니다.\n다시 확인해 주세요.');
+                    return;
+
+                case 'failure_invalid_password':
+                    toast('유효하지 않은 비밀번호입니다.', '비밀번호 형식이 올바르지 않습니다.\n다시 입력해 주세요.');
+                    return;
+
                 case 'failure_duplicate_email':
-                    toast('회원가입', '중복된 이메일입니다. \n 다른 이메일을 사용해 주세요.');
-                    break;
+                    toast('이미 존재하는 이메일입니다.', '다른 이메일을 사용해 주세요.');
+                    return;
+
+                case 'failure_invalid_birth':
+                    toast('생일이 잘못되었습니다.', '생년월일이 올바르지 않습니다.\n다시 확인해 주세요.');
+                    return;
+
                 case 'success':
                     setProfile($emailInput.value, profileColor);
                     sessionStorage.setItem('showToastSignup', 'true');
                     location.reload();
                     return;
+
                 default:
                     toastAlter('회원가입에 실패하였습니다.', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
                     return;

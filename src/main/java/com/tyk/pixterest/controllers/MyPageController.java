@@ -4,6 +4,8 @@ import com.tyk.pixterest.entities.BoardEntity;
 import com.tyk.pixterest.entities.PinEntity;
 import com.tyk.pixterest.entities.UserEntity;
 import com.tyk.pixterest.results.CommonResult;
+import com.tyk.pixterest.results.Result;
+import com.tyk.pixterest.results.ResultTuple;
 import com.tyk.pixterest.services.MyPageService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +29,7 @@ public class MyPageController {
     }
 
     @RequestMapping(value = "/myPage", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getMyPage(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                            Model model)
+    public String getMyPage(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser)
     {
         if (signedUser == null) {
             return "redirect:/user/login?loginCheck=false";
@@ -85,10 +86,10 @@ public class MyPageController {
     public String getBoard(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                            @RequestParam(value = "boardId" ,required = false) Integer boardId)
     {
-        BoardEntity board = this.myPageService.getBoardByBoardId(signedUser, boardId);
+        ResultTuple<BoardEntity> board = this.myPageService.getBoardByBoardId(signedUser, boardId);
         JSONObject response = new JSONObject();
-        response.put("result", CommonResult.SUCCESS.toStringLower());
-        response.put("boardName", board.getName());
+        response.put("result", board.getResult());
+        response.put("boardName", board.getPayload().getName());
         return response.toString();
     }
 
@@ -108,7 +109,7 @@ public class MyPageController {
             response.put("result", "failure_forbidden");
             return response.toString();
         }
-        CommonResult result = this.myPageService.saveBoard(signedUser, board);
+        Result result = this.myPageService.saveBoard(signedUser, board);
         response.put("result", result.toStringLower());
 
         if (result == CommonResult.SUCCESS) {
@@ -141,7 +142,7 @@ public class MyPageController {
     public String postPinDelete(@SessionAttribute(value = "signedUser",required = false) UserEntity signedUser,
                                 @RequestParam(value = "pinId", required = false) Integer pinId)
     {
-        CommonResult result = this.myPageService.deletePinAtBoard(signedUser, pinId);
+        Result result = this.myPageService.deletePinAtBoard(signedUser, pinId);
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
         return response.toString();
@@ -152,7 +153,7 @@ public class MyPageController {
     public String postPinDelete(@SessionAttribute(value = "signedUser",required = false) UserEntity signedUser,
                                 @RequestParam(value = "boardId", required = false) int boardId)
     {
-        CommonResult result = this.myPageService.deleteBoard(signedUser, boardId);
+        Result result = this.myPageService.deleteBoard(signedUser, boardId);
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
         return response.toString();

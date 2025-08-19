@@ -37,7 +37,7 @@ public class BoardController {
             }
         }
 
-        return "board/view";
+        return "board/boardView";
     }
 
     // 보드 상세 (기존 유지)
@@ -53,6 +53,6 @@ public class BoardController {
         List<PinEntity> pins = boardService.getPintykBoardId(boardId);
         model.addAttribute("board", board);
         model.addAttribute("pins", pins);
-        return "board/view";
+        return "board/boardView";
     }
 }

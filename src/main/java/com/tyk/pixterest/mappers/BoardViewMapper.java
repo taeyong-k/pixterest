@@ -13,3 +13,4 @@ public interface BoardViewMapper {
 
     List<PinEntity> selectPinsByBoardId(int boardId);
 }
+

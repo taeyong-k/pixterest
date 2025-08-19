@@ -1367,6 +1367,9 @@ body.dark .menu > .item:hover {
 #edit-page > .form-container > #accountForm > .field-wrapper > .field.email {
   pointer-events: none;
 }
+#edit-page > .form-container > #accountForm > .field-wrapper > .field.email > .obj-label {
+  background-color: #e0e0d9;
+}
 #edit-page > .form-container > #accountForm > .field-wrapper > .field .obj-label .caption {
   font-size: 0.85rem;
   color: #000000;
@@ -1550,7 +1553,8 @@ body.dark .menu > .item:hover {
 }
 #edit-page > .button-container > .obj-button.disabled {
   pointer-events: none;
-  background-color: #2f2f2e;
+  background-color: #e5e5e0;
+  color: #ffffff;
   cursor: default;
 }
 #edit-page > .button-container > .obj-button:active {

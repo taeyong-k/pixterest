@@ -5,19 +5,6 @@ $loginButton.addEventListener('click', () =>
     $registerModalForm.classList.remove('-visible');
 });
 
-
-const label = document.querySelector('.obj-label');
-const dateInput = document.querySelector('input[name="birth"]');
-
-label.addEventListener('click', () => {
-    if (dateInput.showPicker) {
-        dateInput.showPicker(); // 최신 브라우저에서 달력 띄움
-    } else {
-        dateInput.focus(); // fallback: 일부 브라우저는 focus로도 달력 뜸
-    }
-});
-
-
 // 폼제출 및 검사
 [$loginForm, $loginModalForm].forEach(($form) =>
 {
@@ -59,7 +46,7 @@ label.addEventListener('click', () => {
         });
         validateInput($emailInput, $emailLabel, emailRegex, '음... 올바른 이메일 주소가 아닙니다.')
 
-        validateInput($passwordInput, $passwordLabel, passwordRegex, '올바르지 않은 비밀번호를 입력했습니다. 다시 시도하거나 비밀번호 재설정하세요.')
+        validateInput($passwordInput, $passwordLabel, passwordRegex, '올바르지 않은 비밀번호를 입력했습니다. \n다시 시도하거나 비밀번호 재설정하세요.')
 
         const formData = new FormData();
         formData.append('email', $emailInput.value);
@@ -80,9 +67,18 @@ label.addEventListener('click', () => {
             const response = JSON.parse(xhr.responseText);
             switch (response['result'])
             {
-                case 'failure_suspended':
-                    toast('계정 정지', '정지된 계정의 로그인 요청입니다\n 자세한 사항은 관리자에게 문의 주세요.')
+                case 'failure_invalid_email':
+                    toast('이메일을 틀리셨습니다.', '올바르지 않은 이메일 형식입니다. 다시 한번 확인해 주세요.')
+                    break;
+                case 'failure_invalid_password':
+                    toast('비밀번호를 틀리셨습니다.', '올바르지 않은 비밀번호 형식입니다. 다시 한번 확인해 주세요.')
+                    break;
+                case 'failure_forbidden':
+                    toast('유저를 찾을 수 없습니다.', '삭제되었거나 정지된 계정의 로그인 요청입니다\n 자세한 사항은 관리자에게 문의 주세요.')
                     return;
+                case 'failure_wrong_password':
+                    toast('잘못된 비밀번호입니다.', '비밀번호를 다시 한번 확인해 주세요.')
+                    break;
                 case 'success':
                     location.href = `${origin}/`
                     return;
@@ -122,7 +118,7 @@ window.addEventListener('load', () => {
         sessionStorage.removeItem('showToast');
     }
     if (sessionStorage.getItem('showToastDeactivated') === 'true') {
-        toast('계정이 비활성화되었습니다.', '원하실 때 언제든 다시 로그인하실 수 있습니다.');
+        toast('계정이 비활성화되었습니다.', '다시 사용하려면 관리자에게 문의하세요');
         sessionStorage.removeItem('showToastDeactivated');
     }
     if (sessionStorage.getItem('showToastDeleted') === 'true') {

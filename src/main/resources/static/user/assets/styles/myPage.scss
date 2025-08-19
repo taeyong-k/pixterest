@@ -1208,6 +1208,10 @@ body.dark
           &.email
           {
             pointer-events: none;
+            > .obj-label
+            {
+              background-color: #e0e0d9;
+            }
           }
           .obj-label {
 
@@ -1375,7 +1379,8 @@ body.dark
       &.disabled
       {
         pointer-events: none;
-        background-color: #2f2f2e;
+        background-color: #e5e5e0;
+        color: #ffffff;
         cursor: default;
       }
       &:active

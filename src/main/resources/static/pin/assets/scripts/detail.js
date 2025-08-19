@@ -1043,7 +1043,8 @@ window.onload = () => {
     }
 };
 
-function loadProfileImageToAll() {
+function loadProfileImageToAll()
+{
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
@@ -1054,11 +1055,21 @@ function loadProfileImageToAll() {
 
         const response = JSON.parse(xhr.responseText);
         if (response.result === 'success') {
-            const userInfo = response.userInfo;
+            // 서버에서 내 정보 가져오기
+            const myInfo = response.userInfo;
+
+            // 모든 프로필 요소 순회
             const images = document.querySelectorAll('.profile-img-circle');
             images.forEach(image => {
-                image.style.backgroundColor = userInfo.profileColor;
-                image.textContent = userInfo.name.trim().toUpperCase();
+                const nickname = image.dataset.userNickname; // data-user-nickname 값 가져오기
+
+                if (nickname === myInfo.name) {
+                    // 내 프로필일 경우만 적용
+                    image.style.backgroundColor = myInfo.profileColor;
+                    image.textContent = myInfo.name.trim().toUpperCase();
+                }
+                // 다른 사람은 서버에서 해당 유저 정보가 있으면 적용할 수 있음
+                // 아니면 기본 이미지/색상 유지
             });
         }
     };

@@ -4,6 +4,7 @@ const $main = document.getElementById('main')
 const $edit = document.getElementById('edit-page');
 const $buttons = $edit.querySelectorAll(':scope > .button-container > button');
 const $deleteButtons = $edit.querySelectorAll('.account-delete button');
+const $modifyForm = document.getElementById('modifyForm');
 const $accountForm = document.getElementById('accountForm');
 const $accountEmail = $accountForm.querySelector(':scope > .field-wrapper > .field > .obj-label > input[name="email"]')
 let initialFormData = {}; // ✅ 초기 데이터 저장
@@ -260,6 +261,7 @@ function renderCoverPinImages(pins) {
     });
 }
 
+// 보드 삭제 xhr
 function deleteBoardXHR(boardId)
 {
     const xhr = new XMLHttpRequest();
@@ -274,9 +276,17 @@ function deleteBoardXHR(boardId)
         }
         const response = JSON.parse(xhr.responseText)
         switch (response.result) {
-
-            case 'failure':
-                toast('보드 삭제', '핀 삭제에 정보가 잘못되었습니다. 다시 한번 확인해 주세요.');
+            case 'failure_session_expired':
+                window.location.href = '/user/login?loginCheck=expired'
+                break;
+            case 'failure_not_found':
+                toast('보드 조회 실패', '해당 보드를 찾을 수 없습니다.');
+                break;
+            case 'failure_deleted':
+                toast('삭제된 보드', '삭제된 보드입니다.');
+                break;
+            case 'failure_no_permission':
+                toast('보드 권한 없음', '권한이 없습니다.');
                 break;
             case 'success':
                 sessionStorage.setItem('showToast', 'true');
@@ -293,7 +303,8 @@ function deleteBoardXHR(boardId)
 }
 
 // ✅ 핀 ID로 보드에서 삭제 요청
-function deletePinXHR(pinId) {
+function deletePinXHR(pinId)
+{
     const xhr = new XMLHttpRequest();
     const formData = new FormData();
     formData.append("pinId", pinId)
@@ -306,17 +317,26 @@ function deletePinXHR(pinId) {
         }
         const response = JSON.parse(xhr.responseText)
         switch (response.result) {
-
-            case 'failure':
-                toast('핀 삭제', '핀 삭제에 정보가 잘못되었습니다. 다시 한번 확인해 주세요.');
+            case 'failure_session_expired':
+                window.location.href = '/user/login?loginCheck=expired'
+                break;
+            case 'failure_not_found':
+                toast('없는 핀', '삭제할 핀을 찾을 수 없습니다.');
+                break;
+            case 'failure_deleted':
+                toast('삭제된 핀', '이미 삭제된 핀입니다.');
+                break;
+            case 'failure_no_permission':
+                toast('권한 없는 핀', '핀 삭제 권한이 없습니다.');
                 break;
             case 'success':
                 toast('핀 삭제', '보드에서 정상적으로 핀이 삭제되었습니다.');
                 location.reload();
                 break;
             default:
-                toastAlter('삭제에 실패하였습니다.', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+                toastAlter('핀 삭제', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
         }
+
     };
 
     // DELETE 메서드를 지원하지 않으면 POST로도 가능 (서버 설정에 따라)
@@ -350,11 +370,17 @@ $boardModalForm.onsubmit = (e) => {
         }
         const response = JSON.parse(xhr.responseText);
         switch (response.result) {
-            case 'failure':
-                toast('저장 실패', '잘못된 정보가 있습니다. 다시 한번 확인해 주세요.')
+            case 'failure_session_expired':
+                window.location.href = '/user/login?loginCheck=expired'
+                break;
+            case 'failure_not_found':
+                toast('보드 없음', '보드를 찾을 수 없습니다.');
+                break;
+            case 'failure_board_update_fail': // 필요 시 추가
+                toast('업데이트 실패', '보드 업데이트에 실패했습니다.');
                 break;
             case 'success':
-                toast('보드 저장', '보드 저장에 성공하였습니다.');
+                toast('저장 성공', '보드 저장에 성공하였습니다.');
                 updateBoardUI(response.board);
                 $boardModalForm.classList.remove('-visible');
                 $dialog.classList.remove('-visible');
@@ -364,6 +390,7 @@ $boardModalForm.onsubmit = (e) => {
                 toastAlter('저장에 실패하였습니다.', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
                 break;
         }
+
     };
     xhr.open('POST', '/user/board');
     xhr.send(formData);
@@ -464,6 +491,10 @@ function setButtonState(buttons, enabled) {
 function updateButtonState() {
     const changed = isFormChanged(getVisibleForm());
     setButtonState($buttons, changed);
+    const $form = getVisibleForm();
+    const valid = !$form.querySelector('.-invalid'); // invalid가 없으면 통과
+
+    setButtonState($buttons, changed && valid);
 }
 
 // 유저 프로필 정보 가져오기
@@ -481,7 +512,7 @@ xhr.onreadystatechange = () => {
     switch (response.result) {
         case 'failure_session_expired':
             toastAlter('정보 가져오기', '유저 정보가 일치하지 않거나 세션이 만료 되었습니다. 로그인으로 이동합니다.')
-            location.href = `${origin}/user/login`;
+            window.location.href = '/user/login?loginCheck=expired'
             break;
         case 'success':
             const profile = document.getElementById('profile')
@@ -543,7 +574,8 @@ pinEditButtons.forEach(button => {
 
             const response = JSON.parse(xhr.responseText);
 
-            switch (response.result) {
+            switch (response.result)
+            {
                 case 'failure_not_found':
                     toastAlter('오류', '해당 핀을 찾을 수 없습니다.');
                     break;
@@ -911,6 +943,70 @@ $editPin.querySelector('.button.write').addEventListener('click', () => {
     xhr.send(formData);
 });
 
+function setupModifyFormValidation() {
+    if (!$modifyForm) return;
+    // --- 이름 ---
+    const $nameInput = $modifyForm.querySelector('[name="name"]');
+    const $nameLabel = $modifyForm.querySelector('.obj-label input[name="name"]')?.parentElement;
+    setupValidation({
+        $input: $nameInput,
+        $label: $nameLabel,
+        maxLength: 20,
+        regexValidator: /^[가-힣a-zA-Z0-9]{2,20}$/, // 한글, 영문, 숫자 허용
+        invalidMessage: '이름은 한글/영문 2~20자여야 합니다.',
+        MinMessage: '이름은 최소 2자 이상이어야 합니다.',
+        MaxMessage: '이름은 최대 20자까지 입력 가능합니다.'
+    });
+
+    // --- 소개 ---
+    const $introduce = $modifyForm.querySelector('[name="introduce"]');
+    const $introduceLabel = $modifyForm.querySelector('.obj-label input[name="introduce"]')?.parentElement;
+    setupValidation({
+        $input: $introduce,
+        $label: $introduceLabel,
+        maxLength: 100,
+        regexValidator: /^.{0,100}$/,
+        invalidMessage: '소개는 최대 100자까지 입력 가능합니다.',
+        MinMessage: '',
+        MaxMessage: '소개는 최대 100자까지 입력 가능합니다.'
+    });
+
+    // --- 웹사이트 ---
+    const $site = $modifyForm.querySelector('[name="site"]');
+    const $siteLabel = $modifyForm.querySelector('.obj-label input[name="site"]')?.parentElement;
+    setupValidation({
+        $input: $site,
+        $label: $siteLabel,
+        maxLength: 100,
+        regexValidator: /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-]*)*\/?$/,
+        invalidMessage: '올바른 웹사이트 주소를 입력해주세요.',
+        MinMessage: '',
+        MaxMessage: '웹사이트 주소가 너무 깁니다.'
+    });
+
+    // --- 사용자 이름 ---
+    const $nickname = $modifyForm.querySelector('[name="nickname"]');
+    const $nicknameLabel = $modifyForm.querySelector('.obj-label input[name="nickname"]')?.parentElement;
+    setupValidation({
+        $input: $nickname,
+        $label: $nicknameLabel,
+        maxLength: 15,
+        regexValidator: /^[가-힣a-zA-Z0-9]{3,15}$/, // 한글, 영문, 숫자 허용
+        invalidMessage: '사용자 이름은 영문+숫자 3~15자여야 합니다.',
+        MinMessage: '사용자 이름은 최소 3자 이상이어야 합니다.',
+        MaxMessage: '사용자 이름은 최대 15자까지 입력 가능합니다.'
+    });
+
+    // --- 버튼 상태 업데이트 연결 ---
+    $modifyForm.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', updateButtonState);
+        input.addEventListener('blur', updateButtonState);
+    });
+}
+
+// --- 초기화 실행 ---
+setupModifyFormValidation();
+
 // 입력 변경 감지 → 버튼 상태 갱신
 $edit.querySelector('.form-container').addEventListener('input', e => {
     const target = e.target;
@@ -944,6 +1040,98 @@ $passwordInputs.forEach(input => {
 
 // ✅ 페이지 로드 직후에도 체크
 toggleChangeButton();
+
+$passwordInputs.forEach(input =>
+{
+    // label 찾기
+    const $label = input.parentElement;
+
+    // 실시간 유효성 검사
+    setupValidation({
+        $input: input,
+        $label: $label,
+        maxLength: 20,
+        regexValidator: passwordRegex,
+        invalidMessage: input.name === 'password'
+            ? '비밀번호는 6~20자이며 특수문자를 포함할 수 있습니다.'
+            : '새 비밀번호는 6~20자이며 특수문자를 포함할 수 있습니다.',
+        MinMessage: '6자 이상 입력하세요.',
+        MaxMessage: '20자까지 입력할 수 있어요.'
+    });
+});
+
+// 비밀번호 변경
+$changeButton.addEventListener('click', (e) => {
+    e.preventDefault()
+    const $passwordInput = $accountForm['password'];
+    const $passwordLabel = $accountForm.querySelector('.obj-label input[name="password"]')?.parentElement;
+
+    validateInput($passwordInput, $passwordLabel, passwordRegex, '올바르지 않은 비밀번호를 입력했습니다. \n다시 시도하거나 비밀번호 재설정하세요.')
+
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append('password', $accountForm.querySelector('input[name="password"]').value);
+    formData.append('newPassword', $accountForm.querySelector('input[name="newPassword"]').value);
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (xhr.status < 200 || xhr.status >= 300) {
+            toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
+            return;
+        }
+
+        const response = JSON.parse(xhr.responseText);
+
+        switch (response.result) {
+            // ✅ 성공
+            case 'success': // CommonResult.SUCCESS
+                toast('비밀번호 변경 성공', '비밀번호가 성공적으로 변경되었습니다.');
+                $accountForm.querySelector('input[name="password"]').value = '';
+                $accountForm.querySelector('input[name="newPassword"]').value = '';
+                location.reload();
+                break;
+
+            // ✅ 세션 만료
+            case 'failure_session_expired': // CommonResult.FAILURE_SESSION_EXPIRED
+                window.location.href = '/user/login?loginCheck=expired'
+                // location.href = `${origin}/user/login`;
+                break;
+
+            // 🔹 기존 비밀번호 관련 오류
+            case 'current_password_invalid': // ChangePasswordFailure.CURRENT_PASSWORD_INVALID
+                toast('기존 비밀번호가 유효하지 않습니다.', '현재 비밀번호 형식이 올바르지 않습니다.');
+                break;
+            case 'current_password_mismatch': // ChangePasswordFailure.CURRENT_PASSWORD_MISMATCH
+                toast('비밀번호가 일치하지 않음', '현재 비밀번호가 일치하지 않습니다.');
+                break;
+
+            // 🔹 새 비밀번호 관련 오류
+            case 'new_password_invalid': // ChangePasswordFailure.NEW_PASSWORD_INVALID
+                toast('새 비밀번호가 유효하지 않습니다.', '새 비밀번호 형식이 올바르지 않습니다.');
+                break;
+            case 'password_same': // ChangePasswordFailure.PASSWORD_SAME
+                toast('중복된 비밀번호', '기존 비밀번호와 새 비밀번호가 같습니다.');
+                break;
+
+            // 🔹 DB 관련 오류
+            case 'user_not_found': // ChangePasswordFailure.USER_NOT_FOUND
+                toast('사용자 찾기 불가', '사용자를 찾을 수 없습니다.');
+                break;
+            case 'update_failed': // ChangePasswordFailure.UPDATE_FAILED
+                toast('처리 오류', '비밀번호 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
+                break;
+
+            // ✅ 예외 처리
+            default:
+                toastAlter('비밀번호 변경에 실패하였습니다.', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+                break;
+        }
+    };
+    xhr.open('POST', '/user/password');
+    xhr.send(formData);
+});
 
 // 삭제 및 비활성화 토스트
 function getToastConfig(name) {
@@ -1013,13 +1201,40 @@ $deleteButtons.forEach(($button) => {
                     }
 
                     const response = JSON.parse(xhr.responseText);
-                    switch (response.result) {
+                    switch (response.result)
+                    {
                         case 'failure_session_expired':
-                            toast('계정 처리 실패', '유저 정보가 잘못 되었거나 세션이 만료되었습니다. 다시 시도해 주세요.');
+                            window.location.href = '/user/login?loginCheck=expired'
                             break;
+
+                        case 'failure_no_permission':
+                            toast('권한 없음', '이 작업을 수행할 권한이 없습니다.');
+                            break;
+
+                        case 'failure_invalid_email':
+                            toast('잘못된 이메일', '입력된 이메일 형식이 올바르지 않습니다.');
+                            break;
+
+                        case 'failure_user_not_found':
+                            toast('사용자 없음', '해당 사용자를 찾을 수 없습니다.');
+                            break;
+
+                        case 'failure_user_already_deleted':
+                            toast('이미 삭제된 계정', '이미 삭제된 사용자 계정입니다.');
+                            break;
+
+                        case 'failure_user_already_suspended':
+                            toast('이미 정지된 계정', '이미 정지된 사용자 계정입니다.');
+                            break;
+
+                        case 'failure_db_update':
+                            toast('DB 오류', '계정 처리 중 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+                            break;
+
                         case 'failure':
-                            toast('계정 처리 실패', '정보가 잘못되었습니다. 다시 확인해 주세요.');
+                            toast('실패', '알 수 없는 오류가 발생했습니다. 다시 시도해 주세요.');
                             break;
+
                         case 'success':
                             if ($button.name === 'deactivate') {
                                 sessionStorage.setItem('showToastDeactivated', 'true');
@@ -1028,8 +1243,9 @@ $deleteButtons.forEach(($button) => {
                             }
                             location.href = `${origin}/user/login`;
                             break;
+
                         default:
-                            toastAlter('계정 처리에 실패하였습니다.', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+                            toastAlter('계정 처리 실패', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
                     }
                 };
 
@@ -1040,52 +1256,7 @@ $deleteButtons.forEach(($button) => {
     });
 });
 
-// 비밀번호 변경
-$changeButton.addEventListener('click', (e) => {
-    e.preventDefault()
-    const xhr = new XMLHttpRequest();
-    const formData = new FormData();
-    formData.append('password', $accountForm.querySelector('input[name="password"]').value);
-    formData.append('newPassword', $accountForm.querySelector('input[name="newPassword"]').value);
-
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState !== XMLHttpRequest.DONE) {
-            return;
-        }
-        if (xhr.status < 200 || xhr.status >= 300) {
-            toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
-            return;
-        }
-
-        const response = JSON.parse(xhr.responseText);
-
-        switch (response.result) {
-            case 'failure_duplicate':
-                toastAlter('비밀번호 변경 실패', '이미 사용된 비밀번호입니다 다른 비밀번호를 입력해 주세요.');
-                break;
-            case 'failure_session_expired':
-                toast('비밀번호 변경 실패', '세션이 만료되었습니다.\n로그인창으로 이동합니다.');
-                // location.href = `${origin}/user/login`;
-                break;
-            case 'failure':
-                toast('비밀번호 변경 실패', '잘못된 정보가 있습니다. 다시 한번 확인해 주세요.');
-                break;
-            case 'success':
-                toast('비밀번호 변경 성공', '비밀번호가 성공적으로 변경되었습니다.');
-                $accountForm.querySelector('input[name="password"]').value = '';
-                $accountForm.querySelector('input[name="newPassword"]').value = '';
-                $changeButton.disabled = true; // 다시 비활성화
-                location.reload();
-                break;
-            default:
-                toastAlter('비밀번호 변경에 실패하였습니다.', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
-        }
-    };
-    xhr.open('POST', '/user/password');
-    xhr.send(formData);
-});
-
-// 재설정 & 저장
+// 초기화 & 저장
 $buttons.forEach(button => {
     switch (button.name) {
         case 'reset':
@@ -1117,21 +1288,46 @@ $buttons.forEach(button => {
 
                     const response = JSON.parse(xhr.responseText);
 
-                    switch (response.result) {
-                        case 'failure_session_expired':
-                            toastAlter('저장 실패', '로그인된 유저의 정보가 잘못되었거나 세션이 만료되었습니다.\n로그인창으로 이동합니다.')
-                            location.href = `${origin}/user/login`
+                    switch (response.result)
+                    {
+                        case 'failure_session_expired': // CommonResult
+                            window.location.href = '/user/login?loginCheck=expired'
                             break;
-                        case 'failure':
-                            toastAlter('저장 실패', '잘못된 정보가 있습니다. 다시 한번 확인해 주세요.')
-                            break;
-                        case 'success':
-                            toast('저장 성공', '프로필 정보가 성공적으로 저장되었습니다.');
+
+                        case 'success': // CommonResult
+                            sessionStorage.setItem('showProfile', 'true');
                             saveInitialFormData($visibleForm);
                             updateButtonState();
+                            location.reload();
                             break;
+
+                        case 'invalid_name': // ProfileUpdateResult
+                            toast('유효하지 않은 이름', '이름이 유효하지 않습니다. 한글/영문/숫자 2~20자로 입력해주세요.');
+                            break;
+
+                        case 'invalid_nickname': // ProfileUpdateResult
+                            toast('유효하지 않은 사용자 이름', '사용자 이름이 유효하지 않습니다. 한글/영문/숫자 3~15자로 입력해주세요.');
+                            break;
+
+                        case 'invalid_site': // ProfileUpdateResult
+                            toast('올바르지 않은 주소', '웹사이트 주소가 올바르지 않습니다.');
+                            break;
+
+                        case 'invalid_introduce': // ProfileUpdateResult
+                            toast('유효하지 않은 소개', '소개는 최대 100자까지 입력 가능합니다.');
+                            break;
+
+                        case 'invalid_birth': // ProfileUpdateResult
+                            toast('올바르지 않은 생년월일', '생일이 올바르지 않습니다. 1900년 이후, 오늘 이전 날짜여야 합니다.');
+                            break;
+
+                        case 'db_update_failed': // ProfileUpdateResult
+                            toastAlter('db 업데이트 오류', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+                            break;
+
                         default:
                             toastAlter('저장에 실패하였습니다.', '일시적인 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.');
+                            break;
                     }
                 };
                 xhr.open('POST', '/user/profile');
@@ -1146,5 +1342,9 @@ window.addEventListener('load', () =>
     if (sessionStorage.getItem('showToast') === 'true') {
         toast('보드 삭제', '보드가 정상적으로 삭제되었습니다.');
         sessionStorage.removeItem('showToast');
+    }
+    if (sessionStorage.getItem('showProfile') === 'true') {
+        toast('프로필 저장', '프로필 정보가 성공적으로 저장되었습니다.');
+        sessionStorage.removeItem('showProfile');
     }
 })

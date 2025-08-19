@@ -2,7 +2,6 @@ package com.tyk.pixterest.services;
 
 import com.tyk.pixterest.entities.BoardEntity;
 import com.tyk.pixterest.entities.PinEntity;
-import com.tyk.pixterest.mappers.BoardMapper;
 import com.tyk.pixterest.mappers.BoardViewMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,7 @@ public class BoardService {
 
     @Autowired
     public BoardService(BoardViewMapper boardViewMapper) {
+
         this.boardViewMapper = boardViewMapper;
     }
 
