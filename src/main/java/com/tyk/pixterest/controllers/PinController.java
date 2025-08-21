@@ -229,6 +229,7 @@ public class PinController {
                     comment.setContent(null);
                 }
                 comment.setMine(comment.getUserEmail().equals(signedUserEmail));
+                if (comment.getProfileColor() == null) comment.setProfileColor("#ccc");
             }
             return comments;
         }

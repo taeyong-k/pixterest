@@ -360,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let selectedBoardId = null;
+
     // ✅ 팝업 요소 저장 setting
     function attachBoardClickEvents() {
         const $boardInfo = document.querySelectorAll('.board-info');
@@ -823,12 +824,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function appendComments(container, targetComments, allComments, depth = 0) {
         for (const comment of targetComments) {
             const paddingLeft = 24 * depth;
+
+            const emailPrefix = (comment.nickname || '').trim().toUpperCase();
+
             container.insertAdjacentHTML('beforeend', `
             <div class="comment ${comment.commentId ? 'reply' : ''} ${comment.deleted ? 'deleted' : ''}" data-id="${comment.id}" style="padding-left: ${paddingLeft}px;">
                 <div class="head">
                     <a aria-label="내 프로필" class="profile" href="#" tabindex="0">
                         <div class="profile-img-wrapper">
-                            <div class="profile-img-circle"></div>
+                            <div class="profile-img-circle" 
+                                 style="background-color: ${comment.profileColor || '#CCC'};">
+                                 ${emailPrefix}
+                            </div>
                         </div>
                     </a>
                 </div>
@@ -1020,7 +1027,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     loadComments();
-    loadProfileImageToAll();
 });
 
 // 페이지 로드 시 저장 완료 토스트 표시
@@ -1042,37 +1048,3 @@ window.onload = () => {
         sessionStorage.removeItem('showToast-write');
     }
 };
-
-function loadProfileImageToAll()
-{
-    const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState !== XMLHttpRequest.DONE) return;
-        if (xhr.status < 200 || xhr.status >= 300) {
-            toastAlter('서버 오류', '서버 요청 중 문제가 발생했습니다.\n잠시 후 다시 시도해주세요.');
-            return;
-        }
-
-        const response = JSON.parse(xhr.responseText);
-        if (response.result === 'success') {
-            // 서버에서 내 정보 가져오기
-            const myInfo = response.userInfo;
-
-            // 모든 프로필 요소 순회
-            const images = document.querySelectorAll('.profile-img-circle');
-            images.forEach(image => {
-                const nickname = image.dataset.userNickname; // data-user-nickname 값 가져오기
-
-                if (nickname === myInfo.name) {
-                    // 내 프로필일 경우만 적용
-                    image.style.backgroundColor = myInfo.profileColor;
-                    image.textContent = myInfo.name.trim().toUpperCase();
-                }
-                // 다른 사람은 서버에서 해당 유저 정보가 있으면 적용할 수 있음
-                // 아니면 기본 이미지/색상 유지
-            });
-        }
-    };
-    xhr.open('GET', '/user/info');
-    xhr.send();
-}

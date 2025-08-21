@@ -28,7 +28,7 @@
             `is_deleted`  = #{pin.isDeleted}
         WHERE `id` = #{pin.id}
     </update>
-    <select id="selectBoardtykEmail" resultType="com.tyk.pixterest.entities.BoardEntity">
+    <select id="selectBoardsByEmail" resultType="com.tyk.pixterest.entities.BoardEntity">
         SELECT `id`          AS `id`,
                `user_email`  AS `userEmail`,
                `name`        AS `name`,
@@ -40,7 +40,7 @@
         WHERE `user_email` = #{email}
           AND `is_deleted` = false;
     </select>
-    <select id="selectPintykEmail" resultType="com.tyk.pixterest.entities.PinEntity">
+    <select id="selectPinsByEmail" resultType="com.tyk.pixterest.entities.PinEntity">
         SELECT `id`          AS `id`,
                `user_email`  AS `userEmail`,
                `board_id`    AS `boardId`,
@@ -57,7 +57,7 @@
           AND board_id IS NULL
           AND is_deleted = false
     </select>
-    <select id="selectSavedPintykEmail" resultType="com.tyk.pixterest.entities.PinEntity">
+    <select id="selectSavedPinsByEmail" resultType="com.tyk.pixterest.entities.PinEntity">
         SELECT p.`id`          AS `id`,
                p.`user_email`  AS `userEmail`,
                p.`board_id`    AS `boardId`,
@@ -75,7 +75,7 @@
         WHERE s.user_email = #{email}
           AND p.is_deleted = false
     </select>
-    <select id="selectPintykBoardId" resultType="com.tyk.pixterest.entities.PinEntity">
+    <select id="selectPinsByBoardId" resultType="com.tyk.pixterest.entities.PinEntity">
         SELECT `id`          AS `id`,
                `user_email`  AS `userEmail`,
                `board_id`    AS `boardId`,

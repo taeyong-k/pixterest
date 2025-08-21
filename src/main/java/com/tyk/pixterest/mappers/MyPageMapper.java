@@ -15,14 +15,14 @@ public interface MyPageMapper {
 
     BoardEntity selectBoardByBoardId(@Param(value = "boardId") int boardId);
 
-    List<BoardEntity> selectBoardtykEmail(@Param(value = "email") String email);
+    List<BoardEntity> selectBoardsByEmail(@Param(value = "email") String email);
 
     PinEntity selectPinByPinId(@Param(value = "pinId") int pinId);
 
-    List<PinEntity> selectPintykEmail(@Param(value = "email") String email);
+    List<PinEntity> selectPinsByEmail(@Param(value = "email") String email);
 
-    List<PinEntity> selectSavedPintykEmail(@Param(value = "email") String email);
+    List<PinEntity> selectSavedPinsByEmail(@Param(value = "email") String email);
 
-    List<PinEntity> selectPintykBoardId(@Param(value = "boardId") int boardId);
+    List<PinEntity> selectPinsByBoardId(@Param(value = "boardId") int boardId);
 
 }

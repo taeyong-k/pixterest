@@ -9,7 +9,7 @@ body {
 
   > .board-detail {
     @include flex(row, flex-start, flex-start);
-    padding: 2rem 2rem 1rem 120px; // 사이드바 고려해서 왼쪽 패딩 반으로 줄임
+    padding: 2rem 2rem 1rem 80px; // 사이드바 고려해서 왼쪽 패딩 반으로 줄임
 
     > .board-name {
       font-size: 2rem;
@@ -84,6 +84,9 @@ body {
         height: 100%;
         object-fit: cover;
         display: block;
+        border-radius: 1rem;
+        padding: 0 1px;
+        border: 1px solid #e5e5e5;
       }
 
       > .pin-button {
@@ -121,7 +124,7 @@ body {
 
       .pinDetail-backButton {
         top: 82px;
-        margin-left: 12px;
+        margin-right: 24px;
         position: sticky;
         display: block;
 

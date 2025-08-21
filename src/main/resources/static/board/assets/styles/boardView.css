@@ -9,7 +9,7 @@ body > .board-detail {
   flex-direction: row;
   gap: 0;
   justify-content: flex-start;
-  padding: 2rem 2rem 1rem 120px;
+  padding: 2rem 2rem 1rem 80px;
 }
 body > .board-detail > * {
   flex-grow: 0;
@@ -107,6 +107,9 @@ body > .pins > .pin > .image {
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: 1rem;
+  padding: 0 1px;
+  border: 1px solid #e5e5e5;
 }
 body > .pins > .pin > .pin-button {
   align-items: flex-end;
@@ -147,7 +150,7 @@ body > .pins > .pin:hover > .pin-button {
 }
 body .board-detail > .pinDetail-backButton-wrapper .pinDetail-backButton {
   top: 82px;
-  margin-left: 12px;
+  margin-right: 24px;
   position: sticky;
   display: block;
 }

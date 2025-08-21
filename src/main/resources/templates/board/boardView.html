@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>보드 상세</title>
+    <link rel="icon" href="/assets/images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="/assets/styles/common.min.css">
     <link rel="stylesheet" href="/board/assets/styles/boardView.min.css">
     <script defer src="/assets/scripts/components/toast.js"></script>
@@ -13,8 +14,6 @@
 <th:block th:replace="~{fragments/header :: header}"></th:block>
 <!-- 보드 정보 -->
 <section class="board-detail" th:attr="data-board-id=${board.id}">
-    <h1 class="board-name" th:text="${board.name}">보드 이름</h1>
-    <span class="-flex-stretch"></span>
     <div class="pinDetail-backButton-wrapper">
         <div class="pinDetail-backButton">
             <button aria-label="뒤로가기" class="backButton" tabindex="0" type="button">
@@ -24,15 +23,14 @@
             </button>
         </div>
     </div>
+    <h1 class="board-name" th:text="${board.name}">보드 이름</h1>
+    <span class="-flex-stretch"></span>
 </section>
 
 <!-- 핀 목록 -->
 <div class="pins">
     <div class="pin" th:each="pin : ${pins}" th:attr="data-pin-id=${pin.id}">
         <img alt="img" class="image" th:src="@{/images/{file}(file=${pin.image})}">
-        <button class="obj-button pin-button" type="button" title="수정" th:attr="data-pin-id=${pin.id}">
-            <img alt="" class="icon" src="/user/assets/images/edit-button.png">
-        </button>
     </div>
 </div>
 <th:block th:replace="~{fragments/toast :: toast}"></th:block>

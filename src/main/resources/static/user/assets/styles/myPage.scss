@@ -2,15 +2,13 @@
 
 @import "../../../assets/styles/_def";
 
-body
-{
+body {
   background: #fff;
   color: #111;
   transition: background 0.3s, color 0.3s;
 }
 
-body.dark
-{
+body.dark {
   background-color: #111;
   color: #fff;
 
@@ -48,8 +46,7 @@ body.dark
 }
 
 
-#dark
-{
+#dark {
   position: fixed;
   top: 4.5rem; // 👈 헤더 높이보다 아래로 내림 (예: 72px)
   right: 1.25rem;
@@ -68,8 +65,7 @@ body.dark
   }
 }
 
-#dialog
-{
+#dialog {
   width: 100vw;
   height: 100vh;
   top: 0;
@@ -78,17 +74,17 @@ body.dark
   z-index: 4000;
   display: none;
 
-  &.-visible
-  {
+  &.-visible {
     display: flex;
   }
 
-  &::before
-  {
+  &::before {
     content: "";
     position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.4);
     z-index: 4000;
   }
@@ -142,8 +138,7 @@ body.dark
       }
 
       > .field-wrapper {
-        &.row
-        {
+        &.row {
           @include flex(row, center, center, 1rem);
           width: 100%;
 
@@ -211,19 +206,15 @@ body.dark
             }
           }
 
-          > .pins
-          {
-            > .pin
-            {
-              > .image
-              {
+          > .pins {
+            > .pin {
+              > .image {
                 pointer-events: none;
               }
             }
           }
 
-          #pinFlyout
-          {
+          #pinFlyout {
             left: 0;
             top: 100%;
             margin-top: 4px;
@@ -275,6 +266,7 @@ body.dark
 
                 > .pin-flyout__list {
                   width: 100%;
+
                   > .empty-message {
                     padding-bottom: 12px;
                     text-align: center;
@@ -359,8 +351,7 @@ body.dark
 
         }
 
-        > .pins
-        {
+        > .pins {
           @include flex(row, flex-start, flex-start, 0.5rem);
           flex-wrap: wrap;
           width: 100%;
@@ -370,8 +361,7 @@ body.dark
           margin-bottom: 1.5rem;
 
 
-          > .pin
-          {
+          > .pin {
             @include flex(row, flex-start, flex-start, 0.5rem);
             width: 14.888rem;
             height: 10rem;
@@ -383,16 +373,14 @@ body.dark
               opacity: 1;
             }
 
-            > .image
-            {
+            > .image {
               width: 100%;
               height: 100%;
               object-fit: cover;
               display: block;
             }
 
-            > .button-container
-            {
+            > .button-container {
               @include flex(row, center, center);
               transform: translateX(-110%);
               color: #ffffff;
@@ -403,21 +391,20 @@ body.dark
               display: flex;
               z-index: 2;
 
-              > .edit-button
-              {
+              > .edit-button {
                 transition: transform 85ms ease-out;
+
                 > .icon {
                   width: 1rem;
                   height: 1rem;
                   fill: #000000;
                 }
 
-                &:hover{
+                &:hover {
                   background-color: #cc001f;
                 }
 
-                &:active
-                {
+                &:active {
                   transform: scale(0.833333);
                 }
               }
@@ -452,46 +439,40 @@ body.dark
   }
 }
 
-#main-page
-{
+#main-page {
   @include flex(column, center, center);
   position: relative;
   width: 100%;
   z-index: 1;
   display: none;
 
-  .exit
-  {
+  .exit {
     @include flex(column, flex-start, flex-start);
     width: 100%;
     padding: 0 4rem;
     display: none;
 
-    > .obj-button
-    {
+    > .obj-button {
       top: 5%;
       left: 5%;
       position: absolute;
       transform: translate(-5%, -5%);
-      > .icon
-      {
+
+      > .icon {
         width: 1.875rem;
       }
     }
 
-    > .-visible
-    {
+    > .-visible {
       display: flex;
     }
   }
 
-  &.-visible
-  {
+  &.-visible {
     display: flex;
   }
 
-  > #profile
-  {
+  > #profile {
     @include flex(column, center, center, 0.25rem);
     margin-top: 5rem; // 상단 여백
 
@@ -502,7 +483,7 @@ body.dark
       overflow: hidden;
       border: 2px solid #ccc;
       margin-bottom: 1rem;
-      display: flex;         // 랜덤 원형 글자도 가운데 정렬
+      display: flex; // 랜덤 원형 글자도 가운데 정렬
       align-items: center;
       justify-content: center;
 
@@ -529,59 +510,48 @@ body.dark
     }
 
 
-    > .nickname-wrapper
-    {
-      > .caption
-      {
+    > .nickname-wrapper {
+      > .caption {
         color: #000000;
         font-size: 2.25rem;
         font-weight: 700;
       }
     }
 
-    > .info-wrapper
-    {
+    > .info-wrapper {
       @include flex(row, center, center, 0.25rem);
       display: none;
 
-      &.-visible
-      {
+      &.-visible {
         display: flex;
       }
 
-      > .link
-      {
-        > .caption
-        {
+      > .link {
+        > .caption {
           color: #000000;
           font-size: 1rem;
           font-weight: 700;
           text-decoration: none;
 
-          &.hover
-          {
+          &.hover {
             color: #272721;
             text-decoration: underline;
           }
         }
       }
 
-      > .introduce
-      {
+      > .introduce {
         color: #000000;
         font-size: 1rem;
         font-weight: 400;
       }
     }
 
-    > .id-wrapper
-    {
-      > .logo
-      {
+    > .id-wrapper {
+      > .logo {
         @include flex(row, center, center, 0.125rem);
 
-        > .icon
-        {
+        > .icon {
           width: 1rem;
           color: #57574c;
           fill: currentColor;
@@ -590,54 +560,47 @@ body.dark
           vertical-align: middle;
         }
 
-        > .caption
-        {
+        > .caption {
           color: #000000;
           font-weight: 400;
         }
       }
     }
 
-    > .follower-wrapper
-    {
+    > .follower-wrapper {
       @include flex(row, center, center, 0.25rem);
 
-      > .caption
-      {
+      > .caption {
         color: #000000;
         font-weight: 400;
       }
     }
 
-    > .button-container
-    {
+    > .button-container {
       @include flex(row, center, center, 0.375rem);
       margin-top: 0.5rem;
-      > .obj-button
-      {
+
+      > .obj-button {
         padding: 0.625rem 1rem;
         color: #000000;
         font-weight: 500;
       }
     }
 
-    > .category
-    {
+    > .category {
       @include flex(row, center, center, 0.5rem);
       margin-top: 2rem;
       position: static;
 
       > .created,
-      > .saved
-      {
+      > .saved {
         @include flex(row, center, center);
         height: 3rem;
         min-width: 3.75rem;
         padding: 0.5rem 0.75rem;
         border-radius: 1rem;
 
-        &.active
-        {
+        &.active {
           position: relative;
 
           &::after {
@@ -651,44 +614,37 @@ body.dark
             border-radius: 1px;
           }
 
-          &:hover
-          {
+          &:hover {
             background-color: unset; /* hover 시 변화 없게 */
             cursor: default;
           }
         }
 
-        > .link
-        {
+        > .link {
           color: #000000;
           font-size: 1rem;
           font-weight: 500;
           user-select: none;
         }
 
-        &:hover
-        {
+        &:hover {
           background-color: #e0e0d9;
         }
 
-        &:focus > .link
-        {
+        &:focus > .link {
           text-decoration: underline;
         }
       }
     }
   }
 
-  > #main
-  {
+  > #main {
     width: 100%;
     position: relative;
     z-index: 2;
 
-    > .content
-    {
-      > .empty
-      {
+    > .content {
+      > .empty {
         @include flex(column, center, center, 1rem);
         top: 60%;
         left: 50%;
@@ -696,31 +652,26 @@ body.dark
         position: absolute;
         transform: translate(-50%, -60%);
 
-        > .message
-        {
+        > .message {
           font-size: 1rem;
           font-weight: 400;
         }
 
-        > .obj-button
-        {
+        > .obj-button {
           padding: 0.375rem 0.75rem;
           height: 2.25rem;
         }
 
-        &.-visible
-        {
+        &.-visible {
           display: flex;
         }
       }
 
-      > .space
-      {
+      > .space {
         @include flex(column, center, center);
         width: 100%;
 
-        > .boards
-        {
+        > .boards {
           @include flex(row, flex-start, flex-start, 0.5rem);
           flex-wrap: wrap;
           width: 100%;
@@ -729,14 +680,12 @@ body.dark
           margin-top: 1.5rem;
           border-bottom: 0.0625rem solid #d1d1c7;
 
-          > .board
-          {
+          > .board {
             @include flex(column, flex-start, flex-start);
             margin-bottom: 1rem;
 
 
-            > .image
-            {
+            > .image {
               @include flex(row, flex-start, flex-start, 0.5rem);
               background-color: #e0e0d9;
               width: 12rem;
@@ -748,8 +697,7 @@ body.dark
 
               margin-bottom: 1rem;
 
-              &::before
-              {
+              &::before {
                 content: '';
                 position: absolute;
                 top: 0;
@@ -762,67 +710,36 @@ body.dark
                 transition: opacity 0.3s ease;
               }
 
-              &:hover::before
-              {
+              &:hover::before {
                 opacity: 1;
               }
 
-              > .background
-              {
+              > .background {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
                 display: block;
               }
 
-              > .board-button
-              {
-                @include flex(row, flex-end, flex-end);
-                position: absolute;
-                bottom: 0.75rem;
-                left: 99%;
-                transform: translateX(-100%);
-                background-color: #f0f0eb;
-                border-radius: 1rem;
-                opacity: 0;
-                pointer-events: none;
-                transition: opacity 0.3s ease;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 2;
-
-                > .icon
-                {
-                  width: 1rem;
-                  height: 1rem;
-                  fill: #000000;
-                }
-              }
-
-              &:hover > .board-button
-              {
+              &:hover > .board-button {
                 opacity: 1;
                 pointer-events: auto;
               }
             }
 
-            > .content
-            {
-              > .title
-              {
+            > .content {
+              > .title {
                 color: #000000;
                 font-size: 1.25rem;
                 font-weight: 500;
               }
-              > .text
-              {
+
+              > .text {
                 color: #000000;
                 font-size: 0.75rem;
                 font-weight: 400;
 
-                > .time
-                {
+                > .time {
                   color: #57574c;
                   font-size: 0.75rem;
                   font-weight: 400;
@@ -832,8 +749,7 @@ body.dark
           }
         }
 
-        > .pins
-        {
+        > .pins {
           @include flex(row, flex-start, flex-start, 0.5rem);
           flex-wrap: wrap;
           width: 100%;
@@ -843,8 +759,7 @@ body.dark
           margin-bottom: 1.5rem;
 
 
-          > .pin
-          {
+          > .pin {
             @include flex(row, flex-start, flex-start, 0.5rem);
             width: 12rem;
             height: 16rem;
@@ -854,8 +769,7 @@ body.dark
             position: relative;
             z-index: 3;
 
-            &::before
-            {
+            &::before {
               content: '';
               position: absolute;
               top: 0;
@@ -872,16 +786,14 @@ body.dark
               opacity: 1;
             }
 
-            > .image
-            {
+            > .image {
               width: 100%;
               height: 100%;
               object-fit: cover;
               display: block;
             }
 
-            > .pin-button
-            {
+            > .pin-button {
               @include flex(row, flex-end, flex-end);
               position: absolute;
               bottom: 0.75rem;
@@ -916,8 +828,7 @@ body.dark
 
 }
 
-#edit-page
-{
+#edit-page {
   @include flex(row, flex-start, flex-start);
   width: 100%;
   height: 100vh;
@@ -927,34 +838,28 @@ body.dark
   display: none;
   overflow-y: auto;
 
-  input
-  {
+  input {
     border: none;
   }
 
-  &.-visible
-  {
+  &.-visible {
     display: flex;
   }
 
-  > .menu-container
-  {
+  > .menu-container {
     position: relative;
     width: 20%;
     margin-top: 1.5rem;
 
-    > .modifyNav
-    {
+    > .modifyNav {
       width: 100%;
 
-      > .menu
-      {
+      > .menu {
         @include flex(column, flex-start, flex-start);
         width: 95%;
         margin-left: 1rem;
 
-        > .item
-        {
+        > .item {
           @include flex(column, center, center);
           height: 3rem;
           margin-bottom: 0.5rem;
@@ -962,23 +867,19 @@ body.dark
           border-radius: 0.5rem;
           padding: 0.5rem;
 
-          &.active
-          {
-            > .caption::after
-            {
+          &.active {
+            > .caption::after {
               transform: scaleX(1); // 활성화시 밑줄 표시
             }
           }
 
-          > .caption
-          {
+          > .caption {
             position: relative;
             font-size: 1rem;
             color: #000000;
             font-weight: 700;
 
-            &::after
-            {
+            &::after {
               content: "";
               position: absolute;
               bottom: -2px; // 텍스트 밑에 살짝 띄움
@@ -992,8 +893,7 @@ body.dark
             }
           }
 
-          &:hover
-          {
+          &:hover {
             cursor: pointer;
             background-color: #E8E8E8;
           }
@@ -1002,28 +902,24 @@ body.dark
     }
   }
 
-  > .form-container
-  {
+  > .form-container {
     margin-left: 2rem;
     flex-grow: 1; // 나머지 영역 차지
     max-width: 30.5rem;
     padding-bottom: 3.5rem; // ✅ 고정 버튼 공간 확보
 
-    > #modifyForm
-    {
+    > #modifyForm {
       @include flex(column, flex-start, flex-start, 1rem);
       width: 100%;
       max-width: 30.5rem;
       margin-top: 2rem;
       display: none;
 
-      &.-visible
-      {
+      &.-visible {
         display: flex;
       }
 
-      > .field-wrapper
-      {
+      > .field-wrapper {
         width: 100%;
 
         &.column {
@@ -1034,7 +930,7 @@ body.dark
 
         > .field {
           flex: 1 1 50%; // ✅ 각 필드 50% 차지
-          margin: 0;     // ✅ 불필요 margin 제거
+          margin: 0; // ✅ 불필요 margin 제거
 
           .obj-label {
 
@@ -1095,67 +991,56 @@ body.dark
       }
 
 
-      > .title
-      {
+      > .title {
         font-size: 1.75rem;
         font-weight: 700;
         color: #000;
       }
 
-      > .caption
-      {
+      > .caption {
         font-size: 1rem;
         font-weight: 400;
         color: #000;
       }
     }
 
-    > #accountForm
-    {
+    > #accountForm {
       @include flex(column, flex-start, flex-start, 1rem);
       width: 100%;
       max-width: 30.5rem;
       margin-top: 2rem;
       display: none;
 
-      &.-visible
-      {
+      &.-visible {
         display: flex;
       }
 
-      > .title
-      {
+      > .title {
         font-size: 1.75rem;
         font-weight: 700;
         color: #000;
       }
 
-      > .sub-title
-      {
+      > .sub-title {
         font-size: 1.25rem;
         font-weight: 500;
         color: #000;
       }
 
-      > .obj-label
-      {
-        > .-row
-        {
-          > .content
-          {
+      > .obj-label {
+        > .-row {
+          > .content {
             @include flex(row, flex-start, flex-start, 0.25rem);
             max-width: 14.975rem;
           }
         }
 
-        > button[name="change"]
-        {
+        > button[name="change"] {
           margin-top: 1rem;
         }
       }
 
-      > .field-wrapper
-      {
+      > .field-wrapper {
         width: 100%;
         position: relative;
         margin-bottom: 1.5rem;
@@ -1205,14 +1090,14 @@ body.dark
         > .field {
           flex: 1 1 50%; // ✅ 각 필드 50% 차지
           margin: 0; // ✅ 불필요 margin 제거
-          &.email
-          {
+          &.email {
             pointer-events: none;
-            > .obj-label
-            {
+
+            > .obj-label {
               background-color: #e0e0d9;
             }
           }
+
           .obj-label {
 
             .caption {
@@ -1238,9 +1123,9 @@ body.dark
           }
         }
 
-        > .button-container
-        {
+        > .button-container {
           transition: transform 85ms ease-out;
+
           .obj-button {
             background-color: #e60023;
             width: 100%;
@@ -1250,16 +1135,15 @@ body.dark
             margin-top: 0.5rem;
             pointer-events: auto;
             cursor: pointer;
+            transition: transform 85ms ease-out;
 
-            &.disabled
-            {
+            &.disabled {
               pointer-events: none;
               background-color: #e0e0d9;
               cursor: default;
             }
 
-            &:active
-            {
+            &:active {
               transform: scale(0.933333);
             }
           }
@@ -1291,73 +1175,84 @@ body.dark
         }
       }
 
-      > .caption
-      {
+      > .caption {
         font-size: 1rem;
         font-weight: 400;
         color: #000;
       }
 
-      > .-caption
-      {
+      > .-caption {
         font-size: 0.75rem;
         font-weight: 400;
         color: #000;
       }
 
-      > .account-delete
-      {
+      > .account-delete {
         @include flex(column, flex-start, flex-start, 1rem);
         padding-bottom: 3rem;
+
         > .row {
           @include flex(row, flex-start, flex-start);
           width: 100%;
 
-          &.inactive
-          {
+          &.inactive {
             gap: 7.875rem;
           }
 
-          &.delete
-          {
+          &.delete {
             gap: 1rem;
           }
 
-          > .info
-          {
+          > .info {
             @include flex(column, flex-start, flex-start);
 
-            > .subject
-            {
+            > .subject {
               color: #000000;
               font-size: 1rem;
               font-weight: 700;
             }
 
-            > .caption
-            {
+            > .caption {
               color: #000000;
               font-size: 1rem;
               font-weight: 400;
             }
           }
 
-          > .obj-button
-          {
+          > .obj-button {
             padding: 0.75rem 1rem;
 
             color: #000000;
             font-size: 1rem;
             font-weight: 500;
+            transition: transform 85ms ease-out;
+
+            &.-color-gray {
+              &:active {
+                transform: scale(0.934426);
+              }
+            }
+
+            &.info-delete {
+              color: #fff;
+              background-color: #e60023;
+
+              &:hover {
+                background-color: #cc001f;
+              }
+
+              &:active {
+                background-color: #b8001b;
+                transform: scale(0.934426);
+              }
+            }
           }
         }
       }
-
     }
   }
 
-  > .button-container
-  {
+  > .button-container {
     @include flex(row, center, flex-start, 0.5rem);
     position: fixed;
     bottom: 0;
@@ -1369,39 +1264,138 @@ body.dark
     z-index: 99;
     padding-left: 50.5rem;
 
-    > .obj-button
-    {
+    > .obj-button {
       padding: 0.75rem 1rem;
       transition: transform 85ms ease-out;
       pointer-events: auto;
       cursor: pointer;
 
-      &.disabled
-      {
+      &.disabled {
         pointer-events: none;
         background-color: #e5e5e0;
         color: #ffffff;
         cursor: default;
       }
-      &:active
-      {
+
+      &:active {
         transform: scale(0.934426);
       }
 
     }
 
-    > .-color-gray
-    {
+    > .-color-gray {
       color: #000000;
       font-size: 1rem;
       font-weight: 500;
     }
 
-    > .-color-red
-    {
+    > .-color-red {
       color: #ffffff;
       font-weight: 500;
       font-size: 1rem;
     }
+  }
+}
+
+
+/* 데스크탑 ~ 대형 화면 */
+@media (max-width: 1200px) {
+  #main {
+
+    > .space > .title {
+      font-size: clamp(3rem, 2vw, 3.5rem);
+    }
+  }
+
+  #header {
+    > .menu > .item {
+      margin: 0.75rem; // 12px
+    }
+  }
+}
+
+/* 데스크탑 중간 크기 */
+@media (max-width: 1024px) {
+  #main {
+    flex-direction: column;
+
+    > .space > .title {
+      font-size: clamp(2.5rem, 2.5vw, 3rem);
+      text-align: center;
+    }
+  }
+
+  #header {
+    height: 4rem; // 64px
+
+    > .menu > .item {
+      margin: 0.5rem; // 8px
+    }
+  }
+}
+
+/* 모바일 일반 */
+@media (max-width: 768px) {
+  #dialog > .-modal > #loginModalForm,
+  #dialog > .-modal > #registerModalForm {
+    width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #header > .logo > .caption {
+    font-size: clamp(0.9rem, 2vw, 1rem);
+  }
+
+  #header > .search {
+    min-width: auto;
+    padding: 0 0.5rem; // 8px
+  }
+
+  #header > .button-container .obj-button {
+    padding: 0.5rem 0.75rem; // 8px 12px
+    font-size: 0.875rem; // 14px
+  }
+}
+
+/* 모바일 소형 */
+@media (max-width: 640px) {
+  @media (max-width: 640px) {
+    #header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+    }
+  }
+
+  #main > .space > .title {
+    font-size: clamp(2rem, 4vw, 2.25rem);
+    line-height: 1.3;
+  }
+}
+
+/* 초소형 스마트폰 */
+@media (max-width: 360px) {
+  #main {
+    gap: 2.5rem; // 40px
+  }
+
+  #main > .space > .title {
+    font-size: clamp(1.25rem, 5vw, 1.5rem);
+    padding: 0 0.5rem;
+  }
+
+  #header > .logo > .caption {
+    font-size: clamp(0.75rem, 4vw, 0.85rem);
+  }
+
+  #header > .button-container .obj-button {
+    padding: 0.25rem 0.5rem; // 4px 8px
   }
 }

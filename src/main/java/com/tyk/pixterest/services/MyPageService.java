@@ -33,7 +33,7 @@ public class MyPageService {
         return input != null && input.matches("^(?=.{8,50}$)([\\da-z\\-_.]{4,})@([\\da-z][\\da-z\\-]*[\\da-z]\\.)?([\\da-z][\\da-z\\-]*[\\da-z])\\.([a-z]{2,15})(\\.[a-z]{2,3})?$");
     }
 
-    public List<BoardEntity> getBoardtykUser(String email)
+    public List<BoardEntity> getBoardsByUser(String email)
     {
         if (email == null || email.isEmpty())
         {
@@ -53,10 +53,10 @@ public class MyPageService {
             return null;
         }
 
-        return this.myPageMapper.selectBoardtykEmail(email);
+        return this.myPageMapper.selectBoardsByEmail(email);
     }
 
-    public List<PinEntity> getPintykUser(String email)
+    public List<PinEntity> getPinsByUser(String email)
     {
         if (email == null || email.isEmpty())
         {
@@ -75,10 +75,10 @@ public class MyPageService {
         {
             return null;
         }
-        return this.myPageMapper.selectPintykEmail(email);
+        return this.myPageMapper.selectPinsByEmail(email);
     }
 
-    public List<PinEntity> getSavedPintykUser(String email)
+    public List<PinEntity> getSavedPinsByUser(String email)
     {
         if (email == null || email.isEmpty())
         {
@@ -98,13 +98,14 @@ public class MyPageService {
             return new ArrayList<>();
         }
 
-        return this.myPageMapper.selectSavedPintykEmail(email);
+        return this.myPageMapper.selectSavedPinsByEmail(email);
     }
 
     public ResultTuple<BoardEntity> getBoardByBoardId(UserEntity signedUser, int boardId)
     {
         // 1. 사용자 상태 검사
-        if (signedUser == null || signedUser.isDeleted() || signedUser.isSuspended()) {
+        if (signedUser == null || signedUser.isDeleted() || signedUser.isSuspended())
+        {
             return ResultTuple.<BoardEntity>builder()
                     .result(ModifyBoardResult.FAILURE_SESSION_EXPIRED)
                     .payload(null)
@@ -128,14 +129,6 @@ public class MyPageService {
                     .build();
         }
 
-        // 4. 권한 확인
-        if (!signedUser.isAdmin()) {
-            return ResultTuple.<BoardEntity>builder()
-                    .result(ModifyBoardResult.FAILURE_NO_PERMISSION)
-                    .payload(null)
-                    .build();
-        }
-
         // 5. 성공
         return ResultTuple.<BoardEntity>builder()
                 .result(CommonResult.SUCCESS)
@@ -143,9 +136,8 @@ public class MyPageService {
                 .build();
     }
 
-
-    public List<PinEntity> getPintykBoardId(int boardId) {
-        return myPageMapper.selectPintykBoardId(boardId);
+    public List<PinEntity> getPinsByBoardId(int boardId) {
+        return myPageMapper.selectPinsByBoardId(boardId);
     }
 
     public Result saveBoard(UserEntity signedUser, BoardEntity board) {
@@ -169,62 +161,5 @@ public class MyPageService {
         return updated ? CommonResult.SUCCESS : CommonResult.FAILURE; // 새 FAILURE 추가 가능
     }
 
-    public Result deletePinAtBoard(UserEntity signedUser, int pinId)
-    {
-        // 1. 사용자 상태 검사
-        if (signedUser == null || signedUser.isDeleted() || signedUser.isSuspended()) {
-            return ModifyBoardResult.FAILURE_SESSION_EXPIRED;
-        }
-
-        // 2. 핀 존재 확인
-        PinEntity dbPin = this.myPageMapper.selectPinByPinId(pinId);
-        if (dbPin == null) {
-            return ModifyBoardResult.FAILURE_NOT_FOUND;
-        }
-
-        // 3. 커버 이미지 여부 확인
-        if (dbPin.getBoardId() != null) {
-            BoardEntity board = this.myPageMapper.selectBoardByBoardId(dbPin.getBoardId());
-            if (board != null && board.getCoverImage() != null
-                    && board.getCoverImage().equals(dbPin.getImage())) {
-                // 커버 이미지가 삭제할 핀과 같으면 null로 초기화
-                board.setCoverImage(null);
-                board.setModifiedAt(LocalDateTime.now());
-                this.myPageMapper.boardUpdate(board);
-            }
-        }
-
-        // 4. 핀 삭제 처리
-        dbPin.setBoardId(null);
-        dbPin.setModifiedAt(LocalDateTime.now());
-
-        boolean updated = this.myPageMapper.pinUpdate(dbPin) > 0;
-        return updated ? CommonResult.SUCCESS : CommonResult.FAILURE; // 필요 시 FAILURE_PIN_DELETE_FAIL 등 추가 가능
-    }
-
-    public Result deleteBoard(UserEntity signedUser, int boardId) {
-        // 1. 사용자 상태 검사
-        if (signedUser == null || signedUser.isDeleted() || signedUser.isSuspended()) {
-            return ModifyBoardResult.FAILURE_SESSION_EXPIRED;
-        }
-
-        // 2. 게시판 존재 확인
-        BoardEntity dbBoard = this.myPageMapper.selectBoardByBoardId(boardId);
-        if (dbBoard == null) {
-            return ModifyBoardResult.FAILURE_NOT_FOUND;
-        }
-
-        // 3. 이미 삭제된 보드인지 확인
-        if (dbBoard.isDeleted()) {
-            return ModifyBoardResult.FAILURE_DELETED;
-        }
-
-        // 4. 보드 삭제 처리
-        dbBoard.setDeleted(true);
-        dbBoard.setModifiedAt(LocalDateTime.now());
-
-        boolean updated = this.myPageMapper.boardUpdate(dbBoard) > 0;
-        return updated ? CommonResult.SUCCESS : CommonResult.FAILURE; // 필요 시 FAILURE_BOARD_DELETE_FAIL 추가 가능
-    }
 
 }

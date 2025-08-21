@@ -170,9 +170,6 @@
                             <img alt="보드 이미지" class="background"
                                  th:if="${board.coverImage == null}"
                                  th:src="@{'/assets/images/default.png'}">
-                            <button class="obj-button board-button" title="수정">
-                                <img alt="" class="icon" src="/user/assets/images/edit-button.png">
-                            </button>
                         </div>
                         <div class="content">
                             <span class="title" th:text="${board.name}">Board 이름</span>
@@ -185,9 +182,6 @@
                 <div class="pins">
                     <div class="pin" th:each="pin : ${pins}" th:data-pin-id="${pin.id}">
                         <img alt="img" class="image" th:src="@{/images/{file}(file=${pin.image})}">
-                        <button class="obj-button pin-button" type="button" title="수정" th:attr="data-pin-id=${pin.id}">
-                            <img alt="" class="icon" src="/user/assets/images/edit-button.png">
-                        </button>
                     </div>
                 </div>
             </div>
@@ -356,7 +350,7 @@
                         <span class="subject">데이터 및 계정 삭제</span>
                         <span class="caption">데이터 및 계정과 관련된 모든 정보를 영구적으로 삭제합니다.</span>
                     </div>
-                    <button class="obj-button -color-gray" name="remove" type="button">계정 삭제</button>
+                    <button class="obj-button info-delete" name="remove" type="button">계정 삭제</button>
                 </div>
             </div>
         </form>

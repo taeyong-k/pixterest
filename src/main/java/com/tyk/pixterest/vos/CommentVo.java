@@ -12,5 +12,6 @@ import lombok.Setter;
 @Setter
 public class CommentVo extends CommentEntity {
     private String userNickname;
+    private String profileColor;
     private boolean isMine;
 }

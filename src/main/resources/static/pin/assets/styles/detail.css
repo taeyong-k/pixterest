@@ -475,17 +475,6 @@ body {
   background-color: #ccc;
 }
 
-#pinDetail .commentContainer .comment .head .profile .profile-img-wrapper .img {
-  max-width: 100%;
-  width: 100%;
-  height: auto;
-  border: 0;
-  color: transparent;
-  vertical-align: middle;
-  position: absolute;
-  display: block;
-}
-
 #pinDetail .commentContainer .comment .body {
   align-items: stretch;
   display: flex;

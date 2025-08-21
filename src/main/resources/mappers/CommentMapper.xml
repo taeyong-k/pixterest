@@ -50,7 +50,8 @@
                c.`content`    as `content`,
                c.`created_at` as `createdAt`,
                c.`modified_at` as `modifiedAt`,
-               c.`is_deleted` as `isDeleted`
+               c.`is_deleted` as `isDeleted`,
+               u.`profile_color` as `profileColor`
         from `pixterest`.`comments` c
                  join `pixterest`.`users` u on c.user_email = u.email
         where c.`pin_id` = #{pinId}

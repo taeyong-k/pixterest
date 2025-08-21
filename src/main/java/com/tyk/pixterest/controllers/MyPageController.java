@@ -29,8 +29,7 @@ public class MyPageController {
     }
 
     @RequestMapping(value = "/myPage", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getMyPage(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser)
-    {
+    public String getMyPage(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser) {
         if (signedUser == null) {
             return "redirect:/user/login?loginCheck=false";
         }
@@ -43,8 +42,7 @@ public class MyPageController {
 
     @RequestMapping(value = "/created", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getCreated(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                             Model model)
-    {
+                             Model model) {
         if (signedUser == null) {
             return "redirect:/user/login?loginCheck=false";
         }
@@ -52,9 +50,8 @@ public class MyPageController {
             return "redirect:/user/login?loginCheck=forbidden";
         }
         // 본인이 만든 Board + Pin
-        List<BoardEntity> boards = myPageService.getBoardtykUser(signedUser.getEmail());
-        List<PinEntity> pins = myPageService.getPintykUser(signedUser.getEmail());
-
+        List<BoardEntity> boards = myPageService.getBoardsByUser(signedUser.getEmail());
+        List<PinEntity> pins = myPageService.getPinsByUser(signedUser.getEmail());
 
 
         model.addAttribute("boards", boards);
@@ -65,8 +62,7 @@ public class MyPageController {
 
     @RequestMapping(value = "/saved", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getSaved(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                           Model model)
-    {
+                           Model model) {
         if (signedUser == null) {
             return "redirect:/user/login?loginCheck=false";
         }
@@ -74,7 +70,7 @@ public class MyPageController {
             return "redirect:/user/login?loginCheck=forbidden";
         }
         // 본인이 저장한 Pin 가져오기
-        List<PinEntity> savedPins = myPageService.getSavedPintykUser(signedUser.getEmail());
+        List<PinEntity> savedPins = myPageService.getSavedPinsByUser(signedUser.getEmail());
 
         model.addAttribute("pins", savedPins);
         model.addAttribute("category", "saved"); // 👈 뷰에서 active 탭 구분용
@@ -84,20 +80,20 @@ public class MyPageController {
     @RequestMapping(value = "/board", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getBoard(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                           @RequestParam(value = "boardId" ,required = false) Integer boardId)
-    {
+                           @RequestParam(value = "boardId", required = false) Integer boardId) {
         ResultTuple<BoardEntity> board = this.myPageService.getBoardByBoardId(signedUser, boardId);
         JSONObject response = new JSONObject();
         response.put("result", board.getResult());
-        response.put("boardName", board.getPayload().getName());
+        if (board.getPayload() != null) {
+            response.put("boardName", board.getPayload().getName());
+        }
         return response.toString();
     }
 
     @RequestMapping(value = "/board", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String postBoard(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                            BoardEntity board)
-    {
+                            BoardEntity board) {
         JSONObject response = new JSONObject();
 
         if (signedUser == null) {
@@ -128,34 +124,11 @@ public class MyPageController {
     @RequestMapping(value = "/pins", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getBoardPin(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
-                              @RequestParam(value = "boardId") int boardId)
-    {
-        List<PinEntity> boardPins = this.myPageService.getPintykBoardId(boardId);
+                              @RequestParam(value = "boardId") int boardId) {
+        List<PinEntity> boardPins = this.myPageService.getPinsByBoardId(boardId);
         JSONObject response = new JSONObject();
         response.put("result", CommonResult.SUCCESS.toStringLower());
         response.put("pins", boardPins);
-        return response.toString();
-    }
-
-    @RequestMapping(value = "/pin/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String postPinDelete(@SessionAttribute(value = "signedUser",required = false) UserEntity signedUser,
-                                @RequestParam(value = "pinId", required = false) Integer pinId)
-    {
-        Result result = this.myPageService.deletePinAtBoard(signedUser, pinId);
-        JSONObject response = new JSONObject();
-        response.put("result", result.toStringLower());
-        return response.toString();
-    }
-
-    @RequestMapping(value = "/board/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String postPinDelete(@SessionAttribute(value = "signedUser",required = false) UserEntity signedUser,
-                                @RequestParam(value = "boardId", required = false) int boardId)
-    {
-        Result result = this.myPageService.deleteBoard(signedUser, boardId);
-        JSONObject response = new JSONObject();
-        response.put("result", result.toStringLower());
         return response.toString();
     }
 }
