@@ -54,14 +54,17 @@ public class profileController {
     public String postInfo(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                            UserEntity user)
     {
+        JSONObject response = new JSONObject();
+
         if (signedUser == null) {
-            return "redirect:/user/login?loginCheck=false";
+            response.put("result", "failure_session_expired");
+            return response.toString();
         }
         if (signedUser.isSuspended() || signedUser.isDeleted()) {
-            return "redirect:/user/login?loginCheck=forbidden";
+            response.put("result", "failure_forbidden");
+            return response.toString();
         }
         CommonResult result = this.profileService.saveInfo(signedUser,user);
-        JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
         return response.toString();
     }
@@ -71,14 +74,17 @@ public class profileController {
     public String postProfileColor(@SessionAttribute(value = "signedUser",required = false) UserEntity signedUser,
                                    @RequestParam(value = "profileColor",required = false) String profileColor)
     {
+        JSONObject response = new JSONObject();
+
         if (signedUser == null) {
-            return "redirect:/user/login?loginCheck=false";
+            response.put("result", "failure_session_expired");
+            return response.toString();
         }
         if (signedUser.isSuspended() || signedUser.isDeleted()) {
-            return "redirect:/user/login?loginCheck=forbidden";
+            response.put("result", "failure_forbidden");
+            return response.toString();
         }
         CommonResult result = this.profileService.controlProfileColor(signedUser, profileColor);
-        JSONObject response = new JSONObject();
         response.put("result",result.toStringLower());
         return response.toString();
     }

@@ -9,7 +9,7 @@
                 #{user.birth}, #{user.profileColor},#{user.createdAt}, #{user.modifiedAt}, #{user.isAdmin},
                 #{user.isDeleted})
     </insert>
-    <update id="update">
+    <update id="update" parameterType="com.tyk.pixterest.entities.UserEntity">
         UPDATE `pixterest`.`users`
         SET `password`     = #{user.password},
             `first_name`   = #{user.firstName},

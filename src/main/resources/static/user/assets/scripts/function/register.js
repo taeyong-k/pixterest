@@ -69,7 +69,6 @@ $registerButton.addEventListener('click', () =>
         e.preventDefault();
         const $labels = [$emailLabel, $passwordLabel, $birthLabel];
         $labels.forEach(($label) => $label.classList.remove('-invalid'));
-
         validateInput($emailInput, $emailLabel, emailRegex, '음... 올바른 이메일 주소가 아닙니다.')
 
         validateInput($passwordInput, $passwordLabel, passwordRegex, '올바르지 않은 비밀번호를 입력했습니다. \n다시 시도하거나 비밀번호 재설정하세요.')

@@ -556,6 +556,9 @@ $buttons.forEach(button => {
                         case 'failure_session_expired': // CommonResult
                             window.location.href = '/user/login?loginCheck=expired'
                             break;
+                        case 'failure_forbidden':
+                            window.location.href = '/user/login?loginCheck=forbidden';
+                            break;
 
                         case 'success': // CommonResult
                             sessionStorage.setItem('showProfile', 'true');

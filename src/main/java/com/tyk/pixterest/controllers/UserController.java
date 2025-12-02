@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -31,13 +32,27 @@ public class UserController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String postRegister(UserEntity user)
-    {
+    public String postRegister(
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "password", required = false) String password,
+            @RequestParam(value = "birth", required = false) String birth,
+            @RequestParam(value = "profileColor", required = false) String profileColor
+    ) {
+        UserEntity user = new UserEntity();
+        user.setEmail(email);
+        user.setPassword(password);
+        if (birth != null && !birth.isBlank()) {
+            user.setBirth(LocalDate.parse(birth));
+        }
+        user.setProfileColor(profileColor);
+
         Result result = this.userService.register(user);
+
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
         return response.toString();
     }
+
 
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getLogin()
