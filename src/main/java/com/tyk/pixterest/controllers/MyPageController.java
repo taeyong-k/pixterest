@@ -56,7 +56,7 @@ public class MyPageController {
 
         model.addAttribute("boards", boards);
         model.addAttribute("pins", pins);
-        model.addAttribute("category", "created"); // 👈 뷰에서 active 탭 구분용
+        model.addAttribute("category", "created");
         return "user/myPage";
     }
 
@@ -73,7 +73,7 @@ public class MyPageController {
         List<PinEntity> savedPins = myPageService.getSavedPinsByUser(signedUser.getEmail());
 
         model.addAttribute("pins", savedPins);
-        model.addAttribute("category", "saved"); // 👈 뷰에서 active 탭 구분용
+        model.addAttribute("category", "saved");
         return "user/myPage";
     }
 

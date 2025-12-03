@@ -15,7 +15,6 @@ $loginButton.addEventListener('click', () =>
     const $emailLabel = $form.querySelector('.obj-label input[name="email"]')?.parentElement;
     const $passwordLabel = $form.querySelector('.obj-label input[name="password"]')?.parentElement;
 
-
     setupValidation({
         $input: $emailInput,
         $label: $emailLabel,

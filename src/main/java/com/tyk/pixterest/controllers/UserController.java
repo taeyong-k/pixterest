@@ -53,7 +53,6 @@ public class UserController {
         return response.toString();
     }
 
-
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getLogin()
     {
@@ -112,10 +111,6 @@ public class UserController {
             response.put("theme", "light");  // 로그인 안 되어 있으면 기본값
             return response.toString();
         }
-
-        // DB에서 사용자 테마 조회 (예: userService.getThemeByUserId)
-//        String theme = userService.getThemeByUserId(signedUser.getId());
-
         if (theme == null) theme = "light";
 
         response.put("theme", theme);
@@ -135,10 +130,6 @@ public class UserController {
             return response.toString();
         }
 
-        // DB에 사용자 테마 저장
-//        boolean success = userService.saveUserTheme(signedUser.getId(), theme);
-
-//        response.put("result", success ? "success" : "fail");
         return response.toString();
     }
 
